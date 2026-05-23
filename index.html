@@ -2,564 +2,83 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a50cc'/><polygon points='18,3 8,18 15,18 14,29 24,14 17,14' fill='%234a9eff'/></svg>"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>DSA Forge — Learn Patterns · Practice Problems</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<!-- Primary Meta -->
+<title>DSA Forge — Master DSA Patterns &amp; Solve Problems</title>
+<meta name="description" content="DSA Forge is a free, browser-based DSA practice platform. Master 15+ algorithm patterns — Arrays, Trees, Graphs, DP, and more — across 63 curated problems with hints, solutions, and a built-in code editor.">
+<meta name="keywords" content="DSA, data structures, algorithms, LeetCode, coding interview, dynamic programming, binary search, graphs, trees, sorting">
+<meta name="author" content="DSA Forge">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#07101f">
+
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="DSA Forge — Master DSA Patterns &amp; Solve Problems">
+<meta property="og:description" content="Free browser-based DSA practice. 63 problems across 15+ patterns with hints, complexity analysis, and a built-in JS editor. No login required.">
+<meta property="og:image" content="https://dsa-forge.vercel.app/og-image.png">
+<meta property="og:url" content="https://dsa-forge.vercel.app">
+<meta property="og:site_name" content="DSA Forge">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DSA Forge — Master DSA Patterns &amp; Solve Problems">
+<meta name="twitter:description" content="Free browser-based DSA practice. 63 problems, 15+ patterns, built-in JS editor. No login.">
+<meta name="twitter:image" content="https://dsa-forge.vercel.app/og-image.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a50cc'/><polygon points='18,3 8,18 15,18 14,29 24,14 17,14' fill='%234a9eff'/></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a50cc'/><polygon points='18,3 8,18 15,18 14,29 24,14 17,14' fill='%234a9eff'/></svg>">
+
+<!-- Performance: preconnect to CDN origins -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+<!-- Fonts: preload critical weights -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@800&family=DM+Sans:wght@400;500;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
-<style>
-/* ══════════════════════════════════════════════════════════════
-   DSA FORGE — Design System
-   Breakpoints: 360px (mobile), 768px (tablet), 1280px (desktop)
-   ══════════════════════════════════════════════════════════════ */
-:root{
-  --bg:#07101f;
-  --s1:#0c1929;--s2:#111f32;--s3:#172840;--s4:#1e3352;
-  --b1:#1c3050;--b2:#264570;--b3:#305090;
-  --text:#b5cce8;--dim:#5a7a9d;--mut:#2a4060;
-  --arr:#4a9eff;--str:#ff5f85;
-  --easy:#22c55e;--med:#f59e0b;--hard:#ef4444;
-  --ok:#22c55e;--err:#ef4444;--warn:#f59e0b;
-  --brute:#ffb347;--opt:#2dd4bf;
-  --tcol:#a78bfa;--scol:#34d399;
-  --hh:52px;
-  --radius:10px;
-  --fnt-display:'Syne',sans-serif;
-  --fnt-body:'DM Sans',sans-serif;
-  --fnt-code:'JetBrains Mono',monospace;
-}
-
-/* ── RESET ── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:14px;-webkit-text-size-adjust:100%}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:var(--fnt-body);
-  height:100dvh;overflow:hidden;
-  display:flex;flex-direction:column;
-}
-button{cursor:pointer;font-family:var(--fnt-body)}
-a{color:inherit;text-decoration:none}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
-
-/* ══ HEADER ══════════════════════════════════════════════════ */
-#hdr{
-  height:var(--hh);background:var(--s1);
-  border-bottom:1px solid var(--b1);
-  display:flex;align-items:center;
-  padding:0;flex-shrink:0;z-index:100;
-}
-.hdr-inner{
-  max-width:1200px;width:100%;margin:0 auto;
-  display:flex;align-items:center;
-  gap:12px;padding:0 24px;height:100%;
-}
-.logo{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--fnt-display);font-size:1.05rem;
-  font-weight:800;color:#fff;letter-spacing:-.5px;cursor:pointer;
-  white-space:nowrap;
-}
-.logo-mark{
-  width:28px;height:28px;
-  background:linear-gradient(135deg,var(--arr),#1a50cc);
-  border-radius:7px;display:flex;align-items:center;
-  justify-content:center;font-size:.85rem;flex-shrink:0;
-}
-.hdr-sep{width:1px;height:18px;background:var(--b1);flex-shrink:0}
-.hdr-crumb{
-  display:flex;align-items:center;gap:4px;
-  font-size:.78rem;overflow:hidden;flex:1;min-width:0;
-}
-.crumb-item{
-  color:var(--dim);white-space:nowrap;overflow:hidden;
-  text-overflow:ellipsis;
-}
-.crumb-item.active{color:var(--text)}
-.crumb-sep{color:var(--mut);margin:0 2px;flex-shrink:0}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.prog-pill{
-  display:flex;align-items:center;gap:7px;
-  padding:4px 10px;background:var(--s2);
-  border:1px solid var(--b1);border-radius:20px;font-size:.75rem;
-}
-.prog-bar{width:48px;height:3px;background:var(--b1);border-radius:2px;overflow:hidden}
-.prog-fill{height:100%;background:var(--arr);border-radius:2px;transition:width .4s}
-.prog-num{font-weight:600;color:var(--arr);min-width:28px}
-
-/* ══ VIEWS ═══════════════════════════════════════════════════ */
-.view{display:none;flex:1;overflow:hidden;min-height:0}
-.view.active{display:flex;flex-direction:column}
-
-/* ══ DASHBOARD ═══════════════════════════════════════════════ */
-#v-dash{display:block;overflow-y:auto;overflow-x:hidden}
-.dash-inner{
-  max-width:1200px;margin:0 auto;
-  padding:24px 24px 40px;
-  width:100%;
-}
-.dash-hero{margin-bottom:16px}
-.dash-hero h1{
-  font-family:var(--fnt-display);font-size:1.7rem;
-  font-weight:800;color:#fff;margin-bottom:4px;line-height:1.2;
-}
-.dash-hero p{color:var(--dim);font-size:.85rem;line-height:1.6}
-
-/* Stats */
-.stats-row{
-  display:flex;flex-wrap:wrap;
-  gap:10px;margin-bottom:16px;
-}
-.stat-box{
-  background:var(--s1);border:1px solid var(--b1);
-  border-radius:var(--radius);padding:14px 20px;
-  width:140px;flex:0 0 140px;
-}
-.stat-n{
-  font-family:var(--fnt-display);font-size:1.6rem;
-  font-weight:800;color:#fff;line-height:1;
-}
-.stat-l{font-size:.7rem;color:var(--dim);margin-top:4px}
-
-/* Progress bar */
-.dash-prog-wrap{
-  height:4px;background:var(--b1);border-radius:2px;
-  overflow:hidden;margin-bottom:20px;
-}
-.dash-prog-fill{height:100%;background:var(--arr);border-radius:2px;transition:width .5s}
-
-/* Category blocks */
-.cats-wrap{display:flex;flex-direction:column;gap:12px}
-.cat-block{
-  background:var(--s1);border:1px solid var(--b1);
-  border-radius:var(--radius);overflow:hidden;
-}
-.cat-block-hdr{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 16px;cursor:pointer;background:var(--s2);
-  border-bottom:1px solid var(--b1);
-  transition:background .15s;
-  -webkit-tap-highlight-color:transparent;
-}
-.cat-block-hdr:hover{background:var(--s3)}
-.cat-block-hdr:active{background:var(--s4)}
-.cat-hdr-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.cat-hdr-name{font-weight:700;font-size:.88rem;color:#fff;flex:1}
-.cat-hdr-stats{color:var(--dim);font-size:.72rem;margin-right:6px}
-.cat-hdr-bar{width:56px;height:3px;background:var(--b1);border-radius:2px;overflow:hidden;flex-shrink:0}
-.cat-hdr-fill{height:100%;border-radius:2px;transition:width .4s}
-.cat-hdr-arr{color:var(--dim);font-size:.85rem;flex-shrink:0}
-
-/* Pattern cards */
-.pattern-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;padding:12px 14px;
-}
-.pc{
-  background:var(--s2);border:1px solid var(--b1);
-  border-radius:var(--radius);padding:14px 14px 12px;
-  cursor:pointer;transition:.2s;position:relative;overflow:hidden;
-  -webkit-tap-highlight-color:transparent;
-  display:flex;flex-direction:column;
-}
-.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.pc.array::before{background:var(--arr)}
-.pc.string::before{background:var(--str)}
-.pc.hashmap::before{background:#f97316}
-.pc.stack::before{background:#14b8a6}
-.pc.ll::before{background:#f59e0b}
-.pc.trees::before{background:#22c55e}
-.pc.bt::before{background:#a855f7}
-.pc.heap::before{background:#ec4899}
-.pc.graphs::before{background:#06b6d4}
-.pc.dp::before{background:#6366f1}
-.pc.greedy::before{background:#ef4444}
-.pc.bits::before{background:#0ea5e9}
-.pc.sorting::before{background:#d97706}
-.pc:hover{border-color:var(--b2);background:var(--s3);transform:translateY(-1px)}
-.pc:active{transform:translateY(0)}
-.pc-name{font-weight:600;font-size:.85rem;color:#fff;margin-bottom:4px}
-.pc-desc{font-size:.73rem;color:var(--dim);line-height:1.5;margin-bottom:10px;flex:1;}
-.pc-foot{display:flex;align-items:center;gap:6px;font-size:.72rem}
-.pc-cnt{color:var(--dim)}
-.pc-prog{margin-left:auto;font-weight:600}
-.pc-bar{width:100%;height:3px;background:var(--b1);border-radius:2px;margin-top:8px;overflow:hidden}
-.pc-bar-fill{height:100%;border-radius:2px;transition:width .5s}
-
-/* ══ PROBLEM LIST ════════════════════════════════════════════ */
-#v-problems{display:flex;flex-direction:column;overflow:hidden}
-.pl-hdr{
-  padding:12px 16px 10px;border-bottom:1px solid var(--b1);
-  flex-shrink:0;background:var(--s1);
-}
-.pl-inner{max-width:1200px;margin:0 auto;width:100%;padding:0 4px}
-.pl-hdr-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.pl-back{
-  display:flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:6px;
-  border:1px solid var(--b1);background:transparent;
-  color:var(--dim);font-size:.76rem;font-weight:500;
-  cursor:pointer;transition:.15s;
-  -webkit-tap-highlight-color:transparent;
-}
-.pl-back:hover{background:var(--s2);color:var(--text)}
-.pl-cat-badge{
-  font-size:.7rem;padding:.15rem .55rem;
-  border-radius:10px;font-weight:700;border:1px solid transparent;
-}
-.pl-top{
-  display:flex;align-items:flex-start;gap:10px;
-  flex-wrap:wrap;row-gap:6px;
-}
-.pl-title{
-  font-family:var(--fnt-display);font-size:1.1rem;
-  font-weight:800;color:#fff;
-}
-.pl-meta{font-size:.76rem;color:var(--dim);flex:1;line-height:1.4;min-width:160px}
-.diff-tabs{display:flex;gap:4px;flex-shrink:0}
-.dtab{
-  padding:4px 10px;border-radius:6px;
-  border:1px solid transparent;background:transparent;
-  color:var(--dim);font-size:.74rem;font-weight:500;transition:.15s;
-}
-.dtab:hover{background:var(--s2)}
-.dtab.on-all{background:var(--s2);color:var(--text);border-color:var(--b1)}
-.dtab.on-easy{background:rgba(34,197,94,.1);color:var(--easy);border-color:rgba(34,197,94,.25)}
-.dtab.on-med{background:rgba(245,158,11,.1);color:var(--med);border-color:rgba(245,158,11,.25)}
-.dtab.on-hard{background:rgba(239,68,68,.1);color:var(--hard);border-color:rgba(239,68,68,.25)}
-.pl-wrap{flex:1;overflow-y:auto;overflow-x:auto}
-.pl-wrap-inner{max-width:1200px;margin:0 auto;padding-bottom:24px}
-.pl-table{width:100%;border-collapse:collapse;min-width:400px}
-.pl-table thead th{
-  text-align:left;padding:9px 12px;
-  font-size:.66rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:1.2px;
-  color:var(--mut);border-bottom:1px solid var(--b1);
-  position:sticky;top:0;background:var(--bg);z-index:2;
-}
-.pl-table tbody tr{
-  cursor:pointer;border-bottom:1px solid var(--b1);
-  transition:.12s;-webkit-tap-highlight-color:transparent;
-}
-.pl-table tbody tr:hover{background:var(--s2)}
-.pl-table tbody tr:active{background:var(--s3)}
-.pl-table tbody td{padding:10px 12px}
-.td-s{width:28px;text-align:center}
-.td-n{width:40px;font-family:var(--fnt-code);font-size:.72rem;color:var(--mut)}
-.td-title-cell{color:var(--text);font-weight:500;font-size:.85rem}
-.td-tech{color:var(--dim);font-size:.74rem}
-.diff-badge{
-  display:inline-block;padding:2px 7px;
-  border-radius:10px;font-size:.68rem;font-weight:600;
-}
-.d-easy{background:rgba(34,197,94,.1);color:var(--easy)}
-.d-med{background:rgba(245,158,11,.1);color:var(--med)}
-.d-hard{background:rgba(239,68,68,.1);color:var(--hard)}
-.sdot{width:7px;height:7px;border-radius:50%;display:inline-block}
-.sdot-ok{background:var(--ok)}
-.sdot-no{background:var(--mut)}
-
-/* ══ SOLVE VIEW ══════════════════════════════════════════════ */
-#v-solve{flex-direction:row;overflow:hidden;justify-content:center}
-.solve-shell{display:flex;flex-direction:row;width:100%;max-width:1200px;overflow:hidden;margin:0 auto;height:100%}
-
-/* Left panel — description */
-.desc-panel{
-  width:42%;min-width:280px;max-width:560px;
-  border-right:1px solid var(--b1);
-  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
-}
-.dp-topbar{
-  padding:8px 14px;border-bottom:1px solid var(--b1);
-  display:flex;align-items:center;gap:8px;
-  flex-shrink:0;background:var(--s1);
-}
-.dp-num{font-family:var(--fnt-code);font-size:.68rem;color:var(--mut)}
-.dp-title{font-weight:600;font-size:.85rem;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dp-tabs-row{
-  display:flex;background:var(--s2);
-  padding:0 14px;border-bottom:1px solid var(--b1);flex-shrink:0;
-}
-.dp-tab{
-  padding:8px 11px;border:none;background:transparent;
-  color:var(--dim);font-size:.78rem;font-weight:500;cursor:pointer;
-  border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px;
-}
-.dp-tab:hover{color:var(--text)}
-.dp-tab.on{color:var(--arr);border-bottom-color:var(--arr)}
-.dp-body{flex:1;overflow-y:auto;padding:16px}
-.dp-pane{display:none}.dp-pane.on{display:block}
-
-/* Description content */
-.prob-heading{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.prob-heading h2{
-  font-family:var(--fnt-display);font-size:1rem;
-  font-weight:800;color:#fff;
-}
-.prob-text{font-size:.84rem;line-height:1.7;color:var(--text);margin-bottom:12px}
-.ex-block{
-  background:var(--s2);border:1px solid var(--b1);border-radius:8px;
-  padding:10px 12px;margin-bottom:8px;
-  font-family:var(--fnt-code);font-size:.74rem;line-height:1.6;
-}
-.ex-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:4px}
-.ex-line{margin-bottom:2px}
-.ex-line .ek{color:var(--dim)}
-.ex-line .ev{color:#c5e0ff}
-.ex-line .en{color:var(--mut);font-size:.7rem}
-.sec-hd{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--mut);margin-bottom:6px;margin-top:12px}
-.constraints{margin-bottom:12px}
-.constraints li{
-  list-style:none;font-family:var(--fnt-code);
-  font-size:.73rem;color:var(--dim);padding:3px 0;
-  border-bottom:1px solid var(--b1);
-}
-.tag-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
-.tag{
-  padding:2px 7px;border-radius:8px;font-size:.67rem;
-  background:var(--s3);color:var(--dim);border:1px solid var(--b1);
-}
-
-/* Approach tab */
-.ap-card{
-  background:var(--s2);border:1px solid var(--b1);
-  border-radius:8px;overflow:hidden;margin-bottom:10px;
-}
-.ap-head{padding:9px 12px;background:var(--s3);border-bottom:1px solid var(--b1)}
-.ap-title{font-weight:600;font-size:.84rem;color:#fff}
-.ap-body{padding:11px 13px;font-size:.81rem;line-height:1.68;color:var(--text)}
-.cx-table{width:100%;border-collapse:collapse;font-size:.75rem;margin-top:10px}
-.cx-table th{text-align:left;padding:5px 9px;background:var(--s3);color:var(--dim);font-size:.65rem;text-transform:uppercase;letter-spacing:.8px}
-.cx-table td{padding:5px 9px;border-bottom:1px solid var(--b1)}
-.cx-table tr:last-child td{border-bottom:none}
-.cx-t{font-family:var(--fnt-code);font-weight:600;color:var(--tcol)}
-.cx-s{font-family:var(--fnt-code);font-weight:600;color:var(--scol)}
-
-/* Hints tab */
-.hint-item{
-  background:var(--s2);border:1px solid var(--b1);
-  border-left:3px solid var(--warn);
-  border-radius:0 8px 8px 0;
-  padding:9px 12px;margin-bottom:7px;
-  font-size:.81rem;line-height:1.55;color:var(--text);
-}
-.hint-all-btn{
-  width:100%;margin-top:6px;padding:7px 12px;
-  border-radius:6px;border:1px solid var(--b1);
-  background:var(--s2);color:var(--dim);
-  font-size:.77rem;font-weight:500;transition:.15s;
-}
-.hint-all-btn:hover{background:var(--s3);color:var(--text)}
-.sol-block{margin-bottom:12px}
-.sol-hd{
-  padding:7px 11px;font-size:.67rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:1px;
-  border:1px solid;display:flex;align-items:center;gap:7px;
-  border-radius:7px 7px 0 0;
-}
-.sol-brute-hd{background:rgba(255,179,71,.08);color:var(--brute);border-color:rgba(255,179,71,.2)}
-.sol-opt-hd{background:rgba(45,212,191,.08);color:var(--opt);border-color:rgba(45,212,191,.2)}
-.sol-pre{
-  background:#04080f;padding:12px;
-  font-family:var(--fnt-code);font-size:.74rem;
-  line-height:1.6;color:#c5dfff;
-  overflow-x:auto;max-height:260px;overflow-y:auto;
-  white-space:pre;border:1px solid var(--b1);
-  border-top:none;border-radius:0 0 7px 7px;
-}
-
-/* Resizer */
-.resizer{width:4px;background:var(--b1);cursor:col-resize;flex-shrink:0;transition:background .15s}
-.resizer:hover,.resizer.drag{background:var(--b3)}
-
-/* Right panel — editor */
-.editor-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.ep-bar{
-  padding:6px 12px;border-bottom:1px solid var(--b1);
-  display:flex;align-items:center;gap:7px;flex-shrink:0;background:var(--s1);
-  flex-wrap:wrap;row-gap:4px;
-}
-.ep-lang{
-  font-family:var(--fnt-code);font-size:.68rem;color:var(--dim);
-  background:var(--s2);border:1px solid var(--b1);
-  padding:2px 7px;border-radius:4px;
-}
-.ep-shortcut{font-size:.68rem;color:var(--mut)}
-.ep-sp{flex:1;min-width:4px}
-.ep-btn{
-  display:flex;align-items:center;gap:4px;
-  padding:5px 11px;border-radius:6px;
-  border:1px solid var(--b1);font-size:.77rem;font-weight:600;
-  transition:.15s;-webkit-tap-highlight-color:transparent;
-}
-.ep-reset{background:var(--s2);color:var(--dim)}.ep-reset:hover{background:var(--s3);color:var(--text)}
-.ep-run{background:rgba(74,158,255,.1);border-color:rgba(74,158,255,.3);color:var(--arr)}.ep-run:hover{background:rgba(74,158,255,.18)}
-.ep-sub{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--ok)}.ep-sub:hover{background:rgba(34,197,94,.18)}
-.ep-btn:active{transform:scale(.97)}
-.editor-wrap{flex:1;overflow:hidden;position:relative}
-.CodeMirror{height:100%!important;font-family:var(--fnt-code)!important;font-size:13px!important;line-height:1.65!important}
-.CodeMirror-scroll{padding-bottom:0!important}
-.CodeMirror-gutters{background:#04080f!important;border-right:1px solid #1a2d45!important}
-.CodeMirror-linenumber{color:#2d4560!important}
-
-/* Test results */
-.results-area{
-  height:200px;border-top:1px solid var(--b1);
-  display:flex;flex-direction:column;flex-shrink:0;background:var(--s1);
-}
-.ra-hdr{
-  padding:5px 12px;border-bottom:1px solid var(--b1);
-  display:flex;align-items:center;gap:8px;flex-shrink:0;
-}
-.ra-lbl{font-size:.72rem;font-weight:600;color:var(--dim)}
-.ra-status{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px}
-.rs-idle{color:var(--mut)}
-.rs-pass{background:rgba(34,197,94,.12);color:var(--ok)}
-.rs-fail{background:rgba(239,68,68,.12);color:var(--err)}
-.rs-err{background:rgba(245,158,11,.12);color:var(--warn)}
-.rs-run{background:rgba(74,158,255,.12);color:var(--arr)}
-.ra-body{flex:1;overflow-y:auto;padding:6px 12px}
-.tc-row{
-  display:flex;align-items:flex-start;gap:8px;
-  padding:6px 0;border-bottom:1px solid var(--b1);
-  font-size:.77rem;
-}
-.tc-row:last-child{border-bottom:none}
-.tc-ico{font-size:.86rem;flex-shrink:0;padding-top:1px}
-.tc-info{flex:1;min-width:0}
-.tc-name{font-weight:500;color:var(--text);margin-bottom:2px}
-.tc-detail{font-family:var(--fnt-code);font-size:.7rem;color:var(--dim);line-height:1.5}
-.tc-detail .ek{color:var(--dim)}
-.tc-detail .v{color:#8ab4d4}
-.tc-detail .e{color:var(--err)}
-.console-out{
-  font-family:var(--fnt-code);font-size:.7rem;color:#6a9fcc;
-  margin-top:3px;padding:3px 7px;
-  background:rgba(74,158,255,.04);
-  border-radius:4px;border-left:2px solid var(--b1);
-}
-.idle-msg{color:var(--mut);font-size:.78rem;padding:4px 0}
-.back-btn{
-  display:flex;align-items:center;gap:4px;
-  padding:4px 10px;border-radius:6px;
-  border:1px solid var(--b1);background:transparent;
-  color:var(--dim);font-size:.78rem;font-weight:500;transition:.15s;
-}
-.back-btn:hover{background:var(--s2);color:var(--text)}
-
-/* Modal */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:500;animation:faIn .25s ease}
-.modal-box{background:var(--s1);border:1px solid var(--b2);border-radius:14px;padding:28px 32px;text-align:center;max-width:320px;width:90%;animation:slideUp .25s ease}
-.modal-emoji{font-size:2.6rem;margin-bottom:8px}
-.modal-title{font-family:var(--fnt-display);font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:5px}
-.modal-sub{font-size:.82rem;color:var(--dim);margin-bottom:14px;line-height:1.6}
-.modal-btns{display:flex;gap:8px;justify-content:center}
-.modal-btn{padding:7px 16px;border-radius:7px;border:1px solid var(--b1);background:var(--s2);color:var(--text);font-size:.82rem;font-weight:600;cursor:pointer;transition:.15s}
-.modal-btn:hover{background:var(--s3)}
-.modal-btn-ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.35);color:var(--ok)}
-.modal-btn-ok:hover{background:rgba(34,197,94,.22)}
-@keyframes faIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
-
-/* ══ RESPONSIVE ══════════════════════════════════════════════ */
-
-/* ── Tablet: 768px ── */
-@media(max-width:900px){
-  .stats-row{gap:8px}
-  .pattern-grid{grid-template-columns:repeat(3,1fr)}
-  .pattern-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
-  .pl-meta{display:none}
-  .ep-shortcut{display:none}
-}
-
-/* ── Mobile: 640px and below ── */
-@media(max-width:640px){
-  :root{--hh:48px}
-  html{font-size:13px}
-
-  /* Header */
-  .logo-text{display:none}  /* hide text, keep icon */
-  .prog-pill{padding:3px 7px;gap:5px}
-  .prog-bar{display:none}
-
-  /* Dashboard */
-  .dash-inner{padding:14px 12px 32px}
-  .dash-hero h1{font-size:1.35rem}
-  .stats-row{gap:6px}
-  .stat-n{font-size:1.3rem}
-  .pattern-grid{grid-template-columns:repeat(2,1fr);gap:8px;padding:10px}
-  .pc{padding:11px 11px 9px}
-  .pc-desc{display:none}
-
-  /* Problem list */
-  .pl-hdr{padding:10px 12px 8px}
-  .td-tech{display:none}
-  .td-n{display:none}
-  .pl-table{min-width:0}
-
-  /* Solve: stack vertically */
-  #v-solve{flex-direction:column}
-  .desc-panel{
-    width:100% !important;
-    height:48dvh;
-    border-right:none;border-bottom:1px solid var(--b1);
-    min-width:unset;max-width:none;
-  }
-  .resizer{display:none}
-  .editor-panel{flex:1;min-height:0}
-  .results-area{height:170px}
-  .ep-shortcut{display:none}
-
-  /* Hide tech column in table on mobile */
-  .pl-table .td-tech{display:none}
-
-  /* Crumb: only show last 2 items */
-  .crumb-item:not(:nth-last-child(-n+3)){display:none}
-  .crumb-sep:not(:nth-last-child(-n+4)){display:none}
-}
-
-/* ── Very small: 360px ── */
-@media(max-width:400px){
-  .stats-row{gap:6px}
-  .dash-hero h1{font-size:1.2rem}
-  .pattern-grid{grid-template-columns:repeat(2,1fr);gap:6px}
-  .ep-btn{padding:4px 8px;font-size:.72rem}
-  .CodeMirror{font-size:12px!important}
-}
-
-/* ── Landscape mobile ── */
-@media(max-width:812px) and (orientation:landscape){
-  #v-solve{flex-direction:row}
-  .desc-panel{width:40%;height:auto;border-right:1px solid var(--b1);border-bottom:none}
-  .resizer{display:block}
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header id="hdr">
+<a class="skip-link" href="#v-dash">Skip to content</a>
+<header id="hdr" role="banner">
   <div class="hdr-inner">
     <div class="logo" id="logo-home">
       <div class="logo-mark">&#9889;</div>
       <span class="logo-text">DSA Forge</span>
     </div>
     <div class="hdr-sep"></div>
-    <div class="hdr-crumb" id="crumb"></div>
+    <nav class="hdr-crumb" id="crumb" aria-label="Breadcrumb"></nav>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="search-inp" class="search-inp"
+        placeholder="Search problems…" autocomplete="off"
+        oninput="onSearchInput(this.value)"
+        onkeydown="if(event.key==='Escape'){clearSearch();this.blur();}"
+        aria-label="Search problems">
+      <button class="search-clear" onclick="clearSearch()" title="Clear">✕</button>
+    </div>
     <div class="hdr-right">
       <div class="prog-pill">
         <div class="prog-bar"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
         <span class="prog-num" id="pnum">—</span>
       </div>
+      <button class="hdr-icon-btn" onclick="go_starred()" title="Starred problems" aria-label="View starred problems">⭐</button>
+      <button class="theme-btn" id="theme-btn" aria-label="Switch theme" title="Switch theme">🎨</button>
     </div>
+    <!-- Theme picker -->
+    <div class="theme-picker" id="theme-picker" role="menu" aria-label="Theme options"></div>
   </div>
 </header>
 
-<div id="v-dash" class="view active"></div>
-<div id="v-problems" class="view"></div>
-<div id="v-solve" class="view"></div>
+<div id="v-dash" class="view active" role="main"></div>
+<div id="v-problems" class="view" aria-label="Problem list"></div>
+<div id="v-solve" class="view" aria-label="Problem solver"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
@@ -1514,13 +1033,176 @@ const CAT_META={
   sorting:{label:'Sorting',           color:'#d97706',     icon:'&#9632;'},
 };
 
+/* ══ THEME SYSTEM ══════════════════════════════════════════════ */
+const THEMES = [
+  { id:'ocean',       label:'Ocean',        swatch:'#07101f', dark:true  },
+  { id:'dracula',     label:'Dracula',      swatch:'#282a36', dark:true  },
+  { id:'nord',        label:'Nord',         swatch:'#2e3440', dark:true  },
+  { id:'catppuccin',  label:'Catppuccin',   swatch:'#1e1e2e', dark:true  },
+  { id:'github-dark', label:'GitHub Dark',  swatch:'#0d1117', dark:true  },
+  { id:'solarized',   label:'Solarized',    swatch:'#002b36', dark:true  },
+  { id:'monokai',     label:'Monokai',      swatch:'#272822', dark:true  },
+  { id:'light',       label:'Light',        swatch:'#f6f8fa', dark:false },
+];
+
+const CM_THEMES = {
+  'ocean':'dracula','dracula':'dracula','nord':'dracula',
+  'catppuccin':'dracula','github-dark':'dracula',
+  'solarized':'dracula','monokai':'dracula','light':'dracula'
+};
+// Note: light theme uses dracula CM theme but overrides bg via CSS vars
+
+function getTheme(){
+  return localStorage.getItem('dsa_theme')||'ocean';
+}
+
+function applyTheme(id, save=true){
+  document.documentElement.setAttribute('data-theme', id);
+  if(save) localStorage.setItem('dsa_theme', id);
+  // Update meta theme-color
+  const tc = THEMES.find(t=>t.id===id);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta && tc) meta.setAttribute('content', tc.swatch);
+  // Update CodeMirror theme if editor is open
+  if(S.editor){
+    const cmTheme = CM_THEMES[id]||'dracula';
+    S.editor.setOption('theme', cmTheme);
+  }
+  // Update picker active state
+  document.querySelectorAll('.theme-opt').forEach(el=>{
+    el.classList.toggle('active', el.dataset.theme===id);
+  });
+}
+
+function buildThemePicker(){
+  const picker = document.getElementById('theme-picker');
+  if(!picker) return;
+  const current = getTheme();
+  picker.innerHTML = THEMES.map(t=>`
+    <div class="theme-opt${t.id===current?' active':''}" data-theme="${t.id}" onclick="pickTheme('${t.id}')" role="menuitem" tabindex="0" onkeydown="if(event.key==='Enter')pickTheme('${t.id}')">
+      <div class="theme-swatch" style="background:${t.swatch}"></div>
+      <span>${t.label}</span>
+    </div>
+  `).join('');
+}
+
+function pickTheme(id){
+  applyTheme(id);
+  toggleThemePicker(false);
+}
+
+function toggleThemePicker(force){
+  const picker = document.getElementById('theme-picker');
+  if(!picker) return;
+  const open = force!==undefined ? force : !picker.classList.contains('open');
+  picker.classList.toggle('open', open);
+  if(open) buildThemePicker();
+}
+
+
 /* ── HELPERS ────────────────────────────────────────────────── */
 function getAllPats(){return Object.values(PATTERNS).flat();}
 function catLabel(cat){return (CAT_META[cat]||{label:cat}).label;}
 function catColor(cat){return (CAT_META[cat]||{color:'var(--text)'}).color;}
 
 /* ── STATE ──────────────────────────────────────────────────── */
-const S={view:'dash',cat:null,patId:null,prob:null,editor:null,diffFilter:'all'};
+const S={view:'dash',cat:null,patId:null,prob:null,editor:null,diffFilter:'all',searchQ:'',_hintsShown:0,_solRevealed:false};
+
+
+/* ══════════════════════════════════════════════════════════════
+   FEATURE 1 — BOOKMARKS
+   ══════════════════════════════════════════════════════════════ */
+function getBookmarks(){ try{ return JSON.parse(localStorage.getItem('dsa_bookmarks')||'[]'); }catch{ return []; } }
+function toggleBookmark(id){
+  const b=getBookmarks();
+  const idx=b.indexOf(id);
+  if(idx>-1) b.splice(idx,1); else b.push(id);
+  localStorage.setItem('dsa_bookmarks',JSON.stringify(b));
+  // Refresh star icon everywhere visible
+  const btn=document.getElementById(`star-btn-${id}`);
+  if(btn) btn.textContent=b.includes(id)?'★':'☆';
+  const topStar=document.getElementById('topbar-star');
+  if(topStar){ topStar.textContent=b.includes(id)?'★':'☆'; topStar.classList.toggle('starred',b.includes(id)); }
+}
+function isBookmarked(id){ return getBookmarks().includes(id); }
+
+/* ══════════════════════════════════════════════════════════════
+   FEATURE 2 — TIMER
+   ══════════════════════════════════════════════════════════════ */
+const TIMER={id:null,start:null,elapsed:0,running:false};
+
+function getBestTime(id){ try{ return parseInt(localStorage.getItem('dsa_best_'+id)||'0',10)||0; }catch{ return 0; } }
+function setBestTime(id,ms){ localStorage.setItem('dsa_best_'+id,ms); }
+function fmtTime(ms){
+  if(!ms) return '--:--';
+  const t=Math.floor(ms/1000);
+  const m=Math.floor(t/60), s=t%60;
+  return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function startTimer(probId){
+  TIMER.id=probId; TIMER.start=Date.now(); TIMER.elapsed=0; TIMER.running=true;
+  _tickTimer();
+}
+function stopTimer(){
+  if(!TIMER.running) return 0;
+  TIMER.elapsed=Date.now()-TIMER.start;
+  TIMER.running=false;
+  clearTimeout(TIMER._tick);
+  return TIMER.elapsed;
+}
+function _tickTimer(){
+  if(!TIMER.running) return;
+  const el=document.getElementById('timer-display');
+  if(el){
+    const ms=Date.now()-TIMER.start;
+    el.textContent=fmtTime(ms);
+  }
+  TIMER._tick=setTimeout(_tickTimer,500);
+}
+function getTimerDisplay(probId){
+  const best=getBestTime(probId);
+  return `<span class="timer-wrap">
+    <span class="timer-icon">⏱</span>
+    <span id="timer-display" class="timer-val">00:00</span>
+    ${best?`<span class="timer-best" title="Personal best">PB ${fmtTime(best)}</span>`:''}
+  </span>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FEATURE 3 — NOTES
+   ══════════════════════════════════════════════════════════════ */
+function getNote(id){ return localStorage.getItem('dsa_note_'+id)||''; }
+function saveNote(id,text){ localStorage.setItem('dsa_note_'+id,text); }
+function getNoteTab(probId){
+  const note=getNote(probId);
+  return `<div class="notes-wrap">
+    <div class="notes-hdr">
+      <span class="notes-lbl">📝 Your Notes</span>
+      <span class="notes-saved" id="notes-saved"></span>
+    </div>
+    <textarea
+      id="prob-notes"
+      class="notes-ta"
+      placeholder="Write your approach, key insight, or 'aha' moment here&#10;&#10;e.g. Use a sliding window — expand right, shrink left when condition breaks. O(n) time.&#10;&#10;Notes auto-save as you type." 
+      oninput="onNoteInput(${probId},this)"
+    >${escHtml(note)}</textarea>
+    <div class="notes-footer">
+      <span class="notes-tip">💡 Tip: jot down <em>why</em> the approach works, not just the code.</span>
+    </div>
+  </div>`;
+}
+let _noteTimer=null;
+function onNoteInput(id,ta){
+  clearTimeout(_noteTimer);
+  const saved=document.getElementById('notes-saved');
+  if(saved){ saved.textContent=''; saved.className='notes-saved'; }
+  _noteTimer=setTimeout(()=>{
+    saveNote(id,ta.value);
+    if(saved){ saved.textContent='✓ Saved'; saved.className='notes-saved ok'; }
+    setTimeout(()=>{ if(saved) saved.textContent=''; },2000);
+  },600);
+}
+
 
 /* ── PERSIST ────────────────────────────────────────────────── */
 function getSolved(){try{return JSON.parse(localStorage.getItem('dsa_solved')||'[]');}catch{return[];}}
@@ -1531,12 +1213,32 @@ function saveCode(id,code){localStorage.setItem('dsa_code_'+id,code);}
 function loadCode(id){return localStorage.getItem('dsa_code_'+id)||null;}
 
 /* ── NAVIGATION ─────────────────────────────────────────────── */
-function showV(id){['v-dash','v-problems','v-solve'].forEach(v=>{const el=document.getElementById(v);if(el)el.style.display=v===id?'flex':'none';});}
+function showV(id){
+  const displays={'v-dash':'flex','v-problems':'flex','v-solve':'flex'};
+  ['v-dash','v-problems','v-solve'].forEach(v=>{
+    const el=document.getElementById(v);
+    if(el) el.style.display=v===id?(displays[v]||'flex'):'none';
+  });
+}
 
 function go_dash(){
-  S.view='dash';S.cat=null;S.patId=null;S.prob=null;
-  showV('v-dash');renderDash();
-  document.getElementById('crumb').innerHTML='<span class="crumb-item active">Dashboard</span>';
+  try{
+    stopTimer();
+    S.view='dash';S.cat=null;S.patId=null;S.prob=null;S.searchQ='';
+    document.title='DSA Forge — Master DSA Patterns & Solve Problems';
+    // Clear search input
+    const si=document.getElementById('search-inp');if(si)si.value='';
+    showV('v-dash');renderDash();
+    const crumb=document.getElementById('crumb');
+    if(crumb) crumb.innerHTML='<span class="crumb-item active" aria-current="page">Dashboard</span>';
+  }catch(e){console.error('go_dash error:',e);}
+}
+
+function go_starred(){
+  S.view='starred';S.cat=null;S.patId=null;S.diffFilter='starred';S.searchQ='';
+  showV('v-problems');renderProblems();
+  document.title='Starred Problems — DSA Forge';
+  setCrumb([{label:'⭐ Starred',fn:go_starred}],'#f59e0b');
 }
 
 function go_problems(id){
@@ -1547,6 +1249,10 @@ function go_problems(id){
   }
   if(foundCat){S.patId=id;S.cat=foundCat;}
   else{S.patId=null;S.cat=id;}
+  // Always reset filters when navigating to a category/pattern
+  if(S.diffFilter==='starred') S.diffFilter='all';
+  S.searchQ='';
+  stopTimer();
   S.view='problems';
   showV('v-problems');renderProblems();
   const pat=getAllPats().find(p=>p.id===id);
@@ -1562,6 +1268,11 @@ function go_solve(probId){
   S.prob=PROBLEMS.find(p=>p.id===probId);
   if(!S.prob)return;
   S.view='solve';
+  document.title=S.prob.title+' — DSA Forge';
+  stopTimer(); // stop any previous timer
+  // Clear search state when opening a problem
+  S.searchQ='';
+  const si=document.getElementById('search-inp');if(si)si.value='';
   showV('v-solve');
   renderSolve();
   const color=catColor(S.prob.cat);
@@ -1570,28 +1281,92 @@ function go_solve(probId){
     ...(S.patId?[{label:(getAllPats().find(p=>p.id===S.patId)||{name:''}).name,fn:()=>go_problems(S.patId)}]:[]),
     {label:S.prob.title,fn:()=>go_solve(probId)}
   ],color);
-  initEditor();
+  // Defer CodeMirror init until after browser paints the DOM
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    initEditor();
+    startTimer(probId);
+  }));
 }
 
+// Crumb fn registry — avoids fn.toString() breakage
+const _crumbFns=[];
 function setCrumb(parts,color){
   const el=document.getElementById('crumb');
+  if(!el)return;
+  _crumbFns.length=0; // clear old fns
   let html='<span class="crumb-item" style="cursor:pointer" onclick="go_dash()">Dashboard</span>';
   parts.forEach((p,i)=>{
-    html+=`<span class="crumb-sep">›</span>`;
+    html+='<span class="crumb-sep">›</span>';
     const isLast=i===parts.length-1;
-    html+=`<span class="crumb-item${isLast?' active':''}" ${!isLast?`style="cursor:pointer;color:${color||'var(--text)'}" onclick="${p.fn.toString().replace(/"/g,"'")}"`:''}>${p.label}</span>`;
+    if(isLast){
+      html+=`<span class="crumb-item active">${p.label}</span>`;
+    }else{
+      const fnIdx=_crumbFns.length;
+      _crumbFns.push(p.fn);
+      html+=`<span class="crumb-item" style="cursor:pointer;color:${color||'var(--text)'}" onclick="_crumbFns[${fnIdx}]()">${p.label}</span>`;
+    }
   });
   el.innerHTML=html;
 }
 
 /* ── FILTER / HELPERS ───────────────────────────────────────── */
 function getFiltered(){
-  return PROBLEMS.filter(p=>
-    (S.patId?p.techId===S.patId:p.cat===S.cat)&&
-    (S.diffFilter==='all'||p.diff===S.diffFilter)
-  );
+  const bookmarks=getBookmarks();
+  return PROBLEMS.filter(p=>{
+    // Scope: starred = global across all cats; search = global; else cat/pat
+    let inScope;
+    if(S.diffFilter==='starred') inScope=bookmarks.includes(p.id);
+    else if(S.searchQ) inScope=true; // search handles its own filter
+    else inScope=S.patId?p.techId===S.patId:p.cat===S.cat;
+    const diffOk=S.diffFilter==='all'||S.diffFilter==='starred'||p.diff===S.diffFilter;
+    // Search filter (applied on top)
+    const q=S.searchQ.toLowerCase().trim();
+    const matchSearch=!q||(
+      p.title.toLowerCase().includes(q)||
+      p.tech.toLowerCase().includes(q)||
+      (p.tags&&p.tags.some(t=>t.toLowerCase().includes(q)))||
+      p.cat.toLowerCase().includes(q)
+    );
+    return inScope&&diffOk&&matchSearch;
+  });
 }
 
+
+/* ── SEARCH ─────────────────────────────────────────────────── */
+let _searchDebounce=null;
+function onSearchInput(val){
+  S.searchQ=val.trim();
+  clearTimeout(_searchDebounce);
+  _searchDebounce=setTimeout(()=>{
+    if(S.searchQ){
+      // Show search results in problem list view
+      if(S.view!=='search'){
+        S._prevView={view:S.view,cat:S.cat,patId:S.patId,diffFilter:S.diffFilter};
+        S.view='search';S.cat=null;S.patId=null;
+      }
+      S.diffFilter='all';
+      showV('v-problems');
+      renderProblems();
+      setCrumb([{label:`🔍 "${S.searchQ}"`,fn:()=>{}}],'var(--arr)');
+    } else {
+      clearSearch();
+    }
+  },200);
+}
+function clearSearch(){
+  S.searchQ='';
+  const inp=document.getElementById('search-inp');
+  if(inp) inp.value='';
+  // Restore previous view
+  if(S._prevView){
+    const pv=S._prevView;S._prevView=null;
+    if(pv.view==='dash') go_dash();
+    else if(pv.view==='problems'||pv.view==='starred'){
+      S.cat=pv.cat;S.patId=pv.patId;S.diffFilter=pv.diffFilter||'all';
+      showV('v-problems');renderProblems();
+    } else go_dash();
+  } else go_dash();
+}
 
 /* ── RENDER DASHBOARD ───────────────────────────────────────────── */
 function renderDash(){
@@ -1607,12 +1382,17 @@ function renderDash(){
   const diffCounts={Easy:0,Medium:0,Hard:0};
   PROBLEMS.forEach(p=>diffCounts[p.diff]=(diffCounts[p.diff]||0)+1);
 
+  const bookmarks=getBookmarks();
+  // Cache notedCount (avoid 63 localStorage reads every render)
+  const notedCount=PROBLEMS.reduce((n,p)=>n+(getNote(p.id).trim().length>0?1:0),0);
   let statsHtml=`<div class="stats-row">
     <div class="stat-box"><div class="stat-n">${total}</div><div class="stat-l">Total Problems</div></div>
     <div class="stat-box"><div class="stat-n" style="color:var(--ok)">${solved.length}</div><div class="stat-l">Solved</div></div>
     <div class="stat-box"><div class="stat-n" style="color:var(--easy)">${diffCounts.Easy||0}</div><div class="stat-l">Easy</div></div>
     <div class="stat-box"><div class="stat-n" style="color:var(--med)">${diffCounts.Medium||0}</div><div class="stat-l">Medium</div></div>
     <div class="stat-box"><div class="stat-n" style="color:var(--hard)">${diffCounts.Hard||0}</div><div class="stat-l">Hard</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:#f59e0b">${bookmarks.length}</div><div class="stat-l">⭐ Bookmarked</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--tcol)">${notedCount}</div><div class="stat-l">📝 Notes</div></div>
   </div>
   <div class="dash-prog-wrap"><div class="dash-prog-fill" style="width:${pct}%"></div></div>`;
 
@@ -1628,7 +1408,7 @@ function renderDash(){
       const pp=PROBLEMS.filter(p=>p.techId===pat.id);
       const ps=pp.filter(p=>solved.includes(p.id)).length;
       const barPct=pp.length?Math.round(ps/pp.length*100):0;
-      patsHtml+=`<div class="pc ${cat}" onclick="go_problems('${pat.id}')">
+      patsHtml+=`<div class="pc ${cat}" onclick="go_problems('${pat.id}')" role="button" tabindex="0" aria-label="${pat.name}">>
         <div class="pc-name">${pat.name}</div>
         <div class="pc-desc">${pat.desc}</div>
         <div class="pc-foot">
@@ -1667,13 +1447,16 @@ function renderProblems(){
   const probs=getFiltered();
   const solved=getSolved();
   const att=getAttempted();
-  const meta=CAT_META[S.cat]||{label:S.cat,color:'var(--dim)'};
+  const isStarred=S.diffFilter==='starred'||S.view==='starred';
+  const isSearch=!!S.searchQ;
+  const meta=S.cat?CAT_META[S.cat]||{label:S.cat,color:'var(--dim)'}:{label:'All',color:'var(--arr)'};
   const pat=S.patId?getAllPats().find(p=>p.id===S.patId):null;
 
-  const diffBtns=['all','Easy','Medium','Hard'].map(d=>{
-    const cls=d==='all'?'on-all':d==='Easy'?'on-easy':d==='Medium'?'on-med':'on-hard';
+  const diffBtns=['all','Easy','Medium','Hard','starred'].map(d=>{
+    const cls=d==='all'?'on-all':d==='Easy'?'on-easy':d==='Medium'?'on-med':d==='Hard'?'on-hard':'on-star';
+    const lbl=d==='all'?'All':d==='starred'?'⭐ Starred':d;
     return `<button class="dtab${S.diffFilter===d?' '+cls:''}" onclick="S.diffFilter='${d}';renderProblems()">
-      ${d==='all'?'All':d}
+      ${lbl}
     </button>`;
   }).join('');
 
@@ -1682,12 +1465,26 @@ function renderProblems(){
     const isAtt=att.includes(p.id);
     const dot=isSolved?'<span class="sdot sdot-ok" title="Solved"></span>':'<span class="sdot sdot-no"></span>';
     const dc={Easy:'d-easy',Medium:'d-med',Hard:'d-hard'}[p.diff]||'';
-    return `<tr onclick="go_solve(${p.id})">
+    const bookmarks=getBookmarks();
+    const starred=bookmarks.includes(p.id);
+    return `<tr onclick="go_solve(${p.id})" tabindex="0" aria-label="${p.title}, ${p.diff}">
       <td class="td-s">${dot}</td>
       <td class="td-n">${String(p.id).padStart(2,'0')}</td>
-      <td class="td-title-cell">${p.title}</td>
+      <td class="td-title-cell">
+        ${p.title}
+        ${getBestTime(p.id)?`<span class="row-pb">⏱${fmtTime(getBestTime(p.id))}</span>`:''}
+        ${getNote(p.id)?'<span class="row-note" title="Has notes">📝</span>':''}
+        ${getRating(p.id)?`<span class="row-rating r-${getRating(p.id).toLowerCase()}">${ratingLabel(getRating(p.id))}</span>`:''}
+      </td>
       <td class="td-tech">${p.tech}</td>
       <td><span class="diff-badge ${dc}">${p.diff}</span></td>
+      <td class="td-star">
+        <button id="star-btn-${p.id}" class="star-btn${starred?' starred':''}"
+          onclick="event.stopPropagation();toggleBookmark(${p.id});"
+          title="${starred?'Remove bookmark':'Bookmark'}">
+          ${starred?'★':'☆'}
+        </button>
+      </td>
     </tr>`;
   }).join('');
 
@@ -1698,8 +1495,9 @@ function renderProblems(){
         <span class="pl-cat-badge" style="background:${meta.color}20;color:${meta.color};border-color:${meta.color}40">${meta.label}</span>
       </div>
       <div class="pl-top">
-        <span class="pl-title">${pat?pat.name:meta.label}</span>
-        ${pat?`<span class="pl-meta">${pat.desc}</span>`:''}
+        <span class="pl-title">${isSearch?`Results for "${S.searchQ}"`:isStarred?'⭐ Starred Problems':pat?pat.name:meta.label}</span>
+        ${(!isSearch&&!isStarred&&pat)?`<span class="pl-meta">${pat.desc}</span>`:''}
+        ${isSearch&&!probs.length?'<span class="pl-meta">No problems match that search.</span>':''}
         <div class="diff-tabs">${diffBtns}</div>
       </div>
     </div>
@@ -1713,6 +1511,7 @@ function renderProblems(){
           <th>Title</th>
           <th>Pattern</th>
           <th>Difficulty</th>
+          <th class="td-star"></th>
         </tr></thead>
         <tbody>${rows||'<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--mut)">No problems found</td></tr>'}</tbody>
       </table>
@@ -1748,12 +1547,23 @@ function renderSolve(){
       <button class="back-btn" onclick="go_problems(S.cat||S.prob.cat)">&#8592; Problems</button>
       <span class="dp-num">#${p.id}</span>
       <span class="dp-title">${p.title}</span>
-      ${isSolved?'<span style="color:var(--ok);font-size:.8rem">&#10003; Solved</span>':''}
+      <span class="tp-right">
+        ${isSolved?'<span class="solved-chip">&#10003; Solved</span>':''}
+        ${getRating(p.id)?`<span id="rating-chip" class="rating-chip r-${getRating(p.id).toLowerCase()}">${ratingLabel(getRating(p.id))}</span>`:''}
+        <button id="topbar-star" class="star-topbtn${isBookmarked(p.id)?' starred':''}"
+          onclick="toggleBookmark(${p.id})"
+          title="${isBookmarked(p.id)?'Remove bookmark':'Bookmark this problem'}">
+          ${isBookmarked(p.id)?'★':'☆'}
+        </button>
+      </span>
     </div>
     <div class="dp-tabs-row">
       <button class="dp-tab on" onclick="dpTab('desc',this)">Description</button>
       <button class="dp-tab" onclick="dpTab('approach',this)">Approach</button>
       <button class="dp-tab" onclick="dpTab('hints',this)">Hints</button>
+      <button class="dp-tab" onclick="dpTab('notes',this)">
+        📝 Notes${getNote(p.id)?'<span class="tab-dot"></span>':''}
+      </button>
     </div>
     <div class="dp-body">
       <div class="dp-pane on" id="dp-desc">
@@ -1773,17 +1583,18 @@ function renderSolve(){
         <button class="hint-all-btn" id="hint-btn" onclick="revealNextHint()">&#128161; Show Hint 1</button>
         <div id="sol-area" style="margin-top:1rem"></div>
       </div>
+      <div class="dp-pane" id="dp-notes">${getNoteTab(p.id)}</div>
     </div>
   </div>
   <div class="resizer" id="resizer"></div>
   <div class="editor-panel">
     <div class="ep-bar">
       <span class="ep-lang">JavaScript</span>
-      <span class="ep-shortcut">Ctrl+Enter = Run</span>
+      ${getTimerDisplay(p.id)}
       <div class="ep-sp"></div>
       <button class="ep-btn ep-reset" onclick="resetEditor()">&#8635; Reset</button>
-      <button class="ep-btn ep-run" onclick="runTests(false)">&#9654; Run Tests</button>
-      <button class="ep-btn ep-sub" onclick="runTests(true)">&#10003; Submit</button>
+      <button class="ep-btn ep-run" onclick="runTests(false)" aria-label="Run test cases (Ctrl+Enter)">&#9654; Run Tests</button>
+      <button class="ep-btn ep-sub" onclick="runTests(true)" aria-label="Submit solution">&#10003; Submit</button>
     </div>
     <div class="editor-wrap" id="editor-wrap"></div>
     <div class="results-area">
@@ -1852,7 +1663,7 @@ function initEditor(){
   S.editor=CodeMirror.fromTextArea(ta,{
     value:saved||p.starter,
     mode:'javascript',
-    theme:'dracula',
+    theme:CM_THEMES[getTheme()]||'dracula',
     lineNumbers:true,
     tabSize:2,
     indentWithTabs:false,
@@ -1862,6 +1673,8 @@ function initEditor(){
   });
   S.editor.setValue(saved||p.starter);
   S.editor.on('change',()=>saveCode(p.id,S.editor.getValue()));
+  // Force refresh so CodeMirror calculates correct height
+  setTimeout(()=>{ if(S.editor) S.editor.refresh(); }, 50);
 }
 
 function resetEditor(){
@@ -1875,7 +1688,9 @@ function deepEq(a,b,compareType){
     return JSON.stringify([...a].sort((x,y)=>x-y))===JSON.stringify([...b].sort((x,y)=>x-y));
   }
   if(compareType==='sorted_nested'){
-    const norm=arr=>[...arr].map(x=>[...x].sort((a,b)=>String(a)<String(b)?-1:1).join('|')).sort().join('||');
+    const norm=arr=>JSON.stringify(
+      [...arr].map(x=>JSON.stringify([...x].map(String).sort())).sort()
+    );
     return norm(a)===norm(b);
   }
   return JSON.stringify(a)===JSON.stringify(b);
@@ -1932,15 +1747,30 @@ function runTests(isSubmit){
   if(allPass){
     statusEl.className='ra-status rs-pass';
     statusEl.textContent=`✅ All ${results.length} passed (${elapsed}ms)`;
-    if(isSubmit){markSolved(p.id);showCelebration();}
+    if(isSubmit){
+      const wasAlreadySolved=getSolved().includes(p.id);
+      markSolved(p.id);
+      // Save timer + best time
+      const solveMs=stopTimer();
+      if(solveMs>0){
+        const best=getBestTime(p.id);
+        if(!best||solveMs<best) setBestTime(p.id,solveMs);
+      }
+      // Only celebrate on FIRST solve
+      if(!wasAlreadySolved) showCelebration();
+    }
   }else{
     statusEl.className='ra-status rs-fail';
     statusEl.textContent=`❌ ${passCount}/${results.length} passed`;
   }
 
+  // Find first failing test to auto-expand
+  const firstFailIdx=results.findIndex(r=>!r.pass);
   const rows=results.map((r,i)=>{
     const icon=r.pass?'✅':r.error?'💥':'❌';
     const color=r.pass?'var(--ok)':r.error?'var(--warn)':'var(--err)';
+    // Auto-expand: first failure always open; passing tests collapsed
+    const autoOpen=(!r.pass&&i===firstFailIdx)||r.error;
     const detail=r.error
       ?`<div style="color:var(--err);font-family:monospace;font-size:.75rem">${escHtml(r.error)}</div>`
       :`<div class="tc-detail">
@@ -1949,10 +1779,13 @@ function runTests(isSubmit){
           ${!r.pass?`<br><span class="ek">Got: </span><span class="e">${escHtml(JSON.stringify(r.result))}</span>`:''}
         </div>
         ${r.logs&&r.logs.length?`<div class="console-out">${r.logs.map(escHtml).join('<br>')}</div>`:''}`;
-    return `<div class="tc-row">
-      <span class="tc-ico">${icon}</span>
-      <div class="tc-info">
-        <div class="tc-name" style="color:${color}">Test ${i+1}${r.label?' — '+r.label:''}</div>
+    return `<div class="tc-row${r.pass?'':' tc-fail-row'}">
+      <div class="tc-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="tc-ico">${icon}</span>
+        <span class="tc-name" style="color:${color}">Test ${i+1}${r.label?' — '+r.label:''}</span>
+        <span class="tc-chevron">${autoOpen?'▴':'▾'}</span>
+      </div>
+      <div class="tc-body${autoOpen?' open':''}">
         ${detail}
       </div>
     </div>`;
@@ -1961,32 +1794,100 @@ function runTests(isSubmit){
   bodyEl.innerHTML=`<div style="padding:0">${rows}</div>`;
 }
 
+
+/* ── DIFFICULTY RATING ──────────────────────────────────────── */
+function getRating(id){ return localStorage.getItem('dsa_rating_'+id)||null; }
+function setRating(id,rating){ localStorage.setItem('dsa_rating_'+id,rating); }
+function ratingLabel(r){
+  return {Easy:'👍 Easy',Medium:'😅 Medium',Hard:'🔥 Hard'}[r]||r;
+}
+function showRatingPrompt(probId){
+  const m=document.getElementById('celebrate-modal');
+  if(!m) return;
+  // Inject rating buttons into modal
+  const existing=document.getElementById('rating-section');
+  if(existing) return; // already shown
+  const sub=m.querySelector('.modal-sub');
+  if(!sub) return;
+  const ratingHtml=`<div id="rating-section" class="rating-section">
+    <div class="rating-q">How hard was this <em>actually</em> for you?</div>
+    <div class="rating-btns">
+      <button class="rating-btn easy" onclick="submitRating(${probId},'Easy')">👍 Easy</button>
+      <button class="rating-btn med"  onclick="submitRating(${probId},'Medium')">😅 Medium</button>
+      <button class="rating-btn hard" onclick="submitRating(${probId},'Hard')">🔥 Hard</button>
+    </div>
+  </div>`;
+  sub.insertAdjacentHTML('afterend',ratingHtml);
+}
+function submitRating(probId,rating){
+  setRating(probId,rating);
+  const section=document.getElementById('rating-section');
+  if(section){
+    section.innerHTML=`<div class="rating-saved">Rated <strong>${ratingLabel(rating)}</strong> — saved!</div>`;
+  }
+  // Update topbar if still on that problem
+  const chip=document.getElementById('rating-chip');
+  if(chip){ chip.textContent=ratingLabel(rating); chip.className='rating-chip r-'+rating.toLowerCase(); }
+}
 function showCelebration(){
   const m=document.getElementById('celebrate-modal');
-  if(m){m.style.display='flex';}
+  if(!m) return;
+  // Reset modal (clear any previous rating section)
+  const prev=document.getElementById('rating-section');
+  if(prev) prev.remove();
+  m.style.display='flex';
+  // Show rating prompt after a short delay
+  setTimeout(()=>{ if(S.prob) showRatingPrompt(S.prob.id); },300);
 }
 
 /* ── RESIZER ─────────────────────────────────────────────────── */
+// Resizer — store handlers to avoid duplicate global listeners
+let _resizerCleanup=null;
 function initResizer(){
+  // Remove previous listeners before adding new ones
+  if(_resizerCleanup){ _resizerCleanup(); _resizerCleanup=null; }
   const r=document.getElementById('resizer');
   const left=document.querySelector('.desc-panel');
   const shell=document.querySelector('.solve-shell');
   if(!r||!left)return;
   let dragging=false,startX=0,startW=0;
-  r.addEventListener('mousedown',e=>{dragging=true;startX=e.clientX;startW=left.offsetWidth;r.classList.add('dragging');e.preventDefault();});
-  document.addEventListener('mousemove',e=>{
+  const onDown=e=>{dragging=true;startX=e.clientX;startW=left.offsetWidth;r.classList.add('dragging');e.preventDefault();};
+  const onMove=e=>{
     if(!dragging)return;
     const delta=e.clientX-startX;
     const total=(shell||r.parentElement).offsetWidth;
     const newW=Math.max(280,Math.min(total-320,startW+delta));
     left.style.width=newW+'px';
-  });
-  document.addEventListener('mouseup',()=>{dragging=false;r.classList.remove('dragging');});
+  };
+  const onUp=()=>{dragging=false;r.classList.remove('dragging');};
+  r.addEventListener('mousedown',onDown);
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onUp);
+  // Store cleanup fn
+  _resizerCleanup=()=>{
+    r.removeEventListener('mousedown',onDown);
+    document.removeEventListener('mousemove',onMove);
+    document.removeEventListener('mouseup',onUp);
+  };
 }
 
 /* ── EVENTS ──────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded',()=>{
   const navHome=document.getElementById('logo-home');if(navHome)navHome.addEventListener('click',go_dash);
+  // Theme init
+  applyTheme(getTheme(), false);
+  const themeBtn = document.getElementById('theme-btn');
+  if(themeBtn) themeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleThemePicker(); });
+  document.addEventListener('click', (e)=>{
+    if(!e.target.closest('#theme-picker') && !e.target.closest('#theme-btn'))
+      toggleThemePicker(false);
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+      if(S.view==='solve') go_problems(S.cat||(S.prob&&S.prob.cat)||'array');
+      else if(S.view==='problems') go_dash();
+    }
+  });
   const cm=document.getElementById('celebrate-modal');
   if(cm){
     cm.addEventListener('click',e=>{if(e.target===cm)cm.style.display='none';});
@@ -1996,6 +1897,33 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(nb) nb.addEventListener('click',()=>{cm.style.display='none';go_problems(S.prob?S.prob.cat:'array');});
   }
   go_dash();
+
+  // PWA: register service worker for offline support
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      // Minimal inline SW via blob (works for same-origin)
+      const swCode=`
+        const CACHE='dsa-forge-v1';
+        self.addEventListener('install',e=>self.skipWaiting());
+        self.addEventListener('activate',e=>self.clients.claim());
+        self.addEventListener('fetch',e=>{
+          if(e.request.method!=='GET') return;
+          e.respondWith(
+            caches.match(e.request).then(cached=>cached||fetch(e.request).then(res=>{
+              const clone=res.clone();
+              caches.open(CACHE).then(c=>c.put(e.request,clone));
+              return res;
+            }).catch(()=>cached))
+          );
+        });
+      `;
+      try{
+        const blob=new Blob([swCode],{type:'application/javascript'});
+        const url=URL.createObjectURL(blob);
+        navigator.serviceWorker.register(url).catch(()=>{});
+      }catch(e){}
+    });
+  }
 });
 
 </script>
@@ -2010,5 +1938,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 </div>
+<noscript>
+  <style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#07101f;color:#b5cce8;font-family:sans-serif;text-align:center;padding:2rem}</style>
+  <div><h2 style="color:#4a9eff;margin-bottom:.5rem">⚡ DSA Forge</h2><p>JavaScript is required to run DSA Forge. Please enable JS in your browser.</p></div>
+</noscript>
 </body>
 </html>

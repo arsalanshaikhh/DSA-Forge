@@ -1408,7 +1408,7 @@ function renderDash(){
       const pp=PROBLEMS.filter(p=>p.techId===pat.id);
       const ps=pp.filter(p=>solved.includes(p.id)).length;
       const barPct=pp.length?Math.round(ps/pp.length*100):0;
-      patsHtml+=`<div class="pc ${cat}" onclick="go_problems('${pat.id}')" role="button" tabindex="0" aria-label="${pat.name}">>
+      patsHtml+=`<div class="pc ${cat}" onclick="go_problems('${pat.id}')" role="button" tabindex="0" aria-label="${pat.name}">
         <div class="pc-name">${pat.name}</div>
         <div class="pc-desc">${pat.desc}</div>
         <div class="pc-foot">

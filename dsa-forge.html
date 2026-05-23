@@ -241,6 +241,64 @@ button{cursor:pointer;font-family:'DM Sans',sans-serif}
   .desc-panel{width:100%;height:44%;border-right:none;border-bottom:1px solid var(--b1);min-width:unset}
   .resizer{display:none}
 }
+
+/* ─── NEW CATEGORIES PC COLORS ─── */
+.pc.hashmap::before{background:#f97316}
+.pc.stack::before{background:#14b8a6}
+.pc.ll::before{background:#f59e0b}
+.pc.trees::before{background:#22c55e}
+.pc.bt::before{background:#a855f7}
+.pc.heap::before{background:#ec4899}
+.pc.graphs::before{background:#06b6d4}
+.pc.dp::before{background:#6366f1}
+.pc.greedy::before{background:#ef4444}
+.pc.bits::before{background:#0ea5e9}
+.pc.sorting::before{background:#d97706}
+.pc.trie::before{background:#84cc16}
+
+/* ─── DASHBOARD CATEGORY SECTION ─── */
+.cats-wrap{display:flex;flex-direction:column;gap:1.5rem}
+.cat-block{background:var(--s1);border:1px solid var(--b1);border-radius:12px;overflow:hidden}
+.cat-block-hdr{display:flex;align-items:center;gap:.75rem;padding:.85rem 1.25rem;cursor:pointer;background:var(--s2);transition:background .15s;border-bottom:1px solid var(--b1)}
+.cat-block-hdr:hover{background:var(--s3)}
+.cat-hdr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cat-hdr-name{font-weight:700;font-size:.92rem;color:#fff}
+.cat-hdr-stats{color:var(--dim);font-size:.75rem;margin-left:auto}
+.cat-hdr-bar{width:70px;height:4px;background:var(--b1);border-radius:2px;overflow:hidden;margin:0 .5rem}
+.cat-hdr-fill{height:100%;border-radius:2px;transition:width .4s}
+.cat-hdr-arr{color:var(--dim);font-size:.9rem;transform:rotate(90deg);display:inline-block}
+
+/* ─── SOLVE VIEW UPDATED ─── */
+.tab-row{display:flex;background:var(--s2);padding:0 16px;border-bottom:1px solid var(--b1);flex-shrink:0}
+.tab-btn{padding:8px 13px;border:none;background:transparent;color:var(--dim);font-size:.8rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.on{color:var(--arr);border-bottom-color:var(--arr)}
+.pane{display:none}.pane.on{display:block}
+
+/* ─── PROB HEADER IN SOLVE ─── */
+.solve-prob-hdr{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.cat-badge{font-size:.7rem;padding:.2rem .6rem;border-radius:12px;font-weight:600;border:1px solid transparent}
+.solved-mark{font-size:.75rem;color:var(--ok)}
+
+/* ─── TEST RESULTS EXPANDED ─── */
+.tc-toggle{cursor:pointer;font-size:.72rem;color:var(--dim)}
+.tc-toggle:hover{color:var(--text)}
+
+/* ─── PROB LIST NEW COLUMNS ─── */
+.pl-hdr-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.pl-back{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;border:1px solid var(--b1);background:transparent;color:var(--dim);font-size:.79rem;font-weight:500;cursor:pointer;transition:.15s}
+.pl-back:hover{background:var(--s2);color:var(--text)}
+.pl-cat-badge{font-size:.72rem;padding:.2rem .65rem;border-radius:10px;font-weight:700;border:1px solid transparent}
+
+/* ─── CRUMB ─── */
+.crumb-item{color:var(--dim);font-size:.82rem}
+.crumb-item.active{color:var(--text)}
+.crumb-sep{color:var(--mut);font-size:.82rem;margin:0 3px}
+
+/* ─── STAT ROW / PROG WRAP ─── */
+.dash-prog-wrap{height:4px;background:var(--b1);border-radius:2px;overflow:hidden;margin:-10px 0 18px}
+.dash-prog-fill{height:100%;background:var(--arr);border-radius:2px;transition:width .5s}
+
 </style>
 </head>
 <body>
@@ -252,7 +310,7 @@ button{cursor:pointer;font-family:'DM Sans',sans-serif}
     <div class="prog-pill">
       <span style="color:var(--dim)">Progress</span>
       <div class="prog-bar"><div class="prog-fill" id="pfill" style="width:0%"></div></div>
-      <span class="prog-num" id="pnum">0/23</span>
+      <span class="prog-num" id="pnum">—</span>
     </div>
   </div>
 </header>
@@ -260,55 +318,11 @@ button{cursor:pointer;font-family:'DM Sans',sans-serif}
 <div id="v-dash" class="view active"></div>
 
 <div id="v-problems" class="view">
-  <div class="pl-hdr" id="pl-hdr"></div>
-  <div class="pl-wrap">
-    <table class="pl-table">
-      <thead><tr><th class="td-s"></th><th class="td-n">#</th><th>Title</th><th>Pattern</th><th>Difficulty</th></tr></thead>
-      <tbody id="pl-tbody"></tbody>
-    </table>
-  </div>
 </div>
 
 <div id="v-solve" class="view">
-  <div class="desc-panel" id="desc-panel">
-    <div class="dp-topbar">
-      <button class="back-btn" id="back-btn">&#8592; Problems</button>
-      <span class="dp-num" id="dp-num"></span>
-      <span class="dp-title" id="dp-title-txt"></span>
-      <div class="nav-btns">
-        <button class="nav-btn" id="nav-prev">&#9664;</button>
-        <button class="nav-btn" id="nav-next">&#9654;</button>
-      </div>
-    </div>
-    <div class="dp-tabs-row" id="dp-tabs-row">
-      <button class="dp-tab on" data-pane="desc">Description</button>
-      <button class="dp-tab" data-pane="approach">Approach</button>
-      <button class="dp-tab" data-pane="hints">Hints</button>
-      <button class="dp-tab" data-pane="solution">Solution</button>
-    </div>
-    <div class="dp-body" id="dp-body"></div>
-  </div>
-  <div class="resizer" id="resizer"></div>
-  <div class="editor-panel">
-    <div class="ep-bar">
-      <span class="ep-lang">JavaScript</span>
-      <span class="ep-shortcut">Ctrl+Enter = Run</span>
-      <div class="ep-sp"></div>
-      <button class="ep-btn ep-reset" id="btn-reset">&#8635; Reset</button>
-      <button class="ep-btn ep-run" id="btn-run">&#9654; Run Tests</button>
-      <button class="ep-btn ep-sub" id="btn-sub">&#10003; Submit</button>
-    </div>
-    <div class="editor-wrap" id="editor-wrap"></div>
-    <div class="results-area">
-      <div class="ra-hdr">
-        <span class="ra-lbl">Test Results</span>
-        <span class="ra-status rs-idle" id="ra-status">&#8212; waiting</span>
-        <span style="margin-left:auto;font-size:.7rem;color:var(--mut)" id="ra-time"></span>
-      </div>
-      <div class="ra-body" id="ra-body"><div class="idle-msg">Write your solution and press Run Tests or Ctrl+Enter.</div></div>
-    </div>
-  </div>
 </div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
@@ -615,314 +629,1145 @@ sol:`function solution(text,pattern){\n  const s=pattern+'$'+text;\n  const n=s.
 bruteSol:`function solution(text,pattern){\n  const res=[];\n  for(let i=0;i<=text.length-pattern.length;i++)\n    if(text.slice(i,i+pattern.length)===pattern) res.push(i);\n  return res;\n}`,
 tests:[{args:['aabcaab','aab'],expected:[0,4],label:'Two matches'},{args:['aaaa','aa'],expected:[0,1,2],label:'Overlapping'},{args:['hello','world'],expected:[],label:'No match'},{args:['mississippi','issi'],expected:[1,4],label:'Multiple'},{args:['abcabc','abc'],expected:[0,3],label:'Two halves'}],
 compare:'sorted'}
+,
+// ─── HASH MAP ───
+{id:24,cat:'hashmap',tech:'Frequency / Lookup',techId:'hm_freq',title:'Two Sum',diff:'Easy',
+desc:'Given an array and a target integer, return the 0-based indices of the two numbers that add up to target. Each input has exactly one solution.',
+examples:[{input:'nums=[2,7,11,15], target=9',output:'[0,1]',note:'2+7=9'},{input:'nums=[3,2,4], target=6',output:'[1,2]'}],
+constraints:['2 &le; nums.length &le; 10&#8308;','Exactly one valid answer'],
+tags:['Array','Hash Map','Lookup'],
+hints:['For each element x, the complement is target-x. Has it been seen before?','Store each value&rarr;index in a map as you scan left to right.','One pass: at index i, check if complement exists in map before inserting nums[i].'],
+approach:{title:'One-Pass Hash Map',body:'Store value&rarr;index in a map. For each nums[i], check if complement = target-nums[i] is already present. If yes, return [map.get(comp), i]. This gives O(1) lookup vs O(n) scan per element.',bt:'O(n&sup2;)',bs:'O(1)',ot:'O(n)',os:'O(n)'},
+starter:`/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nfunction solution(nums, target) {\n  const map = new Map(); // value -> index\n  for (let i = 0; i < nums.length; i++) {\n    const comp = target - nums[i];\n    if (map.has(comp)) return [map.get(comp), i];\n    map.set(nums[i], i);\n  }\n  return [];\n}`,
+sol:`function solution(nums,target){\n  const map=new Map();\n  for(let i=0;i<nums.length;i++){\n    const c=target-nums[i];\n    if(map.has(c)) return [map.get(c),i];\n    map.set(nums[i],i);\n  }\n  return [];\n}`,
+bruteSol:`function solution(nums,target){\n  for(let i=0;i<nums.length;i++)\n    for(let j=i+1;j<nums.length;j++)\n      if(nums[i]+nums[j]===target) return [i,j];\n  return [];\n}`,
+tests:[{args:[[2,7,11,15],9],expected:[0,1],label:'Classic'},{args:[[3,2,4],6],expected:[1,2],label:'Non-adjacent'},{args:[[3,3],6],expected:[0,1],label:'Same value'},{args:[[-1,-2,-3,-4,-5],-8],expected:[2,4],label:'Negatives'},{args:[[0,4,3,0],0],expected:[0,3],label:'Zeros'}],
+compare:'sorted'},
+
+{id:25,cat:'hashmap',tech:'Frequency / Lookup',techId:'hm_freq',title:'Top K Frequent Elements',diff:'Medium',
+desc:'Given an integer array and integer k, return the k most frequent elements. You may return the answer in any order.',
+examples:[{input:'nums=[1,1,1,2,2,3], k=2',output:'[1,2]'},{input:'nums=[1], k=1',output:'[1]'}],
+constraints:['1 &le; nums.length &le; 10&#8309;','k is in range [1, number of unique elements]','Answer is guaranteed to be unique'],
+tags:['Array','Hash Map','Frequency','Sorting'],
+hints:['Build a frequency map: how many times does each number appear?','Sort by frequency descending and take the first k entries.','Bucket sort on frequency gives O(n) — put elements in buckets indexed by count.'],
+approach:{title:'Frequency Map + Sort',body:'Count occurrences in a Map in O(n). Sort entries by frequency descending in O(u log u) where u = unique elements. Take first k. Alternative: bucket sort on frequency for O(n).',bt:'O(n log n)',bs:'O(n)',ot:'O(n log n)',os:'O(n)'},
+starter:`/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nfunction solution(nums, k) {\n  const freq = new Map();\n  for (const n of nums) freq.set(n, (freq.get(n)||0) + 1);\n  return [...freq.entries()]\n    .sort((a, b) => b[1] - a[1])\n    .slice(0, k)\n    .map(e => e[0]);\n}`,
+sol:`function solution(nums,k){\n  const freq=new Map();\n  for(const n of nums) freq.set(n,(freq.get(n)||0)+1);\n  return [...freq.entries()].sort((a,b)=>b[1]-a[1]).slice(0,k).map(e=>e[0]);\n}`,
+bruteSol:`function solution(nums,k){\n  const freq={};\n  for(const n of nums) freq[n]=(freq[n]||0)+1;\n  return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,k).map(e=>+e[0]);\n}`,
+tests:[{args:[[1,1,1,2,2,3],2],expected:[1,2],label:'Classic'},{args:[[1],1],expected:[1],label:'Single'},{args:[[1,2],2],expected:[1,2],label:'Equal freq'},{args:[[4,4,4,5,5,6,6,6,6],2],expected:[6,4],label:'Two top'}],
+compare:'sorted'},
+
+{id:26,cat:'hashmap',tech:'Grouping Pattern',techId:'hm_grp',title:'Group Anagrams',diff:'Medium',
+desc:'Given an array of strings, group the anagrams together. You can return the answer in any order. Two strings are anagrams if one is a rearrangement of the other.',
+examples:[{input:'strs=["eat","tea","tan","ate","nat","bat"]',output:'[["bat"],["nat","tan"],["ate","eat","tea"]]'},{input:'strs=[""]',output:'[[""]]'}],
+constraints:['1 &le; strs.length &le; 10&#8308;','0 &le; strs[i].length &le; 100','strs[i] consists of lowercase English letters'],
+tags:['Array','Hash Map','Grouping','String','Sorting'],
+hints:['Two strings are anagrams if and only if their sorted characters are the same.','Use the sorted string as a hashmap key. All anagrams share the same key.','Iterate through strs: compute key = s.split("").sort().join(""); push s into map.get(key).'],
+approach:{title:'Sort-Based Key Grouping',body:'For each string, sort its characters to form a canonical key. Strings with the same key are anagrams. Group them in a hashmap. Collect all groups as the result. Time: O(n &times; k log k) where k is max string length.',bt:'O(n&sup2; &times; k)',bs:'O(n&times;k)',ot:'O(n&times;k log k)',os:'O(n&times;k)'},
+starter:`/**\n * @param {string[]} strs\n * @return {string[][]}\n */\nfunction solution(strs) {\n  const map = new Map();\n  for (const s of strs) {\n    const key = s.split('').sort().join('');\n    if (!map.has(key)) map.set(key, []);\n    map.get(key).push(s);\n  }\n  return [...map.values()];\n}`,
+sol:`function solution(strs){\n  const map=new Map();\n  for(const s of strs){\n    const k=s.split('').sort().join('');\n    if(!map.has(k)) map.set(k,[]);\n    map.get(k).push(s);\n  }\n  return [...map.values()];\n}`,
+bruteSol:`function solution(strs){\n  const groups=[];\n  const used=new Array(strs.length).fill(false);\n  for(let i=0;i<strs.length;i++){\n    if(used[i]) continue;\n    const g=[strs[i]];\n    const si=strs[i].split('').sort().join('');\n    for(let j=i+1;j<strs.length;j++){\n      if(!used[j]&&strs[j].split('').sort().join('')===si){g.push(strs[j]);used[j]=true;}\n    }\n    groups.push(g);\n  }\n  return groups;\n}`,
+tests:[{args:[['eat','tea','tan','ate','nat','bat']],expected:[['bat'],['nat','tan'],['ate','eat','tea']],label:'Classic'},{args:[['']],expected:[['']],label:'Empty string'},{args:[['a']],expected:[['a']],label:'Single char'},{args:[['ab','ba','abc','bca','cab']],expected:[['ab','ba'],['abc','bca','cab']],label:'Multiple groups'}],
+compare:'sorted_nested'},
+
+{id:27,cat:'hashmap',tech:'Set Based',techId:'hm_set',title:'Longest Consecutive Sequence',diff:'Medium',
+desc:'Find the length of the longest sequence of consecutive integers in an unsorted array. You must write an O(n) algorithm.',
+examples:[{input:'nums=[100,4,200,1,3,2]',output:'4',note:'Sequence [1,2,3,4]'},{input:'nums=[0,3,7,2,5,8,4,6,0,1]',output:'9'}],
+constraints:['0 &le; nums.length &le; 10&#8309;','&minus;10&#8313; &le; nums[i] &le; 10&#8313;'],
+tags:['Array','Hash Map','Set','Sequence'],
+hints:['Put all numbers in a Set for O(1) lookup.','For a number n to be the start of a sequence, n-1 must NOT be in the set.','For each sequence start, count upward while n+1, n+2,... are in the set.'],
+approach:{title:'Set-Based Sequence Start Detection',body:'Insert all numbers into a Set. For each number n, only start counting if n-1 is not in the set (meaning n starts a sequence). Count consecutive n+1, n+2,... until a gap. This ensures each element is visited at most twice, giving O(n).',bt:'O(n log n)',bs:'O(1)',ot:'O(n)',os:'O(n)'},
+starter:`/**\n * @param {number[]} nums\n * @return {number}\n */\nfunction solution(nums) {\n  const set = new Set(nums);\n  let max = 0;\n  for (const n of set) {\n    if (!set.has(n - 1)) { // n is the start of a sequence\n      let len = 1, curr = n;\n      while (set.has(curr + 1)) { len++; curr++; }\n      max = Math.max(max, len);\n    }\n  }\n  return max;\n}`,
+sol:`function solution(nums){\n  const set=new Set(nums);\n  let max=0;\n  for(const n of set){\n    if(!set.has(n-1)){\n      let len=1,curr=n;\n      while(set.has(curr+1)){len++;curr++;}\n      max=Math.max(max,len);\n    }\n  }\n  return max;\n}`,
+bruteSol:`function solution(nums){\n  if(!nums.length) return 0;\n  nums.sort((a,b)=>a-b);\n  let max=1,len=1;\n  for(let i=1;i<nums.length;i++){\n    if(nums[i]===nums[i-1]) continue;\n    if(nums[i]===nums[i-1]+1) len++;\n    else len=1;\n    max=Math.max(max,len);\n  }\n  return max;\n}`,
+tests:[{args:[[100,4,200,1,3,2]],expected:4,label:'Classic'},{args:[[0,3,7,2,5,8,4,6,0,1]],expected:9,label:'Longer'},{args:[[1]],expected:1,label:'Single'},{args:[[1,2,3,4,5]],expected:5,label:'Already consecutive'},{args:[[4,0,-4,-2,2,5,2,0,-8,-8,-8,-8,-1,7,4,5,5,-4,6,6,-3]],expected:5,label:'Complex'}],
+compare:'exact'},
+
+// ─── STACK ───
+{id:28,cat:'stack',tech:'Expression Handling',techId:'st_expr',title:'Valid Parentheses',diff:'Easy',
+desc:'Given a string with characters <code>(</code>, <code>)</code>, <code>{</code>, <code>}</code>, <code>[</code>, <code>]</code>, determine if the input is valid. Open brackets must be closed in the correct order.',
+examples:[{input:'s="()[]{}"',output:'true'},{input:'s="([)]"',output:'false'}],
+constraints:['1 &le; s.length &le; 10&#8308;','s consists only of parentheses characters'],
+tags:['String','Stack','Expression'],
+hints:['When you see an open bracket, push the expected closing bracket onto the stack.','When you see a close bracket, check if it matches the top of the stack.','If stack is empty when we need to match, or non-empty at the end, the string is invalid.'],
+approach:{title:'Stack-Based Bracket Matching',body:'For each opening bracket, push the corresponding closing bracket. For each closing bracket, check if the stack top matches. If not (or stack empty), return false. At the end, the stack must be empty for a valid string.',bt:'O(n)',bs:'O(1)',ot:'O(n)',os:'O(n)'},
+starter:`/**\n * @param {string} s\n * @return {boolean}\n */\nfunction solution(s) {\n  const stack = [];\n  const map = { '(': ')', '[': ']', '{': '}' };\n  for (const c of s) {\n    if (map[c]) stack.push(map[c]);\n    else if (!stack.length || stack.pop() !== c) return false;\n  }\n  return !stack.length;\n}`,
+sol:`function solution(s){\n  const stack=[],map={'(':')','{':'}','[':']'};\n  for(const c of s){\n    if(map[c]) stack.push(map[c]);\n    else if(!stack.length||stack.pop()!==c) return false;\n  }\n  return !stack.length;\n}`,
+bruteSol:`function solution(s){\n  while(s.includes('()')||s.includes('[]')||s.includes('{}'))\n    s=s.replace('()','').replace('[]','').replace('{}','');\n  return !s.length;\n}`,
+tests:[{args:['()[]{}'],expected:true,label:'All valid'},{args:['([)]'],expected:false,label:'Wrong order'},{args:['{[]}'],expected:true,label:'Nested'},{args:['('],expected:false,label:'Unclosed'},{args:['((()))'],expected:true,label:'Deep nesting'}],
+compare:'exact'},
+
+{id:29,cat:'stack',tech:'Monotonic Stack',techId:'st_mono',title:'Next Greater Element I',diff:'Easy',
+desc:'Given two arrays <code>nums1</code> and <code>nums2</code> where nums1 is a subset of nums2, for each element in nums1 find its next greater element in nums2. Return -1 if no greater element exists to its right.',
+examples:[{input:'nums1=[4,1,2], nums2=[1,3,4,2]',output:'[-1,3,-1]',note:'4 has no greater, 1\'s next greater is 3, 2 has no greater'},{input:'nums1=[2,4], nums2=[1,2,3,4]',output:'[3,-1]'}],
+constraints:['1 &le; nums1.length &le; nums2.length &le; 1000','All integers in nums2 are unique'],
+tags:['Array','Stack','Monotonic Stack','Hash Map'],
+hints:['Process nums2 from right to left. Maintain a monotonic decreasing stack.','For each element, pop all smaller elements from the stack (they cannot be the next greater for anything to the left).','The top of the stack after popping is the next greater element. Store this in a map.'],
+approach:{title:'Monotonic Stack + Hash Map',body:'Traverse nums2. Maintain a stack of "candidates" for next greater element in decreasing order. When we see a new element, pop all smaller elements (their next greater is now found). The remaining top is the next greater for the current element. Build a map, then answer queries for nums1.',bt:'O(n&sup2;)',bs:'O(n)',ot:'O(n+m)',os:'O(n)'},
+starter:`/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nfunction solution(nums1, nums2) {\n  const map = new Map();\n  const stack = [];\n  for (let i = nums2.length - 1; i >= 0; i--) {\n    while (stack.length && stack[stack.length-1] <= nums2[i]) stack.pop();\n    map.set(nums2[i], stack.length ? stack[stack.length-1] : -1);\n    stack.push(nums2[i]);\n  }\n  return nums1.map(n => map.get(n));\n}`,
+sol:`function solution(nums1,nums2){\n  const map=new Map(),stack=[];\n  for(let i=nums2.length-1;i>=0;i--){\n    while(stack.length&&stack[stack.length-1]<=nums2[i]) stack.pop();\n    map.set(nums2[i],stack.length?stack[stack.length-1]:-1);\n    stack.push(nums2[i]);\n  }\n  return nums1.map(n=>map.get(n));\n}`,
+bruteSol:`function solution(nums1,nums2){\n  return nums1.map(n=>{\n    const idx=nums2.indexOf(n);\n    for(let i=idx+1;i<nums2.length;i++)\n      if(nums2[i]>n) return nums2[i];\n    return -1;\n  });\n}`,
+tests:[{args:[[4,1,2],[1,3,4,2]],expected:[-1,3,-1],label:'Classic'},{args:[[2,4],[1,2,3,4]],expected:[3,-1],label:'Ascending nums2'},{args:[[1],[1]],expected:[-1],label:'Single no greater'},{args:[[1,3,5,2,4],[6,5,4,3,2,1,7]],expected:[7,7,7,7,7],label:'7 is next for all'}],
+compare:'exact'},
+
+{id:30,cat:'stack',tech:'Nearest Element',techId:'st_near',title:'Daily Temperatures',diff:'Medium',
+desc:'Given an array of daily temperatures, return an array where each element indicates how many days to wait for a warmer temperature. If no warmer day exists, return 0 for that day.',
+examples:[{input:'temps=[73,74,75,71,69,72,76,73]',output:'[1,1,4,2,1,1,0,0]'},{input:'temps=[30,40,50,60]',output:'[1,1,1,0]'}],
+constraints:['1 &le; temps.length &le; 10&#8309;','30 &le; temps[i] &le; 100'],
+tags:['Array','Stack','Monotonic Stack','Nearest Warmer'],
+hints:['Use a stack to track indices of days waiting for a warmer day.','The stack is monotonically decreasing in temperature.','When a new temp is greater than the top of the stack, that top has found its answer.'],
+approach:{title:'Monotonic Decreasing Stack of Indices',body:'Push indices onto the stack. When we see a temperature greater than temps[stack.top], the day at stack.top has found its warmer day. Pop it and record the gap: i - stack.top. Continue until stack is empty or top is warmer. Remaining elements get 0.',bt:'O(n&sup2;)',bs:'O(1)',ot:'O(n)',os:'O(n)'},
+starter:`/**\n * @param {number[]} temps\n * @return {number[]}\n */\nfunction solution(temps) {\n  const res = new Array(temps.length).fill(0);\n  const stack = []; // indices\n  for (let i = 0; i < temps.length; i++) {\n    while (stack.length && temps[stack[stack.length-1]] < temps[i]) {\n      const j = stack.pop();\n      res[j] = i - j;\n    }\n    stack.push(i);\n  }\n  return res;\n}`,
+sol:`function solution(temps){\n  const res=new Array(temps.length).fill(0),stack=[];\n  for(let i=0;i<temps.length;i++){\n    while(stack.length&&temps[stack[stack.length-1]]<temps[i]){\n      const j=stack.pop();\n      res[j]=i-j;\n    }\n    stack.push(i);\n  }\n  return res;\n}`,
+bruteSol:`function solution(temps){\n  return temps.map((t,i)=>{\n    for(let j=i+1;j<temps.length;j++)\n      if(temps[j]>t) return j-i;\n    return 0;\n  });\n}`,
+tests:[{args:[[73,74,75,71,69,72,76,73]],expected:[1,1,4,2,1,1,0,0],label:'Classic'},{args:[[30,40,50,60]],expected:[1,1,1,0],label:'Ascending'},{args:[[60,50,40,30]],expected:[0,0,0,0],label:'Descending'},{args:[[30,60,90]],expected:[1,1,0],label:'Two steps'},{args:[[89,62,70,58,47,47,46,76,100,70]],expected:[8,1,5,4,3,2,1,1,0,0],label:'Longer'}],
+compare:'exact'},
+
+{id:31,cat:'stack',tech:'Histogram Pattern',techId:'st_hist',title:'Largest Rectangle in Histogram',diff:'Hard',
+desc:'Find the area of the largest rectangle that can be formed within a histogram. Each bar has width 1.',
+examples:[{input:'heights=[2,1,5,6,2,3]',output:'10',note:'Bars at index 2-3 (height 5 and 6), rectangle of width 2 and height 5'},{input:'heights=[2,4]',output:'4'}],
+constraints:['1 &le; heights.length &le; 10&#8309;','0 &le; heights[i] &le; 10&#8308;'],
+tags:['Array','Stack','Histogram','Monotonic Stack','Hard'],
+hints:['For each bar, the largest rectangle using it as the shortest bar extends left and right until a shorter bar is found.','A monotonic increasing stack tells you the "previous smaller" element for each bar.','When you pop a bar from the stack (because a shorter one arrived), calculate its rectangle width as i - stack.top - 1.'],
+approach:{title:'Monotonic Increasing Stack',body:'Maintain a stack of bars in increasing height order. When a shorter bar arrives, pop taller bars. For each popped bar at index j with height h, the rectangle extends from stack.top+1 to i-1: area = h * (i - stack.top - 1). Use a sentinel 0 at start and end.',bt:'O(n&sup2;)',bs:'O(1)',ot:'O(n)',os:'O(n)'},
+starter:`/**\n * @param {number[]} heights\n * @return {number}\n */\nfunction solution(heights) {\n  const stack = [-1]; // sentinel\n  heights = [...heights, 0]; // sentinel at end\n  let max = 0;\n  for (let i = 0; i < heights.length; i++) {\n    while (stack[stack.length-1] !== -1 && heights[stack[stack.length-1]] >= heights[i]) {\n      const h = heights[stack.pop()];\n      const w = i - stack[stack.length-1] - 1;\n      max = Math.max(max, h * w);\n    }\n    stack.push(i);\n  }\n  return max;\n}`,
+sol:`function solution(heights){\n  const stack=[-1];\n  heights=[...heights,0];\n  let max=0;\n  for(let i=0;i<heights.length;i++){\n    while(stack[stack.length-1]!==-1&&heights[stack[stack.length-1]]>=heights[i]){\n      const h=heights[stack.pop()];\n      const w=i-stack[stack.length-1]-1;\n      max=Math.max(max,h*w);\n    }\n    stack.push(i);\n  }\n  return max;\n}`,
+bruteSol:`function solution(heights){\n  let max=0;\n  for(let i=0;i<heights.length;i++){\n    let minH=heights[i];\n    for(let j=i;j<heights.length;j++){\n      minH=Math.min(minH,heights[j]);\n      max=Math.max(max,minH*(j-i+1));\n    }\n  }\n  return max;\n}`,
+tests:[{args:[[2,1,5,6,2,3]],expected:10,label:'Classic'},{args:[[2,4]],expected:4,label:'Two bars'},{args:[[1]],expected:1,label:'Single'},{args:[[4,2,0,3,2,5]],expected:6,label:'Valley'},{args:[[6,2,5,4,5,1,6]],expected:12,label:'Complex'}],
+compare:'exact'},
+
+// ─── LINKED LIST ───
+{id:32,cat:'ll',tech:'Reversal',techId:'ll_rev',title:'Reverse Linked List',diff:'Easy',
+desc:'Reverse a singly linked list. Input/output represented as an array of values.',
+examples:[{input:'head=[1,2,3,4,5]',output:'[5,4,3,2,1]'},{input:'head=[1,2]',output:'[2,1]'}],
+constraints:['0 &le; Number of nodes &le; 5000','&minus;5000 &le; Node.val &le; 5000'],
+tags:['Linked List','Reversal','Iterative','Recursive'],
+hints:['Use three pointers: prev (null), curr, next.','At each step: save next = curr.next, point curr.next = prev, advance prev = curr, curr = next.','When curr is null, prev is the new head.'],
+approach:{title:'Iterative Three-Pointer Reversal',body:'prev starts as null (new tail). curr starts at head. At each step, save curr.next, reverse the link (curr.next = prev), then advance both pointers. When curr reaches null, prev is the new head. Each node visited once: O(n).',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`// ListNode is available globally\n// arrToList(arr) converts array to linked list\n// listToArr(head) converts linked list to array\n\n/**\n * @param {ListNode} head\n * @return {ListNode}\n */\nfunction solution(head) {\n  let prev = null, curr = head;\n  while (curr) {\n    const next = curr.next;\n    curr.next = prev;\n    prev = curr;\n    curr = next;\n  }\n  return prev;\n}`,
+sol:`function solution(head){\n  let prev=null,curr=head;\n  while(curr){\n    const next=curr.next;\n    curr.next=prev;\n    prev=curr;\n    curr=next;\n  }\n  return prev;\n}`,
+bruteSol:`function solution(head){\n  const vals=[];\n  while(head){vals.push(head.val);head=head.next;}\n  vals.reverse();\n  const dummy=new ListNode(0);\n  let c=dummy;\n  for(const v of vals){c.next=new ListNode(v);c=c.next;}\n  return dummy.next;\n}`,
+tests:[{args:[[1,2,3,4,5]],expected:[5,4,3,2,1],label:'Classic'},{args:[[1,2]],expected:[2,1],label:'Two nodes'},{args:[[1]],expected:[1],label:'Single'},{args:[[1,2,3]],expected:[3,2,1],label:'Three nodes'}],
+compare:'exact',
+preArgs:(args)=>[arrToList(args[0])],postResult:listToArr},
+
+{id:33,cat:'ll',tech:'Pointer Techniques',techId:'ll_ptr',title:'Middle of the Linked List',diff:'Easy',
+desc:'Find the middle node of a linked list. If the list has two middle nodes, return the second one. Input/output as arrays.',
+examples:[{input:'head=[1,2,3,4,5]',output:'[3,4,5]',note:'Node with value 3'},{input:'head=[1,2,3,4,5,6]',output:'[4,5,6]',note:'Second middle for even length'}],
+constraints:['The number of nodes is in the range [1, 100]'],
+tags:['Linked List','Two Pointer','Fast/Slow'],
+hints:['Use two pointers: slow moves one step, fast moves two steps.','When fast reaches the end, slow is at the middle.','For even length, when fast.next is null, slow is at the second middle.'],
+approach:{title:'Fast and Slow Pointers',body:'slow advances one step at a time, fast advances two. When fast cannot advance (null or fast.next is null), slow is at the middle. For even-length lists, this naturally gives the second middle node. One pass O(n).',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`function solution(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n  }\n  return slow;\n}`,
+sol:`function solution(head){\n  let slow=head,fast=head;\n  while(fast&&fast.next){\n    slow=slow.next;\n    fast=fast.next.next;\n  }\n  return slow;\n}`,
+bruteSol:`function solution(head){\n  const nodes=[];\n  while(head){nodes.push(head);head=head.next;}\n  return nodes[Math.floor(nodes.length/2)];\n}`,
+tests:[{args:[[1,2,3,4,5]],expected:[3,4,5],label:'Odd length'},{args:[[1,2,3,4,5,6]],expected:[4,5,6],label:'Even length'},{args:[[1]],expected:[1],label:'Single node'},{args:[[1,2]],expected:[2],label:'Two nodes'}],
+compare:'exact',
+preArgs:(args)=>[arrToList(args[0])],postResult:listToArr},
+
+{id:34,cat:'ll',tech:'Pointer Techniques',techId:'ll_ptr',title:'Linked List Cycle Detection',diff:'Easy',
+desc:'Determine if a linked list has a cycle. A cycle exists if some node can be reached again by following next pointers. Test input uses a flat array (no actual cycle in test), but you implement the classic Floyd algorithm.',
+examples:[{input:'head=[3,2,0,-4] with cycle at pos 1',output:'true'},{input:'head=[1,2] with no cycle',output:'false'}],
+constraints:['0 &le; Number of nodes &le; 10&#8308;','pos is -1 or valid index (used only in problem description)'],
+tags:['Linked List','Two Pointer','Floyd Cycle','Fast/Slow'],
+hints:['Use two pointers: slow (1 step) and fast (2 steps).','If there is a cycle, fast will eventually lap slow and they will meet.','If fast reaches null, there is no cycle.'],
+approach:{title:'Floyd Cycle Detection (Tortoise and Hare)',body:'slow and fast both start at head. slow advances one step, fast two steps. If they ever meet, a cycle exists. If fast reaches null, no cycle. Space O(1) — no extra data structures needed.',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`function solution(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n    if (slow === fast) return true;\n  }\n  return false;\n}`,
+sol:`function solution(head){\n  let slow=head,fast=head;\n  while(fast&&fast.next){\n    slow=slow.next;\n    fast=fast.next.next;\n    if(slow===fast) return true;\n  }\n  return false;\n}`,
+bruteSol:`function solution(head){\n  const seen=new Set();\n  while(head){\n    if(seen.has(head)) return true;\n    seen.add(head);\n    head=head.next;\n  }\n  return false;\n}`,
+tests:[{args:[[3,2,0,-4]],expected:false,label:'No cycle (flat array)'},{args:[[1,2]],expected:false,label:'Two nodes no cycle'},{args:[[1]],expected:false,label:'Single no cycle'},{args:[[1,2,3,4,5]],expected:false,label:'Five nodes no cycle'}],
+compare:'exact',
+preArgs:(args)=>[arrToList(args[0])]},
+
+{id:35,cat:'ll',tech:'Merge Lists',techId:'ll_merge',title:'Merge Two Sorted Lists',diff:'Easy',
+desc:'Merge two sorted linked lists into one sorted linked list. Return it as an array.',
+examples:[{input:'l1=[1,2,4], l2=[1,3,4]',output:'[1,1,2,3,4,4]'},{input:'l1=[], l2=[0]',output:'[0]'}],
+constraints:['0 &le; number of nodes &le; 50','&minus;100 &le; Node.val &le; 100','Both lists are sorted in non-decreasing order'],
+tags:['Linked List','Merge','Two Pointer','Recursion'],
+hints:['Use a dummy head node to simplify edge cases.','Compare the heads of both lists, attach the smaller one, advance that pointer.','When one list is exhausted, attach the remaining of the other.'],
+approach:{title:'Iterative Merge with Dummy Node',body:'Create a dummy node. Use a current pointer. At each step, compare l1.val and l2.val, attach the smaller node, advance that list pointer. When one list is done, append the other entire list. The dummy.next is the merged list head.',bt:'O(n+m)',bs:'O(n+m)',ot:'O(n+m)',os:'O(1)'},
+starter:`function solution(l1, l2) {\n  const dummy = new ListNode(0);\n  let curr = dummy;\n  while (l1 && l2) {\n    if (l1.val <= l2.val) { curr.next = l1; l1 = l1.next; }\n    else { curr.next = l2; l2 = l2.next; }\n    curr = curr.next;\n  }\n  curr.next = l1 || l2;\n  return dummy.next;\n}`,
+sol:`function solution(l1,l2){\n  const dummy=new ListNode(0);let curr=dummy;\n  while(l1&&l2){\n    if(l1.val<=l2.val){curr.next=l1;l1=l1.next;}\n    else{curr.next=l2;l2=l2.next;}\n    curr=curr.next;\n  }\n  curr.next=l1||l2;\n  return dummy.next;\n}`,
+bruteSol:`function solution(l1,l2){\n  const vals=[];\n  while(l1){vals.push(l1.val);l1=l1.next;}\n  while(l2){vals.push(l2.val);l2=l2.next;}\n  vals.sort((a,b)=>a-b);\n  let dummy=new ListNode(0),c=dummy;\n  for(const v of vals){c.next=new ListNode(v);c=c.next;}\n  return dummy.next;\n}`,
+tests:[{args:[[1,2,4],[1,3,4]],expected:[1,1,2,3,4,4],label:'Classic'},{args:[[],[]],expected:[],label:'Both empty'},{args:[[],[ 0]],expected:[0],label:'One empty'},{args:[[1],[2,3,4]],expected:[1,2,3,4],label:'One shorter'}],
+compare:'exact',
+preArgs:(args)=>[arrToList(args[0]),arrToList(args[1])],postResult:listToArr},
+
+// ─── TREES ───
+{id:36,cat:'trees',tech:'Recursion Patterns',techId:'tr_rec',title:'Maximum Depth of Binary Tree',diff:'Easy',
+desc:'Find the maximum depth (number of nodes along the longest path from root to a leaf) of a binary tree. Tree represented as level-order array.',
+examples:[{input:'root=[3,9,20,null,null,15,7]',output:'3'},{input:'root=[1,null,2]',output:'2'}],
+constraints:['0 &le; number of nodes &le; 10&#8308;','&minus;100 &le; Node.val &le; 100'],
+tags:['Tree','DFS','Recursion','BFS'],
+hints:['The depth of a tree = 1 + max(depth of left subtree, depth of right subtree).','Base case: null node has depth 0.','This is a simple post-order traversal.'],
+approach:{title:'Recursive DFS (Post-Order)',body:'depth(null) = 0. depth(node) = 1 + max(depth(node.left), depth(node.right)). This recursively computes the max depth bottom-up. Each node is visited once: O(n). Stack space O(h) where h is height.',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(h)'},
+starter:`// TreeNode is available. buildTree(array) constructs from level-order array.\nfunction solution(root) {\n  if (!root) return 0;\n  return 1 + Math.max(solution(root.left), solution(root.right));\n}`,
+sol:`function solution(root){\n  if(!root) return 0;\n  return 1+Math.max(solution(root.left),solution(root.right));\n}`,
+bruteSol:`function solution(root){\n  if(!root) return 0;\n  let max=0;\n  const queue=[{node:root,depth:1}];\n  while(queue.length){\n    const {node,depth}=queue.shift();\n    max=Math.max(max,depth);\n    if(node.left) queue.push({node:node.left,depth:depth+1});\n    if(node.right) queue.push({node:node.right,depth:depth+1});\n  }\n  return max;\n}`,
+tests:[{args:[[3,9,20,null,null,15,7]],expected:3,label:'Classic'},{args:[[1,null,2]],expected:2,label:'Right skewed'},{args:[[0]],expected:1,label:'Single node'},{args:[[1,2,3,4,5]],expected:3,label:'Full tree'},{args:[[]],expected:0,label:'Empty tree'}],
+compare:'exact',
+preArgs:(args)=>[buildTree(args[0])]},
+
+{id:37,cat:'trees',tech:'Traversal',techId:'tr_trav',title:'Binary Tree Level Order Traversal',diff:'Medium',
+desc:'Return the level-order traversal of a binary tree as an array of arrays (each inner array contains values at that level). Tree input as level-order array.',
+examples:[{input:'root=[3,9,20,null,null,15,7]',output:'[[3],[9,20],[15,7]]'},{input:'root=[1]',output:'[[1]]'}],
+constraints:['0 &le; number of nodes &le; 2000','&minus;1000 &le; Node.val &le; 1000'],
+tags:['Tree','BFS','Level Order','Queue'],
+hints:['Use a queue (BFS). Start with the root.','For each level, track the queue size at the start — that is how many nodes belong to this level.','Process that many nodes, collect their values, push children for the next level.'],
+approach:{title:'BFS with Level Size Tracking',body:'Initialize queue with root. While queue is not empty: record currentSize = queue.length, then process exactly currentSize nodes (one full level). For each node, push its value and enqueue its children. This cleanly separates levels.',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(n)'},
+starter:`function solution(root) {\n  if (!root) return [];\n  const result = [], queue = [root];\n  while (queue.length) {\n    const level = [], size = queue.length;\n    for (let i = 0; i < size; i++) {\n      const node = queue.shift();\n      level.push(node.val);\n      if (node.left) queue.push(node.left);\n      if (node.right) queue.push(node.right);\n    }\n    result.push(level);\n  }\n  return result;\n}`,
+sol:`function solution(root){\n  if(!root) return [];\n  const res=[],q=[root];\n  while(q.length){\n    const level=[],sz=q.length;\n    for(let i=0;i<sz;i++){\n      const n=q.shift();\n      level.push(n.val);\n      if(n.left) q.push(n.left);\n      if(n.right) q.push(n.right);\n    }\n    res.push(level);\n  }\n  return res;\n}`,
+bruteSol:`function solution(root){\n  if(!root) return [];\n  const res=[];\n  function dfs(node,d){\n    if(!node) return;\n    if(!res[d]) res[d]=[];\n    res[d].push(node.val);\n    dfs(node.left,d+1);\n    dfs(node.right,d+1);\n  }\n  dfs(root,0);\n  return res;\n}`,
+tests:[{args:[[3,9,20,null,null,15,7]],expected:[[3],[9,20],[15,7]],label:'Classic'},{args:[[1]],expected:[[1]],label:'Single node'},{args:[[1,2,3,4,5]],expected:[[1],[2,3],[4,5]],label:'Full tree'},{args:[[1,null,2,null,3]],expected:[[1],[2],[3]],label:'Right chain'}],
+compare:'exact',
+preArgs:(args)=>[buildTree(args[0])]},
+
+{id:38,cat:'trees',tech:'Traversal',techId:'tr_trav',title:'Binary Tree Inorder Traversal',diff:'Easy',
+desc:'Return the inorder traversal of a binary tree (left, root, right). Implement it iteratively without using the call stack recursion.',
+examples:[{input:'root=[1,null,2,3]',output:'[1,3,2]'},{input:'root=[1,2,3,4,5]',output:'[4,2,5,1,3]'}],
+constraints:['0 &le; number of nodes &le; 100','&minus;100 &le; Node.val &le; 100'],
+tags:['Tree','DFS','Inorder','Iterative Stack'],
+hints:['Recursive solution: visit left, push value, visit right. But can you do it iteratively?','Use an explicit stack. Go as far left as possible, then process, then go right.','While curr != null OR stack is not empty: go left (push to stack), pop to process, go right.'],
+approach:{title:'Iterative Inorder with Stack',body:'Use curr pointer and explicit stack. While curr != null, push curr and go left. When curr is null, pop from stack, visit (push value), then go right (curr = popped.right). This simulates the call stack without recursion.',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(n)'},
+starter:`function solution(root) {\n  const result = [], stack = [];\n  let curr = root;\n  while (curr || stack.length) {\n    while (curr) { stack.push(curr); curr = curr.left; }\n    curr = stack.pop();\n    result.push(curr.val);\n    curr = curr.right;\n  }\n  return result;\n}`,
+sol:`function solution(root){\n  const res=[],stack=[];let curr=root;\n  while(curr||stack.length){\n    while(curr){stack.push(curr);curr=curr.left;}\n    curr=stack.pop();\n    res.push(curr.val);\n    curr=curr.right;\n  }\n  return res;\n}`,
+bruteSol:`function solution(root){\n  const res=[];\n  function dfs(n){if(!n)return;dfs(n.left);res.push(n.val);dfs(n.right);}\n  dfs(root);\n  return res;\n}`,
+tests:[{args:[[1,null,2,3]],expected:[1,3,2],label:'Classic'},{args:[[1,2,3,4,5]],expected:[4,2,5,1,3],label:'Full tree'},{args:[[1]],expected:[1],label:'Single node'},{args:[[3,1,4,null,2]],expected:[1,2,3,4],label:'BST-like'}],
+compare:'exact',
+preArgs:(args)=>[buildTree(args[0])]},
+
+{id:39,cat:'trees',tech:'BST',techId:'tr_bst',title:'Validate Binary Search Tree',diff:'Medium',
+desc:'Determine whether a binary tree is a valid Binary Search Tree (BST). A valid BST satisfies: left subtree values < node, right subtree values > node, and both subtrees are valid BSTs.',
+examples:[{input:'root=[2,1,3]',output:'true'},{input:'root=[5,1,4,null,null,3,6]',output:'false',note:'root has 4 in right subtree but 4 > 5 is false'}],
+constraints:['1 &le; number of nodes &le; 10&#8308;','&minus;2&#179;&#185; &le; Node.val &le; 2&#179;&#185;&minus;1'],
+tags:['Tree','BST','Inorder','Recursion','Bounds'],
+hints:['Simply checking left.val < root < right.val is NOT enough — the entire left subtree must be less than root.','Pass valid range [min, max] for each node\'s allowed values.','For left subtree: max becomes root.val. For right subtree: min becomes root.val.'],
+approach:{title:'Recursive with Bounds',body:'validate(node, min, max) checks that node.val is in (min, max). For left child, the upper bound becomes node.val. For right child, the lower bound becomes node.val. Start with (-Infinity, Infinity). This correctly validates the entire subtree structure.',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(h)'},
+starter:`function solution(root) {\n  function validate(node, min, max) {\n    if (!node) return true;\n    if (node.val <= min || node.val >= max) return false;\n    return validate(node.left, min, node.val) &&\n           validate(node.right, node.val, max);\n  }\n  return validate(root, -Infinity, Infinity);\n}`,
+sol:`function solution(root){\n  function check(n,min,max){\n    if(!n) return true;\n    if(n.val<=min||n.val>=max) return false;\n    return check(n.left,min,n.val)&&check(n.right,n.val,max);\n  }\n  return check(root,-Infinity,Infinity);\n}`,
+bruteSol:`function solution(root){\n  const vals=[];\n  function inorder(n){if(!n)return;inorder(n.left);vals.push(n.val);inorder(n.right);}\n  inorder(root);\n  for(let i=1;i<vals.length;i++) if(vals[i]<=vals[i-1]) return false;\n  return true;\n}`,
+tests:[{args:[[2,1,3]],expected:true,label:'Valid BST'},{args:[[5,1,4,null,null,3,6]],expected:false,label:'Invalid right'},{args:[[2,2,2]],expected:false,label:'Duplicate values'},{args:[[1]],expected:true,label:'Single node'},{args:[[5,4,6,null,null,3,7]],expected:false,label:'Invalid deep'}],
+compare:'exact',
+preArgs:(args)=>[buildTree(args[0])]},
+
+// ─── BACKTRACKING ───
+{id:40,cat:'bt',tech:'Exploration',techId:'bt_exp',title:'Subsets',diff:'Medium',
+desc:'Given an integer array of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return in any order.',
+examples:[{input:'nums=[1,2,3]',output:'[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]'},{input:'nums=[0]',output:'[[],[0]]'}],
+constraints:['1 &le; nums.length &le; 10','&minus;10 &le; nums[i] &le; 10','All numbers are unique'],
+tags:['Array','Backtracking','Bit Manipulation','Recursion'],
+hints:['Choose-Explore-Unchoose: at each index, decide whether to include or skip the element.','At each recursive call, push the current path to results, then explore adding each remaining element.','Alternatively, iterate: for each existing subset, create a new subset with the current element added.'],
+approach:{title:'Backtracking — Include/Exclude',body:'For each element, make two choices: include it or not. Recurse for both choices starting from the next index. Add the current path (subset) to results at each node of the recursion tree. Total 2^n subsets, each taking O(n) to copy.',bt:'O(n &times; 2&#8319;)',bs:'O(1)',ot:'O(n &times; 2&#8319;)',os:'O(n &times; 2&#8319;)'},
+starter:`/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nfunction solution(nums) {\n  const result = [[]];\n  function bt(start, path) {\n    for (let i = start; i < nums.length; i++) {\n      path.push(nums[i]);\n      result.push([...path]);\n      bt(i + 1, path);\n      path.pop();\n    }\n  }\n  bt(0, []);\n  return result;\n}`,
+sol:`function solution(nums){\n  const res=[[]];\n  function bt(start,path){\n    for(let i=start;i<nums.length;i++){\n      path.push(nums[i]);\n      res.push([...path]);\n      bt(i+1,path);\n      path.pop();\n    }\n  }\n  bt(0,[]);\n  return res;\n}`,
+bruteSol:`function solution(nums){\n  const res=[[]];\n  for(const n of nums){\n    const len=res.length;\n    for(let i=0;i<len;i++) res.push([...res[i],n]);\n  }\n  return res;\n}`,
+tests:[{args:[[1,2,3]],expected:[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]],label:'Classic'},{args:[[0]],expected:[[],[0]],label:'Single'},{args:[[1,2]],expected:[[],[1],[2],[1,2]],label:'Two elements'}],
+compare:'sorted_nested'},
+
+{id:41,cat:'bt',tech:'Exploration',techId:'bt_exp',title:'Permutations',diff:'Medium',
+desc:'Given an array of distinct integers, return all possible permutations in any order.',
+examples:[{input:'nums=[1,2,3]',output:'[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]'},{input:'nums=[1]',output:'[[1]]'}],
+constraints:['1 &le; nums.length &le; 6','&minus;10 &le; nums[i] &le; 10','All integers are unique'],
+tags:['Array','Backtracking','Permutation'],
+hints:['At each position, place each unused number. Track which numbers have been used.','Recurse with the remaining unused numbers. When path.length === nums.length, push a copy to results.','Backtrack by popping from path and marking number as unused.'],
+approach:{title:'Backtracking with Used Array',body:'Use a boolean used[] array. At each recursive step, try placing each unused number at the current position. Mark it used, recurse, then unmark (backtrack). When path is full (length === n), a complete permutation is found.',bt:'O(n! &times; n)',bs:'O(n)',ot:'O(n! &times; n)',os:'O(n! &times; n)'},
+starter:`function solution(nums) {\n  const result = [], used = new Array(nums.length).fill(false);\n  function bt(path) {\n    if (path.length === nums.length) { result.push([...path]); return; }\n    for (let i = 0; i < nums.length; i++) {\n      if (used[i]) continue;\n      used[i] = true;\n      path.push(nums[i]);\n      bt(path);\n      path.pop();\n      used[i] = false;\n    }\n  }\n  bt([]);\n  return result;\n}`,
+sol:`function solution(nums){\n  const res=[],used=new Array(nums.length).fill(false);\n  function bt(path){\n    if(path.length===nums.length){res.push([...path]);return;}\n    for(let i=0;i<nums.length;i++){\n      if(used[i]) continue;\n      used[i]=true;path.push(nums[i]);\n      bt(path);\n      path.pop();used[i]=false;\n    }\n  }\n  bt([]);\n  return res;\n}`,
+bruteSol:`function solution(nums){\n  if(nums.length===1) return [nums];\n  const res=[];\n  for(let i=0;i<nums.length;i++){\n    const rest=solution([...nums.slice(0,i),...nums.slice(i+1)]);\n    for(const p of rest) res.push([nums[i],...p]);\n  }\n  return res;\n}`,
+tests:[{args:[[1,2,3]],expected:[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]],label:'Classic'},{args:[[1]],expected:[[1]],label:'Single'},{args:[[0,1]],expected:[[0,1],[1,0]],label:'Two elements'}],
+compare:'sorted_nested'},
+
+{id:42,cat:'bt',tech:'Pruning / State Tracking',techId:'bt_prune',title:'N-Queens — Count Solutions',diff:'Hard',
+desc:'Place N queens on an N&times;N chessboard such that no two queens attack each other. Return the number of valid solutions.',
+examples:[{input:'n=4',output:'2'},{input:'n=1',output:'1'}],
+constraints:['1 &le; n &le; 9'],
+tags:['Backtracking','Pruning','N-Queens','Board','Hard'],
+hints:['Place one queen per row. For each row, try each column.','A column is invalid if another queen already occupies it, or the same diagonal.','Track occupied columns, main diagonals (row-col), and anti-diagonals (row+col) using Sets.'],
+approach:{title:'Row-by-Row Backtracking with Diagonal Pruning',body:'For each row, try placing a queen in each column. Prune immediately if the column or either diagonal is occupied. Use three sets: cols, diag1 (row-col), diag2 (row+col). When all N rows are filled, count the solution.',bt:'O(n!)',bs:'O(n)',ot:'O(n!)',os:'O(n)'},
+starter:`function solution(n) {\n  let count = 0;\n  const cols = new Set(), d1 = new Set(), d2 = new Set();\n  function bt(row) {\n    if (row === n) { count++; return; }\n    for (let col = 0; col < n; col++) {\n      if (cols.has(col) || d1.has(row-col) || d2.has(row+col)) continue;\n      cols.add(col); d1.add(row-col); d2.add(row+col);\n      bt(row + 1);\n      cols.delete(col); d1.delete(row-col); d2.delete(row+col);\n    }\n  }\n  bt(0);\n  return count;\n}`,
+sol:`function solution(n){\n  let count=0;\n  const cols=new Set(),d1=new Set(),d2=new Set();\n  function bt(row){\n    if(row===n){count++;return;}\n    for(let col=0;col<n;col++){\n      if(cols.has(col)||d1.has(row-col)||d2.has(row+col)) continue;\n      cols.add(col);d1.add(row-col);d2.add(row+col);\n      bt(row+1);\n      cols.delete(col);d1.delete(row-col);d2.delete(row+col);\n    }\n  }\n  bt(0);\n  return count;\n}`,
+bruteSol:`function solution(n){\n  let count=0;\n  function isValid(board,row,col){\n    for(let i=0;i<row;i++) if(board[i]===col||Math.abs(board[i]-col)===row-i) return false;\n    return true;\n  }\n  function bt(board,row){\n    if(row===n){count++;return;}\n    for(let col=0;col<n;col++){\n      if(isValid(board,row,col)){board[row]=col;bt(board,row+1);board[row]=-1;}\n    }\n  }\n  bt(new Array(n).fill(-1),0);\n  return count;\n}`,
+tests:[{args:[4],expected:2,label:'4-Queens'},{args:[1],expected:1,label:'1-Queen'},{args:[5],expected:10,label:'5-Queens'},{args:[6],expected:4,label:'6-Queens'},{args:[8],expected:92,label:'8-Queens classic'}],
+compare:'exact'},
+
+// ─── HEAP ───
+{id:43,cat:'heap',tech:'Top K / Kth Element',techId:'hp_topk',title:'Kth Largest Element in Array',diff:'Medium',
+desc:'Find the kth largest element in an unsorted array. Note: it is the kth largest in sorted order, not the kth distinct element.',
+examples:[{input:'nums=[3,2,1,5,6,4], k=2',output:'5'},{input:'nums=[3,2,3,1,2,4,5,5,6], k=4',output:'4'}],
+constraints:['1 &le; k &le; nums.length &le; 10&#8309;','&minus;10&#8308; &le; nums[i] &le; 10&#8308;'],
+tags:['Array','Heap','Quick Select','Sorting'],
+hints:['Simple: sort descending, return nums[k-1]. But can you do better than O(n log n)?','Maintain a min-heap of size k. If size exceeds k, pop the smallest. The top is always the kth largest.','Quick select: partition the array (like quicksort) but only recurse into one half — average O(n).'],
+approach:{title:'Sort or Min-Heap of Size K',body:'Approach 1: Sort descending, return at index k-1. O(n log n). Approach 2: Simulate a min-heap of max size k using an array — when a new element is larger than the heap minimum, replace it. Final heap contains k largest elements; the minimum is the kth largest.',bt:'O(n log n)',bs:'O(1)',ot:'O(n log k)',os:'O(k)'},
+starter:`/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nfunction solution(nums, k) {\n  // Simple approach: sort and index\n  nums.sort((a, b) => b - a);\n  return nums[k - 1];\n}`,
+sol:`function solution(nums,k){\n  nums.sort((a,b)=>b-a);\n  return nums[k-1];\n}`,
+bruteSol:`function solution(nums,k){\n  const sorted=[...nums].sort((a,b)=>a-b);\n  return sorted[sorted.length-k];\n}`,
+tests:[{args:[[3,2,1,5,6,4],2],expected:5,label:'Classic'},{args:[[3,2,3,1,2,4,5,5,6],4],expected:4,label:'Duplicates'},{args:[[1],1],expected:1,label:'Single'},{args:[[-1,-2,-3,-4],2],expected:-2,label:'Negatives'},{args:[[7,6,5,4,3,2,1],5],expected:3,label:'Descending'}],
+compare:'exact'},
+
+{id:44,cat:'heap',tech:'Greedy + Heap',techId:'hp_greedy',title:'Task Scheduler',diff:'Medium',
+desc:'Given CPU tasks and a cooldown period n, find the minimum number of intervals needed to finish all tasks. The same task must have at least n intervals between executions. CPU can be idle.',
+examples:[{input:'tasks=["A","A","A","B","B","B"], n=2',output:'8',note:'A->B->idle->A->B->idle->A->B'},{input:'tasks=["A","A","A","B","B","B"], n=0',output:'6'}],
+constraints:['1 &le; tasks.length &le; 10&#8308;','tasks[i] is uppercase English letter','0 &le; n &le; 100'],
+tags:['Array','Heap','Greedy','Math'],
+hints:['The most frequent task determines the minimum length.','Formula: (maxFreq-1) * (n+1) + count_of_max_freq_tasks.','This accounts for idle slots between cycles.'],
+approach:{title:'Frequency-Based Formula',body:'Let maxFreq = highest task frequency, maxCount = number of tasks with that frequency. The minimum time is max(tasks.length, (maxFreq-1)*(n+1)+maxCount). The first term handles when tasks are enough to fill all slots without idles.',bt:'O(n log n)',bs:'O(n)',ot:'O(n)',os:'O(26)'},
+starter:`/**\n * @param {string[]} tasks\n * @param {number} n\n * @return {number}\n */\nfunction solution(tasks, n) {\n  const freq = {};\n  for (const t of tasks) freq[t] = (freq[t] || 0) + 1;\n  const maxFreq = Math.max(...Object.values(freq));\n  const maxCount = Object.values(freq).filter(f => f === maxFreq).length;\n  return Math.max(tasks.length, (maxFreq - 1) * (n + 1) + maxCount);\n}`,
+sol:`function solution(tasks,n){\n  const freq={};\n  for(const t of tasks) freq[t]=(freq[t]||0)+1;\n  const maxFreq=Math.max(...Object.values(freq));\n  const maxCount=Object.values(freq).filter(f=>f===maxFreq).length;\n  return Math.max(tasks.length,(maxFreq-1)*(n+1)+maxCount);\n}`,
+bruteSol:`function solution(tasks,n){\n  const freq={};\n  for(const t of tasks) freq[t]=(freq[t]||0)+1;\n  let time=0;\n  while(Object.keys(freq).length){\n    const sorted=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,n+1);\n    time+=sorted.length<n+1&&Object.keys(freq).length>sorted.length?n+1:sorted.length;\n    for(const [k,v] of sorted){if(v-1===0)delete freq[k];else freq[k]=v-1;}\n  }\n  return time;\n}`,
+tests:[{args:[['A','A','A','B','B','B'],2],expected:8,label:'Classic'},{args:[['A','A','A','B','B','B'],0],expected:6,label:'No cooldown'},{args:[['A','A','A','A','A','A','B','C','D','E','F','G'],2],expected:16,label:'Many A'},{args:[['A','B','C','D','E','F'],2],expected:6,label:'All different'}],
+compare:'exact'},
+
+{id:45,cat:'heap',tech:'K-way Merge',techId:'hp_kway',title:'Merge K Sorted Arrays',diff:'Hard',
+desc:'Given k sorted arrays, merge them into one sorted array. This is the foundational k-way merge problem.',
+examples:[{input:'arrays=[[1,3,5],[2,4,6],[0,7]]',output:'[0,1,2,3,4,5,6,7]'},{input:'arrays=[[1],[0]]',output:'[0,1]'}],
+constraints:['k == arrays.length','1 &le; k &le; 10&#8308;','0 &le; arrays[i].length &le; 500','&minus;10&#8308; &le; arrays[i][j] &le; 10&#8308;','Each arrays[i] is sorted'],
+tags:['Array','Heap','K-way Merge','Priority Queue'],
+hints:['Naive: concatenate all, sort. O(n log n) but ignores the sorted property.','Better: initialize heap with the first element of each array (value, arrayIndex, elementIndex).','Each pop gives the current minimum; push the next element from the same array.'],
+approach:{title:'Min-Heap K-way Merge',body:'Use a min-heap (simulated with a sorted array or priority queue). Initialize with first element of each array. Repeatedly extract the minimum, add to result, and insert the next element from the same array. Total O(n log k) where n is total elements.',bt:'O(n log n)',bs:'O(n)',ot:'O(n log k)',os:'O(k)'},
+starter:`/**\n * @param {number[][]} arrays\n * @return {number[]}\n */\nfunction solution(arrays) {\n  // Simple: concat and sort (optimal uses a heap)\n  return arrays.flat().sort((a, b) => a - b);\n}`,
+sol:`function solution(arrays){\n  return arrays.flat().sort((a,b)=>a-b);\n}`,
+bruteSol:`function solution(arrays){\n  const result=[];\n  const pointers=new Array(arrays.length).fill(0);\n  while(true){\n    let minVal=Infinity,minIdx=-1;\n    for(let i=0;i<arrays.length;i++){\n      if(pointers[i]<arrays[i].length&&arrays[i][pointers[i]]<minVal){\n        minVal=arrays[i][pointers[i]];minIdx=i;\n      }\n    }\n    if(minIdx===-1) break;\n    result.push(minVal);pointers[minIdx]++;\n  }\n  return result;\n}`,
+tests:[{args:[[[1,3,5],[2,4,6],[0,7]]],expected:[0,1,2,3,4,5,6,7],label:'Classic'},{args:[[[1],[0]]],expected:[0,1],label:'Two single'},{args:[[[1,4,7],[2,5,8],[3,6,9]]],expected:[1,2,3,4,5,6,7,8,9],label:'Interleaved'},{args:[[[]]],expected:[],label:'Empty array'}],
+compare:'exact'},
+
+// ─── GRAPHS ───
+{id:46,cat:'graphs',tech:'Traversal',techId:'gr_trav',title:'Number of Islands',diff:'Medium',
+desc:'Given a 2D grid of 1s (land) and 0s (water), count the number of islands. An island is surrounded by water and formed by connecting adjacent land cells horizontally or vertically.',
+examples:[{input:'grid=[[1,1,1,1,0],[1,1,0,1,0],[1,1,0,0,0],[0,0,0,0,0]]',output:'1'},{input:'grid=[[1,1,0,0,0],[1,1,0,0,0],[0,0,1,0,0],[0,0,0,1,1]]',output:'3'}],
+constraints:['m == grid.length, n == grid[0].length','1 &le; m,n &le; 300','grid[i][j] is 0 or 1'],
+tags:['Array','DFS','BFS','Graph','Matrix'],
+hints:['Scan the grid. When you find a 1, increment count and flood-fill it to mark it as visited.','DFS: mark current cell as 0 (visited), then recursively visit all 4 adjacent land cells.','BFS alternative: use a queue to spread from the starting cell.'],
+approach:{title:'DFS Flood Fill',body:'Iterate all cells. When grid[r][c]=1, increment island count, then DFS from that cell: mark as 0 (visited) and recursively visit up/down/left/right cells that are also 1. Each cell is visited at most once: O(m&times;n).',bt:'O(m&times;n)',bs:'O(1)',ot:'O(m&times;n)',os:'O(m&times;n)'},
+starter:`/**\n * @param {string[][]} grid  (use 0/1 numbers in tests)\n * @return {number}\n */\nfunction solution(grid) {\n  let count = 0;\n  const rows = grid.length, cols = grid[0].length;\n  function dfs(r, c) {\n    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] === 0) return;\n    grid[r][c] = 0;\n    dfs(r+1,c); dfs(r-1,c); dfs(r,c+1); dfs(r,c-1);\n  }\n  for (let r = 0; r < rows; r++)\n    for (let c = 0; c < cols; c++)\n      if (grid[r][c] === 1) { count++; dfs(r, c); }\n  return count;\n}`,
+sol:`function solution(grid){\n  let count=0;\n  const R=grid.length,C=grid[0].length;\n  function dfs(r,c){\n    if(r<0||r>=R||c<0||c>=C||grid[r][c]===0) return;\n    grid[r][c]=0;\n    dfs(r+1,c);dfs(r-1,c);dfs(r,c+1);dfs(r,c-1);\n  }\n  for(let r=0;r<R;r++)\n    for(let c=0;c<C;c++)\n      if(grid[r][c]===1){count++;dfs(r,c);}\n  return count;\n}`,
+bruteSol:`function solution(grid){\n  const R=grid.length,C=grid[0].length;\n  let count=0;\n  const visited=Array.from({length:R},()=>new Array(C).fill(false));\n  for(let r=0;r<R;r++){\n    for(let c=0;c<C;c++){\n      if(grid[r][c]===1&&!visited[r][c]){\n        count++;\n        const queue=[[r,c]];visited[r][c]=true;\n        while(queue.length){\n          const [cr,cc]=queue.shift();\n          for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){\n            const nr=cr+dr,nc=cc+dc;\n            if(nr>=0&&nr<R&&nc>=0&&nc<C&&grid[nr][nc]===1&&!visited[nr][nc]){\n              visited[nr][nc]=true;queue.push([nr,nc]);\n            }\n          }\n        }\n      }\n    }\n  }\n  return count;\n}`,
+tests:[{args:[[[1,1,1,1,0],[1,1,0,1,0],[1,1,0,0,0],[0,0,0,0,0]]],expected:1,label:'One big island'},{args:[[[1,1,0,0,0],[1,1,0,0,0],[0,0,1,0,0],[0,0,0,1,1]]],expected:3,label:'Three islands'},{args:[[[1,0,0],[0,1,0],[0,0,1]]],expected:3,label:'Diagonal (not connected)'},{args:[[[0,0,0],[0,0,0]]],expected:0,label:'All water'}],
+compare:'exact'},
+
+{id:47,cat:'graphs',tech:'Cycle Detection',techId:'gr_cycle',title:'Course Schedule',diff:'Medium',
+desc:'There are n courses (0 to n-1) and a list of prerequisites. Can you finish all courses? A cycle in the prerequisite graph means it is impossible.',
+examples:[{input:'n=2, prerequisites=[[1,0]]',output:'true',note:'Take course 0 first, then 1'},{input:'n=2, prerequisites=[[1,0],[0,1]]',output:'false',note:'Cycle: each needs the other first'}],
+constraints:['1 &le; n &le; 2000','0 &le; prerequisites.length &le; 5000','No duplicate prerequisites'],
+tags:['Graph','DFS','Cycle Detection','Topological Sort'],
+hints:['Build an adjacency list from prerequisites.','Use DFS with three states: unvisited (0), in-progress (1), done (2).','If DFS visits an in-progress node, a cycle is found.'],
+approach:{title:'DFS with 3-Color Marking',body:'White (0): unvisited, Gray (1): in current DFS path, Black (2): fully processed. If DFS reaches a Gray node, there is a cycle. Once all neighbors are processed, mark the node Black. If no cycle found for all nodes, courses can be completed.',bt:'O(n&sup2;)',bs:'O(n)',ot:'O(n+e)',os:'O(n+e)'},
+starter:`/**\n * @param {number} n\n * @param {number[][]} prerequisites  [course, prereq]\n * @return {boolean}\n */\nfunction solution(n, prerequisites) {\n  const adj = Array.from({length:n}, () => []);\n  for (const [a,b] of prerequisites) adj[b].push(a);\n  const state = new Array(n).fill(0); // 0:unvisited 1:visiting 2:done\n  function hasCycle(v) {\n    if (state[v] === 1) return true;\n    if (state[v] === 2) return false;\n    state[v] = 1;\n    for (const u of adj[v]) if (hasCycle(u)) return true;\n    state[v] = 2;\n    return false;\n  }\n  for (let i = 0; i < n; i++) if (hasCycle(i)) return false;\n  return true;\n}`,
+sol:`function solution(n,prerequisites){\n  const adj=Array.from({length:n},()=>[]);\n  for(const [a,b] of prerequisites) adj[b].push(a);\n  const state=new Array(n).fill(0);\n  function hasCycle(v){\n    if(state[v]===1) return true;\n    if(state[v]===2) return false;\n    state[v]=1;\n    for(const u of adj[v]) if(hasCycle(u)) return true;\n    state[v]=2;\n    return false;\n  }\n  for(let i=0;i<n;i++) if(hasCycle(i)) return false;\n  return true;\n}`,
+bruteSol:`function solution(n,prerequisites){\n  const adj=Array.from({length:n},()=>[]);\n  for(const [a,b] of prerequisites) adj[b].push(a);\n  function dfs(v,visited){\n    if(visited.has(v)) return true;\n    visited.add(v);\n    for(const u of adj[v]) if(dfs(u,new Set(visited))) return true;\n    return false;\n  }\n  for(let i=0;i<n;i++) if(dfs(i,new Set())) return false;\n  return true;\n}`,
+tests:[{args:[2,[[1,0]]],expected:true,label:'Simple valid'},{args:[2,[[1,0],[0,1]]],expected:false,label:'Cycle'},{args:[4,[[1,0],[2,0],[3,1],[3,2]]],expected:true,label:'Diamond DAG'},{args:[3,[[0,1],[0,2],[1,2]]],expected:true,label:'Valid longer'},{args:[3,[[1,0],[2,1],[0,2]]],expected:false,label:'3-cycle'}],
+compare:'exact'},
+
+{id:48,cat:'graphs',tech:'Topological Sort',techId:'gr_topo',title:'Course Schedule II — Topo Order',diff:'Medium',
+desc:'Return a valid course order to finish all n courses given prerequisites, or an empty array if impossible (cycle exists).',
+examples:[{input:'n=4, prerequisites=[[1,0],[2,0],[3,1],[3,2]]',output:'[0,2,1,3] or [0,1,2,3]'},{input:'n=1, prerequisites=[]',output:'[0]'}],
+constraints:['1 &le; n &le; 2000','0 &le; prerequisites.length &le; 5000'],
+tags:['Graph','Topological Sort','Kahn\'s Algorithm','DFS'],
+hints:['Compute in-degree for each node. Start with nodes having in-degree 0.','BFS (Kahn\'s algorithm): process zero-in-degree nodes, decrement neighbors, add newly zero-in-degree nodes to queue.','If we process all n nodes, return the order. If fewer, a cycle exists.'],
+approach:{title:"Kahn's Algorithm (BFS Topo Sort)",body:'Build adjacency list and in-degree array. Push all nodes with in-degree 0 into a queue. Process: pop node, add to result, decrement all neighbors in-degrees. When a neighbor reaches 0, push it. If result has n nodes, return it; else return [] (cycle).',bt:'O(n+e)',bs:'O(n)',ot:'O(n+e)',os:'O(n+e)'},
+starter:`function solution(n, prerequisites) {\n  const adj = Array.from({length:n},()=>[]);\n  const indegree = new Array(n).fill(0);\n  for (const [a,b] of prerequisites) { adj[b].push(a); indegree[a]++; }\n  const queue = [];\n  for (let i=0;i<n;i++) if(indegree[i]===0) queue.push(i);\n  const result = [];\n  while (queue.length) {\n    const v = queue.shift();\n    result.push(v);\n    for (const u of adj[v]) { if(--indegree[u]===0) queue.push(u); }\n  }\n  return result.length === n ? result : [];\n}`,
+sol:`function solution(n,prerequisites){\n  const adj=Array.from({length:n},()=>[]);\n  const ind=new Array(n).fill(0);\n  for(const [a,b] of prerequisites){adj[b].push(a);ind[a]++;}\n  const q=[];\n  for(let i=0;i<n;i++) if(ind[i]===0) q.push(i);\n  const res=[];\n  while(q.length){\n    const v=q.shift();res.push(v);\n    for(const u of adj[v]) if(--ind[u]===0) q.push(u);\n  }\n  return res.length===n?res:[];\n}`,
+bruteSol:`function solution(n,prerequisites){\n  const adj=Array.from({length:n},()=>[]);\n  for(const [a,b] of prerequisites) adj[b].push(a);\n  const state=new Array(n).fill(0);\n  const res=[];\n  function dfs(v){\n    if(state[v]===1) return false;\n    if(state[v]===2) return true;\n    state[v]=1;\n    for(const u of adj[v]) if(!dfs(u)) return false;\n    state[v]=2;res.unshift(v);\n    return true;\n  }\n  for(let i=0;i<n;i++) if(!dfs(i)) return [];\n  return res;\n}`,
+tests:[{args:[2,[[1,0]]],expected:[0,1],label:'Simple'},{args:[4,[[1,0],[2,0],[3,1],[3,2]]],expected:[0,1,2,3],label:'Diamond'},{args:[2,[[0,1],[1,0]]],expected:[],label:'Cycle - empty'},{args:[1,[]],expected:[0],label:'Single course'}],
+compare:'sorted'},
+
+{id:49,cat:'graphs',tech:'Shortest Path',techId:'gr_short',title:'Network Delay Time — Dijkstra',diff:'Medium',
+desc:'There are n nodes and directed weighted edges (times). Find the minimum time for a signal from source k to reach all nodes. Return -1 if impossible.',
+examples:[{input:'times=[[2,1,1],[2,3,1],[3,4,1]], n=4, k=2',output:'2'},{input:'times=[[1,2,1]], n=2, k=1',output:'1'}],
+constraints:['1 &le; n &le; 100','1 &le; times.length &le; 6000','1-indexed nodes','1 &le; k &le; n'],
+tags:['Graph','Dijkstra','Shortest Path','BFS'],
+hints:['Build adjacency list with weights. Initialize dist[] to Infinity, dist[k]=0.','Use a priority queue (simulate with sorted array). Process nearest node first.','When a shorter path to a neighbor is found, update dist and re-enqueue.'],
+approach:{title:"Dijkstra's Algorithm",body:'Maintain shortest distances from k. Use a min-heap (simulated). Initialize dist[k]=0, all others Infinity. Extract minimum-distance node, update neighbors if shorter path found. Answer is max(dist) — the latest any node was reached. If any node remains Infinity, return -1.',bt:'O(n+e) BFS',bs:'O(n)',ot:'O((n+e) log n)',os:'O(n+e)'},
+starter:`/**\n * @param {number[][]} times  [source, dest, weight]\n * @param {number} n  number of nodes (1-indexed)\n * @param {number} k  source node\n * @return {number}\n */\nfunction solution(times, n, k) {\n  const adj = Array.from({length:n+1},()=>[]);\n  for(const [u,v,w] of times) adj[u].push([v,w]);\n  const dist = new Array(n+1).fill(Infinity);\n  dist[k] = 0;\n  const heap = [[0, k]]; // [dist, node]\n  while (heap.length) {\n    heap.sort((a,b)=>a[0]-b[0]);\n    const [d, u] = heap.shift();\n    if (d > dist[u]) continue;\n    for (const [v, w] of adj[u]) {\n      if (dist[u]+w < dist[v]) { dist[v]=dist[u]+w; heap.push([dist[v],v]); }\n    }\n  }\n  const ans = Math.max(...dist.slice(1));\n  return ans === Infinity ? -1 : ans;\n}`,
+sol:`function solution(times,n,k){\n  const adj=Array.from({length:n+1},()=>[]);\n  for(const [u,v,w] of times) adj[u].push([v,w]);\n  const dist=new Array(n+1).fill(Infinity);dist[k]=0;\n  const heap=[[0,k]];\n  while(heap.length){\n    heap.sort((a,b)=>a[0]-b[0]);\n    const [d,u]=heap.shift();\n    if(d>dist[u]) continue;\n    for(const [v,w] of adj[u]){\n      if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;heap.push([dist[v],v]);}\n    }\n  }\n  const ans=Math.max(...dist.slice(1));\n  return ans===Infinity?-1:ans;\n}`,
+bruteSol:`function solution(times,n,k){\n  const dist=new Array(n+1).fill(Infinity);dist[k]=0;\n  for(let i=0;i<n-1;i++){\n    for(const [u,v,w] of times){\n      if(dist[u]!==Infinity&&dist[u]+w<dist[v]) dist[v]=dist[u]+w;\n    }\n  }\n  const ans=Math.max(...dist.slice(1));\n  return ans===Infinity?-1:ans;\n}`,
+tests:[{args:[[[2,1,1],[2,3,1],[3,4,1]],4,2],expected:2,label:'Classic'},{args:[[[1,2,1]],2,1],expected:1,label:'Single edge'},{args:[[[1,2,1],[2,3,2]],3,1],expected:3,label:'Linear chain'},{args:[[[1,2,1],[1,3,5],[2,3,2]],3,1],expected:3,label:'Two paths'}],
+compare:'exact'},
+
+{id:50,cat:'graphs',tech:'Union-Find (DSU)',techId:'gr_uf',title:'Number of Provinces',diff:'Medium',
+desc:'Given an n x n adjacency matrix (isConnected[i][j]=1 means cities i and j are directly connected), find the total number of provinces (groups of directly or indirectly connected cities).',
+examples:[{input:'isConnected=[[1,1,0],[1,1,0],[0,0,1]]',output:'2'},{input:'isConnected=[[1,0,0],[0,1,0],[0,0,1]]',output:'3'}],
+constraints:['1 &le; n &le; 200','isConnected[i][j] is 1 or 0','isConnected[i][i] == 1'],
+tags:['Graph','Union-Find','DFS','BFS'],
+hints:['DFS/BFS: count connected components. Start DFS from each unvisited node.','Union-Find: for each connected pair (i,j), union them. Count distinct root nodes at the end.','Union-Find with path compression is very efficient for this pattern.'],
+approach:{title:'Union-Find (Disjoint Set Union)',body:'Initialize each city as its own parent. For each pair (i,j) where isConnected[i][j]=1, union them (make same root). At the end, count cities that are their own root — each is one province. Union-Find with path compression: nearly O(n&sup2;) for scanning the matrix.',bt:'O(n&sup2;)',bs:'O(n)',ot:'O(n&sup2; &alpha;(n))',os:'O(n)'},
+starter:`function solution(isConnected) {\n  const n = isConnected.length;\n  const parent = Array.from({length:n},(_, i)=>i);\n  function find(x) {\n    if (parent[x] !== x) parent[x] = find(parent[x]); // path compression\n    return parent[x];\n  }\n  function union(x, y) {\n    parent[find(x)] = find(y);\n  }\n  for (let i=0;i<n;i++)\n    for (let j=i+1;j<n;j++)\n      if (isConnected[i][j]) union(i, j);\n  return parent.filter((_,i)=>find(i)===i).length;\n}`,
+sol:`function solution(isConnected){\n  const n=isConnected.length;\n  const parent=Array.from({length:n},(_,i)=>i);\n  function find(x){if(parent[x]!==x)parent[x]=find(parent[x]);return parent[x];}\n  function union(x,y){parent[find(x)]=find(y);}\n  for(let i=0;i<n;i++)\n    for(let j=i+1;j<n;j++)\n      if(isConnected[i][j]) union(i,j);\n  return parent.filter((_,i)=>find(i)===i).length;\n}`,
+bruteSol:`function solution(isConnected){\n  const n=isConnected.length;\n  const visited=new Array(n).fill(false);\n  let count=0;\n  function dfs(i){\n    visited[i]=true;\n    for(let j=0;j<n;j++) if(isConnected[i][j]&&!visited[j]) dfs(j);\n  }\n  for(let i=0;i<n;i++) if(!visited[i]){count++;dfs(i);}\n  return count;\n}`,
+tests:[{args:[[[1,1,0],[1,1,0],[0,0,1]]],expected:2,label:'Two provinces'},{args:[[[1,0,0],[0,1,0],[0,0,1]]],expected:3,label:'Three provinces'},{args:[[[1,1,1],[1,1,1],[1,1,1]]],expected:1,label:'All connected'},{args:[[[1]]],expected:1,label:'Single city'}],
+compare:'exact'},
+
+// ─── DYNAMIC PROGRAMMING ───
+{id:51,cat:'dp',tech:'Core 1D',techId:'dp_1d',title:'Climbing Stairs',diff:'Easy',
+desc:'You need to climb n stairs. Each time you can climb 1 or 2 steps. In how many distinct ways can you climb to the top?',
+examples:[{input:'n=2',output:'2',note:'1+1 or 2'},{input:'n=3',output:'3',note:'1+1+1, 1+2, 2+1'}],
+constraints:['1 &le; n &le; 45'],
+tags:['Dynamic Programming','Fibonacci','1D DP','Memoization'],
+hints:['To reach step n, you came from step n-1 (one step) or step n-2 (two steps).','ways(n) = ways(n-1) + ways(n-2). This is the Fibonacci sequence!','Base cases: ways(1) = 1, ways(2) = 2.'],
+approach:{title:'Fibonacci DP (Bottom-Up)',body:'Let dp[i] = number of ways to reach step i. dp[1]=1, dp[2]=2. For i > 2: dp[i] = dp[i-1] + dp[i-2]. Only two previous values are needed, so space O(1). The result is the Fibonacci sequence offset by 1.',bt:'O(2&#8319;)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`function solution(n) {\n  if (n <= 2) return n;\n  let prev2 = 1, prev1 = 2;\n  for (let i = 3; i <= n; i++) {\n    const curr = prev1 + prev2;\n    prev2 = prev1;\n    prev1 = curr;\n  }\n  return prev1;\n}`,
+sol:`function solution(n){\n  if(n<=2) return n;\n  let a=1,b=2;\n  for(let i=3;i<=n;i++){const c=a+b;a=b;b=c;}\n  return b;\n}`,
+bruteSol:`function solution(n){\n  const memo={};\n  function dp(i){\n    if(i<=2) return i;\n    if(memo[i]) return memo[i];\n    return memo[i]=dp(i-1)+dp(i-2);\n  }\n  return dp(n);\n}`,
+tests:[{args:[2],expected:2,label:'n=2'},{args:[3],expected:3,label:'n=3'},{args:[1],expected:1,label:'n=1'},{args:[5],expected:8,label:'n=5'},{args:[10],expected:89,label:'n=10'},{args:[45],expected:1836311903,label:'n=45 max'}],
+compare:'exact'},
+
+{id:52,cat:'dp',tech:'Core 1D',techId:'dp_1d',title:'House Robber',diff:'Medium',
+desc:'Given an array of non-negative integers representing houses, rob the maximum amount of money. You cannot rob two adjacent houses.',
+examples:[{input:'nums=[1,2,3,1]',output:'4',note:'Rob house 1 (1) and house 3 (3)'},{input:'nums=[2,7,9,3,1]',output:'12',note:'Rob houses 1,3,5: 2+9+1=12'}],
+constraints:['1 &le; nums.length &le; 100','0 &le; nums[i] &le; 400'],
+tags:['Array','Dynamic Programming','1D DP'],
+hints:['For each house, decide: rob it (add nums[i] + max_rob_without_prev_house) or skip (max_rob_up_to_prev).','dp[i] = max(dp[i-1], dp[i-2] + nums[i]).','Only need last two dp values — O(1) space.'],
+approach:{title:'1D DP with Two Variables',body:'At each house, the best is either: skip this house (keep prev best) or rob it (prev-prev best + current amount). dp[i] = max(dp[i-1], dp[i-2]+nums[i]). Rolling two variables instead of an array gives O(1) space.',bt:'O(2&#8319;)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`function solution(nums) {\n  let prev2 = 0, prev1 = 0;\n  for (const n of nums) {\n    const curr = Math.max(prev1, prev2 + n);\n    prev2 = prev1;\n    prev1 = curr;\n  }\n  return prev1;\n}`,
+sol:`function solution(nums){\n  let a=0,b=0;\n  for(const n of nums){const c=Math.max(b,a+n);a=b;b=c;}\n  return b;\n}`,
+bruteSol:`function solution(nums){\n  const dp=new Array(nums.length).fill(0);\n  dp[0]=nums[0];\n  if(nums.length>1) dp[1]=Math.max(nums[0],nums[1]);\n  for(let i=2;i<nums.length;i++) dp[i]=Math.max(dp[i-1],dp[i-2]+nums[i]);\n  return dp[nums.length-1];\n}`,
+tests:[{args:[[1,2,3,1]],expected:4,label:'Classic'},{args:[[2,7,9,3,1]],expected:12,label:'Skip middle'},{args:[[1]],expected:1,label:'Single'},{args:[[2,1,1,2]],expected:4,label:'Ends'},{args:[[5,3,4,11,2]],expected:16,label:'Larger values'}],
+compare:'exact'},
+
+{id:53,cat:'dp',tech:'Core 2D',techId:'dp_2d',title:'Unique Paths',diff:'Medium',
+desc:'A robot starts at the top-left corner of an m x n grid. It can only move right or down. How many unique paths exist to reach the bottom-right corner?',
+examples:[{input:'m=3, n=7',output:'28'},{input:'m=3, n=2',output:'3'}],
+constraints:['1 &le; m,n &le; 100'],
+tags:['Math','Dynamic Programming','2D DP','Combinatorics'],
+hints:['dp[r][c] = number of ways to reach cell (r,c).','dp[r][c] = dp[r-1][c] + dp[r][c-1] (came from above or from left).','First row and column are all 1 (only one way: go straight right or straight down).'],
+approach:{title:'2D DP Grid',body:'Create dp[m][n]. First row and column = 1 (only one direction). For each other cell: dp[r][c] = dp[r-1][c] + dp[r][c-1]. Can be optimized to O(n) space using a single row.',bt:'O(m+n choose m) enumeration',bs:'O(m&times;n)',ot:'O(m&times;n)',os:'O(m&times;n)'},
+starter:`function solution(m, n) {\n  const dp = Array.from({length:m}, () => new Array(n).fill(1));\n  for (let r = 1; r < m; r++)\n    for (let c = 1; c < n; c++)\n      dp[r][c] = dp[r-1][c] + dp[r][c-1];\n  return dp[m-1][n-1];\n}`,
+sol:`function solution(m,n){\n  const dp=Array.from({length:m},()=>new Array(n).fill(1));\n  for(let r=1;r<m;r++)\n    for(let c=1;c<n;c++)\n      dp[r][c]=dp[r-1][c]+dp[r][c-1];\n  return dp[m-1][n-1];\n}`,
+bruteSol:`function solution(m,n){\n  function dp(r,c){\n    if(r===0||c===0) return 1;\n    return dp(r-1,c)+dp(r,c-1);\n  }\n  return dp(m-1,n-1);\n}`,
+tests:[{args:[3,7],expected:28,label:'Classic'},{args:[3,2],expected:3,label:'Narrow'},{args:[1,1],expected:1,label:'1x1'},{args:[2,2],expected:2,label:'2x2'},{args:[10,10],expected:48620,label:'Large'}],
+compare:'exact'},
+
+{id:54,cat:'dp',tech:'Sequence DP',techId:'dp_seq',title:'Longest Common Subsequence',diff:'Medium',
+desc:'Given two strings, find the length of their longest common subsequence (LCS). A subsequence is a sequence that can be derived by deleting some elements without changing the order.',
+examples:[{input:'text1="abcde", text2="ace"',output:'3',note:'"ace" is common'},{input:'text1="abc", text2="abc"',output:'3'}],
+constraints:['1 &le; text1.length, text2.length &le; 1000','Both strings contain only lowercase letters'],
+tags:['String','Dynamic Programming','2D DP','Sequence'],
+hints:['dp[i][j] = LCS length using first i chars of text1 and first j chars of text2.','If text1[i-1] === text2[j-1]: dp[i][j] = 1 + dp[i-1][j-1].','Otherwise: dp[i][j] = max(dp[i-1][j], dp[i][j-1]).'],
+approach:{title:'2D DP — LCS Standard',body:'Build dp table of size (m+1) x (n+1) where dp[i][j] = LCS of text1[0..i-1] and text2[0..j-1]. When characters match, extend the previous LCS. When they do not, take the best from excluding either character. Time and space O(m&times;n).',bt:'O(m&times;n)',bs:'O(m&times;n)',ot:'O(m&times;n)',os:'O(m&times;n)'},
+starter:`function solution(text1, text2) {\n  const m=text1.length, n=text2.length;\n  const dp = Array.from({length:m+1},()=>new Array(n+1).fill(0));\n  for (let i=1;i<=m;i++)\n    for (let j=1;j<=n;j++)\n      dp[i][j] = text1[i-1]===text2[j-1]\n        ? 1+dp[i-1][j-1]\n        : Math.max(dp[i-1][j], dp[i][j-1]);\n  return dp[m][n];\n}`,
+sol:`function solution(text1,text2){\n  const m=text1.length,n=text2.length;\n  const dp=Array.from({length:m+1},()=>new Array(n+1).fill(0));\n  for(let i=1;i<=m;i++)\n    for(let j=1;j<=n;j++)\n      dp[i][j]=text1[i-1]===text2[j-1]?1+dp[i-1][j-1]:Math.max(dp[i-1][j],dp[i][j-1]);\n  return dp[m][n];\n}`,
+bruteSol:`function solution(text1,text2){\n  const memo={};\n  function dp(i,j){\n    if(i===0||j===0) return 0;\n    const k=i+','+j;\n    if(memo[k]!==undefined) return memo[k];\n    return memo[k]=text1[i-1]===text2[j-1]?1+dp(i-1,j-1):Math.max(dp(i-1,j),dp(i,j-1));\n  }\n  return dp(text1.length,text2.length);\n}`,
+tests:[{args:['abcde','ace'],expected:3,label:'Classic'},{args:['abc','abc'],expected:3,label:'Same strings'},{args:['abc','def'],expected:0,label:'No common'},{args:['bsbininm','jmjkbkjkv'],expected:1,label:'Single common'},{args:['oxcpqrsvwf','shmtulqrypy'],expected:2,label:'Two common'}],
+compare:'exact'},
+
+{id:55,cat:'dp',tech:'Knapsack Pattern',techId:'dp_knap',title:'0/1 Knapsack',diff:'Medium',
+desc:'Given weights and values of n items and a capacity W, find the maximum value you can carry. Each item can be taken at most once (0/1 choice).',
+examples:[{input:'weights=[1,3,4,5], values=[1,4,5,7], W=7',output:'9',note:'Take items with weights 3 and 4 (values 4+5=9)'},{input:'weights=[1,2,3], values=[6,10,12], W=5',output:'22'}],
+constraints:['1 &le; n &le; 1000','1 &le; W &le; 1000','1 &le; weights[i] &le; W'],
+tags:['Dynamic Programming','Knapsack','0/1 Knapsack'],
+hints:['dp[i][w] = max value using first i items with capacity w.','For item i: either skip it (dp[i-1][w]) or take it if it fits (dp[i-1][w-weight[i]] + value[i]).','Space optimize to 1D array, but iterate capacity from right to left to avoid using item twice.'],
+approach:{title:'1D DP Bottom-Up (Space Optimized)',body:'Use dp[w] = max value achievable with capacity w. For each item, iterate capacity from W down to weights[i] (right-to-left prevents using same item twice). dp[w] = max(dp[w], dp[w-weight]+value). Final answer is dp[W].',bt:'O(n&times;2^n)',bs:'O(n)',ot:'O(n&times;W)',os:'O(W)'},
+starter:`/**\n * @param {number[]} weights\n * @param {number[]} values\n * @param {number} W  capacity\n * @return {number}\n */\nfunction solution(weights, values, W) {\n  const dp = new Array(W + 1).fill(0);\n  for (let i = 0; i < weights.length; i++)\n    for (let w = W; w >= weights[i]; w--)\n      dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);\n  return dp[W];\n}`,
+sol:`function solution(weights,values,W){\n  const dp=new Array(W+1).fill(0);\n  for(let i=0;i<weights.length;i++)\n    for(let w=W;w>=weights[i];w--)\n      dp[w]=Math.max(dp[w],dp[w-weights[i]]+values[i]);\n  return dp[W];\n}`,
+bruteSol:`function solution(weights,values,W){\n  const n=weights.length;\n  function dp(i,cap){\n    if(i===n||cap===0) return 0;\n    if(weights[i]>cap) return dp(i+1,cap);\n    return Math.max(dp(i+1,cap),dp(i+1,cap-weights[i])+values[i]);\n  }\n  return dp(0,W);\n}`,
+tests:[{args:[[1,3,4,5],[1,4,5,7],7],expected:9,label:'Classic'},{args:[[1,2,3],[6,10,12],5],expected:22,label:'All three fit combined'},{args:[[5],[10],4],expected:0,label:'Item too heavy'},{args:[[2,3,4,5],[3,4,5,6],8],expected:10,label:'Multiple options'}],
+compare:'exact'},
+
+// ─── GREEDY ───
+{id:56,cat:'greedy',tech:'Jump Game Pattern',techId:'gr_jump',title:'Jump Game',diff:'Medium',
+desc:'Given an array where each element represents the maximum jump length from that position, determine if you can reach the last index starting from index 0.',
+examples:[{input:'nums=[2,3,1,1,4]',output:'true',note:'Jump 1 from index 0 to 1, then 3 to end'},{input:'nums=[3,2,1,0,4]',output:'false',note:'Always stuck at index 3'}],
+constraints:['1 &le; nums.length &le; 3&times;10&#8308;','0 &le; nums[i] &le; 10&#8308;'],
+tags:['Array','Greedy','Jump Game'],
+hints:['Track the farthest reachable position as you iterate.','If you reach a position beyond the current farthest, you are stuck.','If current index i > farthest, you cannot reach i.'],
+approach:{title:'Greedy — Track Max Reach',body:'Maintain maxReach = farthest index reachable so far. For each index i, if i > maxReach, it is unreachable — return false. Otherwise, update maxReach = max(maxReach, i + nums[i]). If we finish the loop, we can reach the end.',bt:'O(n&sup2;)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`function solution(nums) {\n  let maxReach = 0;\n  for (let i = 0; i < nums.length; i++) {\n    if (i > maxReach) return false;\n    maxReach = Math.max(maxReach, i + nums[i]);\n  }\n  return true;\n}`,
+sol:`function solution(nums){\n  let max=0;\n  for(let i=0;i<nums.length;i++){\n    if(i>max) return false;\n    max=Math.max(max,i+nums[i]);\n  }\n  return true;\n}`,
+bruteSol:`function solution(nums){\n  const reach=new Array(nums.length).fill(false);reach[0]=true;\n  for(let i=0;i<nums.length;i++){\n    if(!reach[i]) continue;\n    for(let j=1;j<=nums[i]&&i+j<nums.length;j++) reach[i+j]=true;\n  }\n  return reach[nums.length-1];\n}`,
+tests:[{args:[[2,3,1,1,4]],expected:true,label:'Can reach'},{args:[[3,2,1,0,4]],expected:false,label:'Stuck at 0'},{args:[[0]],expected:true,label:'Single element'},{args:[[1,0,0]],expected:false,label:'Cant get past 1'},{args:[[2,0,0]],expected:true,label:'Jump over zeros'}],
+compare:'exact'},
+
+{id:57,cat:'greedy',tech:'Interval Greedy',techId:'gr_int',title:'Non-overlapping Intervals',diff:'Medium',
+desc:'Find the minimum number of intervals to remove to make the rest non-overlapping. Intervals are [start, end] with start &lt; end.',
+examples:[{input:'intervals=[[1,2],[2,3],[3,4],[1,3]]',output:'1',note:'Remove [1,3]'},{input:'intervals=[[1,2],[1,2],[1,2]]',output:'2'}],
+constraints:['1 &le; intervals.length &le; 10&#8309;','intervals[i].length == 2','&minus;5&times;10&#8308; &le; intervals[i][0] &lt; intervals[i][1] &le; 5&times;10&#8308;'],
+tags:['Array','Greedy','Sorting','Interval'],
+hints:['Sort by end time. The greedy choice: always keep the interval with the earliest end.','When you find an overlap, remove the one with the later end (always the current one after sorting).','Count removals: if current start < prevEnd, we overlap — remove current (increment count), keep tracking prevEnd.'],
+approach:{title:'Sort by End Time — Greedy Activity Selection',body:'Sort intervals by end time. Keep a pointer to the last kept interval\'s end. For each new interval: if it overlaps with the last kept (start < prevEnd), remove it (count++). Otherwise, keep it (update prevEnd). Greedy: keeping earliest-ending leaves more room for future.',bt:'O(n log n)',bs:'O(n)',ot:'O(n log n)',os:'O(1)'},
+starter:`function solution(intervals) {\n  intervals.sort((a, b) => a[1] - b[1]);\n  let count = 0, prevEnd = -Infinity;\n  for (const [start, end] of intervals) {\n    if (start >= prevEnd) prevEnd = end; // keep this interval\n    else count++; // overlap — remove this one\n  }\n  return count;\n}`,
+sol:`function solution(intervals){\n  intervals.sort((a,b)=>a[1]-b[1]);\n  let count=0,prevEnd=-Infinity;\n  for(const [s,e] of intervals){\n    if(s>=prevEnd) prevEnd=e;\n    else count++;\n  }\n  return count;\n}`,
+bruteSol:`function solution(intervals){\n  const n=intervals.length;\n  let minRemove=n;\n  for(let mask=0;mask<(1<<n);mask++){\n    const kept=intervals.filter((_,i)=>mask&(1<<i));\n    kept.sort((a,b)=>a[0]-b[0]);\n    let ok=true;\n    for(let i=1;i<kept.length;i++) if(kept[i][0]<kept[i-1][1]){ok=false;break;}\n    if(ok) minRemove=Math.min(minRemove,n-kept.length);\n  }\n  return minRemove;\n}`,
+tests:[{args:[[[1,2],[2,3],[3,4],[1,3]]],expected:1,label:'Remove one'},{args:[[[1,2],[1,2],[1,2]]],expected:2,label:'Remove two'},{args:[[[1,2],[2,3]]],expected:0,label:'No overlap'},{args:[[[1,100],[11,22],[1,11],[2,12]]],expected:2,label:'One huge interval'}],
+compare:'exact'},
+
+{id:58,cat:'greedy',tech:'Resource Allocation',techId:'gr_res',title:'Meeting Rooms II — Minimum Platforms',diff:'Medium',
+desc:'Given start and end times of meetings, find the minimum number of meeting rooms required so all meetings can run simultaneously.',
+examples:[{input:'start=[0,5,15], end=[30,10,20]',output:'2'},{input:'start=[0,5,15], end=[10,10,20]',output:'1'}],
+constraints:['1 &le; n &le; 10&#8308;','0 &le; start[i] &lt; end[i] &le; 10&#8313;'],
+tags:['Array','Sorting','Greedy','Two Pointer','Sweep Line'],
+hints:['Sort start and end times independently. Use two pointers.','If the next meeting starts before the earliest current meeting ends, we need another room.','Otherwise, the earliest-ending meeting frees up and that room can be reused.'],
+approach:{title:'Two Sorted Arrays + Two Pointers',body:'Sort start[] and end[] separately. Use pointer s for starts and e for ends. If start[s] &lt; end[e], a new meeting begins before any ends — need one more room, advance s. Otherwise, a meeting ended — free a room, advance both e and decrement rooms (or just track net).',bt:'O(n log n)',bs:'O(n)',ot:'O(n log n)',os:'O(1)'},
+starter:`function solution(start, end) {\n  start.sort((a,b)=>a-b);\n  end.sort((a,b)=>a-b);\n  let rooms = 0, maxRooms = 0, e = 0;\n  for (let s = 0; s < start.length; s++) {\n    if (start[s] < end[e]) rooms++;\n    else e++;\n    maxRooms = Math.max(maxRooms, rooms);\n  }\n  return maxRooms;\n}`,
+sol:`function solution(start,end){\n  start.sort((a,b)=>a-b);end.sort((a,b)=>a-b);\n  let rooms=0,max=0,e=0;\n  for(let s=0;s<start.length;s++){\n    if(start[s]<end[e]) rooms++;\n    else e++;\n    max=Math.max(max,rooms);\n  }\n  return max;\n}`,
+bruteSol:`function solution(start,end){\n  const events=[];\n  for(let i=0;i<start.length;i++){events.push([start[i],1]);events.push([end[i],-1]);}\n  events.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);\n  let rooms=0,max=0;\n  for(const [,d] of events){rooms+=d;max=Math.max(max,rooms);}\n  return max;\n}`,
+tests:[{args:[[0,5,15],[30,10,20]],expected:2,label:'Classic'},{args:[[0,5,15],[10,10,20]],expected:1,label:'No overlap'},{args:[[0,5,10],[20,15,30]],expected:1,label:'Sequential'},{args:[[0,0,0],[10,10,10]],expected:3,label:'All same time'}],
+compare:'exact'},
+
+// ─── BIT MANIPULATION ───
+{id:59,cat:'bits',tech:'XOR Pattern',techId:'bit_xor',title:'Single Number',diff:'Easy',
+desc:'Every element in the array appears exactly twice except for one. Find that single element. Must use O(1) extra space.',
+examples:[{input:'nums=[2,2,1]',output:'1'},{input:'nums=[4,1,2,1,2]',output:'4'}],
+constraints:['1 &le; nums.length &le; 3&times;10&#8308;','&minus;3&times;10&#8308; &le; nums[i] &le; 3&times;10&#8308;'],
+tags:['Array','Bit Manipulation','XOR'],
+hints:['XOR of a number with itself is 0: a XOR a = 0.','XOR of any number with 0 is the number itself: a XOR 0 = a.','XOR all elements together — pairs cancel out, leaving the unique element.'],
+approach:{title:'XOR All Elements',body:'a XOR a = 0, a XOR 0 = a, and XOR is commutative and associative. XORing all elements, every duplicate pair cancels to 0, leaving only the unique element. One pass, no extra space.',bt:'O(n)',bs:'O(n)',ot:'O(n)',os:'O(1)'},
+starter:`function solution(nums) {\n  return nums.reduce((xor, n) => xor ^ n, 0);\n}`,
+sol:`function solution(nums){\n  return nums.reduce((x,n)=>x^n,0);\n}`,
+bruteSol:`function solution(nums){\n  const freq={};\n  for(const n of nums) freq[n]=(freq[n]||0)+1;\n  return +Object.keys(freq).find(k=>freq[k]===1);\n}`,
+tests:[{args:[[2,2,1]],expected:1,label:'Classic'},{args:[[4,1,2,1,2]],expected:4,label:'Larger'},{args:[[1]],expected:1,label:'Single element'},{args:[[-1,1,1]],expected:-1,label:'Negative single'},{args:[[0,1,0]],expected:1,label:'Zero pairs'}],
+compare:'exact'},
+
+{id:60,cat:'bits',tech:'Bit Masking',techId:'bit_mask',title:'Number of 1 Bits (Hamming Weight)',diff:'Easy',
+desc:'Return the number of set bits (1s) in the binary representation of a non-negative integer n.',
+examples:[{input:'n=11 (binary: 1011)',output:'3'},{input:'n=128 (binary: 10000000)',output:'1'}],
+constraints:['1 &le; n &le; 2&#179;&#185;&minus;1'],
+tags:['Bit Manipulation','Hamming Weight','Brian Kernighan'],
+hints:['Check each bit with n & 1, then shift right: n >>= 1.','Brian Kernighan trick: n & (n-1) clears the lowest set bit. Count how many times until n=0.','Count set bits by repeatedly clearing the lowest set bit.'],
+approach:{title:"Brian Kernighan's Algorithm",body:'n & (n-1) clears the lowest set bit of n (it converts the trailing 1 to 0). Repeat until n becomes 0, counting how many times. Each iteration removes exactly one set bit, so iterations = number of set bits. O(number of set bits) instead of O(log n).',bt:'O(log n)',bs:'O(1)',ot:'O(k) where k=set bits',os:'O(1)'},
+starter:`function solution(n) {\n  let count = 0;\n  while (n !== 0) {\n    n &= (n - 1); // clear lowest set bit\n    count++;\n  }\n  return count;\n}`,
+sol:`function solution(n){\n  let count=0;\n  while(n!==0){n&=(n-1);count++;}\n  return count;\n}`,
+bruteSol:`function solution(n){\n  return n.toString(2).split('').filter(b=>b==='1').length;\n}`,
+tests:[{args:[11],expected:3,label:'Binary 1011'},{args:[128],expected:1,label:'Power of 2'},{args:[0],expected:0,label:'Zero'},{args:[2147483647],expected:31,label:'Max 31 bits'},{args:[255],expected:8,label:'All 8 bits set'}],
+compare:'exact'},
+
+{id:61,cat:'bits',tech:'Subset via Bits',techId:'bit_sub',title:'All Subsets via Bitmask',diff:'Medium',
+desc:'Generate all subsets of a given array using bitmask enumeration. Each bit in a mask represents whether an element is included. Return all subsets in any order.',
+examples:[{input:'nums=[1,2,3]',output:'[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]'},{input:'nums=[0]',output:'[[],[0]]'}],
+constraints:['1 &le; nums.length &le; 10','All elements are unique'],
+tags:['Array','Bit Manipulation','Bitmask','Subsets'],
+hints:['For n elements, there are 2^n possible subsets, one for each integer from 0 to 2^n - 1.','For mask m, element i is included if bit i of m is set: (m >> i) & 1.','Iterate mask from 0 to 2^n - 1, building each subset.'],
+approach:{title:'Bitmask Enumeration — All 2^n Subsets',body:'For n elements, iterate all 2^n bitmasks (0 to 2^n - 1). For each mask, build a subset by checking each bit: if bit i is set, include nums[i]. This gives all 2^n subsets without recursion, using bit arithmetic.',bt:'O(n &times; 2&#8319;)',bs:'O(n)',ot:'O(n &times; 2&#8319;)',os:'O(n &times; 2&#8319;)'},
+starter:`function solution(nums) {\n  const n = nums.length, result = [];\n  for (let mask = 0; mask < (1 << n); mask++) {\n    const subset = [];\n    for (let i = 0; i < n; i++)\n      if ((mask >> i) & 1) subset.push(nums[i]);\n    result.push(subset);\n  }\n  return result;\n}`,
+sol:`function solution(nums){\n  const n=nums.length,res=[];\n  for(let mask=0;mask<(1<<n);mask++){\n    const sub=[];\n    for(let i=0;i<n;i++) if((mask>>i)&1) sub.push(nums[i]);\n    res.push(sub);\n  }\n  return res;\n}`,
+bruteSol:`function solution(nums){\n  const res=[[]];\n  for(const n of nums){\n    const len=res.length;\n    for(let i=0;i<len;i++) res.push([...res[i],n]);\n  }\n  return res;\n}`,
+tests:[{args:[[1,2,3]],expected:[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]],label:'Classic'},{args:[[0]],expected:[[],[0]],label:'Single'},{args:[[1,2]],expected:[[],[1],[2],[1,2]],label:'Two elements'}],
+compare:'sorted_nested'},
+
+// ─── SORTING ───
+{id:62,cat:'sorting',tech:'Divide & Conquer Sort',techId:'sort_cmp',title:'Merge Sort Implementation',diff:'Medium',
+desc:'Implement merge sort on an array of integers. Return the sorted array. This demonstrates the divide-and-conquer sorting pattern.',
+examples:[{input:'nums=[5,2,8,1,9,3]',output:'[1,2,3,5,8,9]'},{input:'nums=[1]',output:'[1]'}],
+constraints:['1 &le; nums.length &le; 10&#8308;','&minus;10&#8308; &le; nums[i] &le; 10&#8308;'],
+tags:['Sorting','Divide and Conquer','Merge Sort','Recursion'],
+hints:['Divide: split the array at the midpoint into left and right halves.','Conquer: recursively sort each half.','Combine: merge the two sorted halves into one sorted array.'],
+approach:{title:'Merge Sort — Divide and Conquer',body:'Split array at mid. Recursively sort left and right halves. Merge two sorted arrays by comparing their front elements. This gives guaranteed O(n log n) in all cases, unlike quicksort which is average O(n log n).',bt:'O(n&sup2;)',bs:'O(1)',ot:'O(n log n)',os:'O(n)'},
+starter:`function solution(nums) {\n  if (nums.length <= 1) return nums;\n  const mid = Math.floor(nums.length / 2);\n  const left = solution(nums.slice(0, mid));\n  const right = solution(nums.slice(mid));\n  return merge(left, right);\n}\n\nfunction merge(left, right) {\n  const result = [];\n  let i = 0, j = 0;\n  while (i < left.length && j < right.length) {\n    if (left[i] <= right[j]) result.push(left[i++]);\n    else result.push(right[j++]);\n  }\n  return [...result, ...left.slice(i), ...right.slice(j)];\n}`,
+sol:`function solution(nums){\n  if(nums.length<=1) return nums;\n  const mid=Math.floor(nums.length/2);\n  const left=solution(nums.slice(0,mid));\n  const right=solution(nums.slice(mid));\n  const res=[];let i=0,j=0;\n  while(i<left.length&&j<right.length){\n    if(left[i]<=right[j]) res.push(left[i++]);\n    else res.push(right[j++]);\n  }\n  return [...res,...left.slice(i),...right.slice(j)];\n}`,
+bruteSol:`function solution(nums){\n  return [...nums].sort((a,b)=>a-b);\n}`,
+tests:[{args:[[5,2,8,1,9,3]],expected:[1,2,3,5,8,9],label:'Classic'},{args:[[1]],expected:[1],label:'Single'},{args:[[3,2,1]],expected:[1,2,3],label:'Reverse sorted'},{args:[[1,1,1]],expected:[1,1,1],label:'All same'},{args:[[-5,3,0,-1,2]],expected:[-5,-1,0,2,3],label:'Negatives'}],
+compare:'exact'},
+
+{id:63,cat:'sorting',tech:'Distribution Sort',techId:'sort_cnt',title:'Counting Sort',diff:'Easy',
+desc:'Sort an array of non-negative integers using counting sort. Count the occurrences of each value, then reconstruct the sorted array.',
+examples:[{input:'nums=[4,2,2,8,3,3,1]',output:'[1,2,2,3,3,4,8]'},{input:'nums=[1,0,3,1,3,1]',output:'[0,1,1,1,3,3]'}],
+constraints:['1 &le; nums.length &le; 10&#8308;','0 &le; nums[i] &le; 1000'],
+tags:['Sorting','Counting Sort','Linear Sort'],
+hints:['Find the maximum value to determine the count array size.','Count[v] stores how many times value v appears.','Reconstruct: for each v from 0 to max, push v count[v] times.'],
+approach:{title:'Counting Sort — O(n+k)',body:'Count occurrences of each value (array of size k = max+1). Then iterate the count array and output each value count[v] times. This is O(n+k) time — faster than comparison sorts when k is small relative to n.',bt:'O(n log n)',bs:'O(1)',ot:'O(n+k)',os:'O(k)'},
+starter:`function solution(nums) {\n  const max = Math.max(...nums);\n  const count = new Array(max + 1).fill(0);\n  for (const n of nums) count[n]++;\n  const result = [];\n  for (let v = 0; v <= max; v++)\n    for (let i = 0; i < count[v]; i++) result.push(v);\n  return result;\n}`,
+sol:`function solution(nums){\n  const max=Math.max(...nums);\n  const cnt=new Array(max+1).fill(0);\n  for(const n of nums) cnt[n]++;\n  const res=[];\n  for(let v=0;v<=max;v++) for(let i=0;i<cnt[v];i++) res.push(v);\n  return res;\n}`,
+bruteSol:`function solution(nums){\n  return [...nums].sort((a,b)=>a-b);\n}`,
+tests:[{args:[[4,2,2,8,3,3,1]],expected:[1,2,2,3,3,4,8],label:'Classic'},{args:[[1,0,3,1,3,1]],expected:[0,1,1,1,3,3],label:'Repeated values'},{args:[[1]],expected:[1],label:'Single'},{args:[[5,5,5,5]],expected:[5,5,5,5],label:'All same'}],
+compare:'exact'}
+
 ];
 
+
+/* ── GLOBAL DATA-STRUCTURE HELPERS ──────────────────────────── */
+class ListNode{constructor(v=0,n=null){this.val=v;this.next=n;}}
+function arrToList(a){if(!a||!a.length)return null;let h=new ListNode(a[0]),c=h;for(let i=1;i<a.length;i++){c.next=new ListNode(a[i]);c=c.next;}return h;}
+function listToArr(h){const r=[];while(h){r.push(h.val);h=h.next;}return r;}
+class TreeNode{constructor(v=0,l=null,r=null){this.val=v;this.left=l;this.right=r;}}
+function buildTree(a){
+  if(!a||!a.length)return null;
+  const root=new TreeNode(a[0]);const q=[root];let i=1;
+  while(i<a.length){
+    const n=q.shift();
+    if(i<a.length&&a[i]!=null){n.left=new TreeNode(a[i]);q.push(n.left);}i++;
+    if(i<a.length&&a[i]!=null){n.right=new TreeNode(a[i]);q.push(n.right);}i++;
+  }
+  return root;
+}
+
+/* ── PATTERNS ───────────────────────────────────────────────── */
 const PATTERNS={
   array:[
-    {id:'tp', name:'Two Pointer',        icon:'&#8596;', desc:'Two indices moving in sync — opposite ends or same direction — to avoid nested loops.', col:'var(--arr)'},
-    {id:'sw', name:'Sliding Window',     icon:'&#8865;', desc:'Maintain a dynamic subarray window and slide it over the data — fixed or variable size.', col:'var(--arr)'},
-    {id:'pb', name:'Prefix Based',       icon:'&Sigma;', desc:'Precompute cumulative sums/XOR to answer range queries in O(1) after O(n) build.', col:'var(--arr)'},
-    {id:'kd', name:"Kadane's / Subarray",icon:'&#9651;', desc:'Track running state over subarrays using DP — decide at each step whether to extend or restart.', col:'var(--arr)'},
-    {id:'bs', name:'Binary Search',      icon:'&#8918;', desc:'Eliminate half the search space each step — on sorted arrays or monotonic answer spaces.', col:'var(--arr)'},
+    {id:'tp',   name:'Two Pointer',      desc:'Opposite ends or same direction (fast/slow) pointers on a sorted or linear structure.'},
+    {id:'sw',   name:'Sliding Window',   desc:'Maintain a subarray window that expands/shrinks to satisfy a constraint.'},
+    {id:'pb',   name:'Prefix Based',     desc:'Precompute prefix sums or XORs to answer range queries in O(1).'},
+    {id:'ka',   name:'Kadane\'s / Subarray', desc:'Track running state to find optimal contiguous subarray.'},
+    {id:'bs',   name:'Binary Search',    desc:'Eliminate half the search space on each step (on index or answer).'},
   ],
   string:[
-    {id:'ssw',name:'Sliding Window',     icon:'&#8865;', desc:'Maintain a window of characters and slide to find optimal substrings with constraints.', col:'var(--str)'},
-    {id:'stp',name:'Two Pointers',       icon:'&#8596;', desc:'Two indices converging inward or scanning forward to process string structure efficiently.', col:'var(--str)'},
-    {id:'pm', name:'Pattern Matching',   icon:'&#9672;', desc:'Find pattern occurrences with precomputed structures that skip redundant comparisons.', col:'var(--str)'},
-  ]
+    {id:'ssw',  name:'Sliding Window',   desc:'Variable or fixed window over characters to track frequency or pattern.'},
+    {id:'stp',  name:'Two Pointers',     desc:'Converging or expanding pointers for palindrome, compression, reverse.'},
+    {id:'spm',  name:'Pattern Matching', desc:'KMP, Rabin-Karp or Z-algorithm for O(n+m) substring search.'},
+  ],
+  hashmap:[
+    {id:'hm_freq',name:'Frequency / Lookup', desc:'Count occurrences or enable O(1) value lookup and complement search.'},
+    {id:'hm_set', name:'Set Based',          desc:'Use a hash set for O(1) membership checks (cycle detection, consecutive sequence).'},
+    {id:'hm_grp', name:'Grouping Pattern',   desc:'Map a canonical key to all elements that share it (anagram grouping).'},
+  ],
+  stack:[
+    {id:'st_expr', name:'Expression Handling',  desc:'Match brackets and evaluate expressions using a LIFO stack.'},
+    {id:'st_mono', name:'Monotonic Stack',       desc:'Maintain a stack in sorted order to find next/previous greater or smaller elements.'},
+    {id:'st_near', name:'Nearest Element',       desc:'Find nearest warmer/cooler/larger/smaller element using a monotonic decreasing or increasing stack.'},
+    {id:'st_hist', name:'Histogram Pattern',     desc:'Use a stack of indices to find the largest rectangle in a histogram.'},
+  ],
+  ll:[
+    {id:'ll_rev',  name:'Reversal',          desc:'Reverse a linked list in-place using three-pointer iteration or recursion.'},
+    {id:'ll_ptr',  name:'Pointer Techniques',desc:'Fast/slow pointer for cycle detection, midpoint finding.'},
+    {id:'ll_merge',name:'Merge Lists',       desc:'Merge two or more sorted linked lists using a dummy head.'},
+  ],
+  trees:[
+    {id:'tr_rec',  name:'Recursion Patterns',desc:'Top-down / bottom-up DFS: depth, path sum, symmetry, diameter.'},
+    {id:'tr_trav', name:'Traversal',         desc:'DFS (pre/in/post order) and BFS (level order, zigzag, right side view).'},
+    {id:'tr_bst',  name:'BST',               desc:'Leverage BST property (left < root < right) for validation and search.'},
+  ],
+  bt:[
+    {id:'bt_exp',   name:'Exploration',          desc:'Choose-Explore-Unchoose: subsets, permutations, combinations, word search.'},
+    {id:'bt_prune', name:'Pruning / State Track', desc:'Prune invalid branches early (N-Queens, Sudoku). Track state in sets.'},
+  ],
+  heap:[
+    {id:'hp_topk',   name:'Top K / Kth Element', desc:'Maintain a heap of size k to efficiently find the kth largest/smallest.'},
+    {id:'hp_greedy', name:'Greedy + Heap',        desc:'Task scheduling and reorganization — greedily pick highest-priority task.'},
+    {id:'hp_kway',   name:'K-way Merge',          desc:'Use a min-heap to merge k sorted arrays or lists in O(n log k).'},
+  ],
+  graphs:[
+    {id:'gr_trav',  name:'Traversal (BFS/DFS)',   desc:'Explore all reachable nodes. BFS for shortest path in unweighted graph.'},
+    {id:'gr_cycle', name:'Cycle Detection',       desc:'3-color DFS (white/gray/black) for directed graphs; visited set for undirected.'},
+    {id:'gr_topo',  name:'Topological Sort',      desc:"Kahn's BFS or DFS post-order for ordering with dependencies."},
+    {id:'gr_short', name:'Shortest Path',         desc:"Dijkstra (non-negative weights), Bellman-Ford (negative edges), Floyd-Warshall (all pairs)."},
+    {id:'gr_uf',    name:'Union-Find (DSU)',       desc:'Disjoint Set Union with path compression for connected components and cycle detection.'},
+  ],
+  dp:[
+    {id:'dp_1d',   name:'Core 1D',         desc:'Linear DP where each state depends on a fixed number of previous states.'},
+    {id:'dp_2d',   name:'Core 2D',         desc:'Grid or string DP where state dp[i][j] depends on adjacent cells.'},
+    {id:'dp_seq',  name:'Sequence DP',     desc:'LCS, LIS — comparing or extending two sequences.'},
+    {id:'dp_knap', name:'Knapsack Pattern',desc:'0/1 or unbounded knapsack: choose or skip items within a capacity.'},
+  ],
+  greedy:[
+    {id:'gr_jump', name:'Jump Game Pattern',    desc:'Track max reachable position; greedy local choice leads to global optimum.'},
+    {id:'gr_int',  name:'Interval Greedy',      desc:'Sort by end time; greedily keep earliest-ending non-overlapping intervals.'},
+    {id:'gr_res',  name:'Resource Allocation',  desc:'Meeting rooms / minimum platforms: sweep line or two sorted arrays.'},
+  ],
+  bits:[
+    {id:'bit_xor', name:'XOR Pattern',      desc:'XOR cancels duplicates (a^a=0) to isolate unique elements or differences.'},
+    {id:'bit_mask',name:'Bit Masking',      desc:'Check, set, clear individual bits. Count set bits with Brian Kernighan.'},
+    {id:'bit_sub', name:'Subset via Bits',  desc:'Enumerate all 2^n subsets using bitmask from 0 to 2^n-1.'},
+  ],
+  sorting:[
+    {id:'sort_cmp',name:'Divide & Conquer Sort', desc:'Merge sort: recursively divide and merge. Guaranteed O(n log n).'},
+    {id:'sort_cnt',name:'Distribution Sort',      desc:'Counting / radix sort: O(n+k) by exploiting known value range.'},
+  ],
 };
 
-/* ── STATE ── */
-const S={view:'dash',cat:'array',patId:null,prob:null,editor:null,hintsOpen:0,solRevealed:false,descTab:'desc',diffFilter:'all',solved:{},attempted:{}};
+/* ── CATEGORY META ──────────────────────────────────────────── */
+const CAT_META={
+  array:  {label:'Array',             color:'var(--arr)',  icon:'&#9632;'},
+  string: {label:'String',            color:'var(--str)',  icon:'&#9632;'},
+  hashmap:{label:'Hash Map',          color:'#f97316',     icon:'&#9632;'},
+  stack:  {label:'Stack',             color:'#14b8a6',     icon:'&#9632;'},
+  ll:     {label:'Linked List',       color:'#f59e0b',     icon:'&#9632;'},
+  trees:  {label:'Trees',             color:'#22c55e',     icon:'&#9632;'},
+  bt:     {label:'Backtracking',      color:'#a855f7',     icon:'&#9632;'},
+  heap:   {label:'Heap',              color:'#ec4899',     icon:'&#9632;'},
+  graphs: {label:'Graphs',            color:'#06b6d4',     icon:'&#9632;'},
+  dp:     {label:'Dynamic Programming',color:'#6366f1',   icon:'&#9632;'},
+  greedy: {label:'Greedy',            color:'#ef4444',     icon:'&#9632;'},
+  bits:   {label:'Bit Manipulation',  color:'#0ea5e9',     icon:'&#9632;'},
+  sorting:{label:'Sorting',           color:'#d97706',     icon:'&#9632;'},
+};
 
-function loadProg(){try{S.solved=JSON.parse(localStorage.getItem('dsf_solved')||'{}');S.attempted=JSON.parse(localStorage.getItem('dsf_att')||'{}');}catch(e){S.solved={};S.attempted={};}}
-function saveProg(){try{localStorage.setItem('dsf_solved',JSON.stringify(S.solved));localStorage.setItem('dsf_att',JSON.stringify(S.attempted));}catch(e){}}
-function markSolved(id){S.solved[id]=true;S.attempted[id]=true;saveProg();updProg();}
-function markAtt(id){if(!S.solved[id]){S.attempted[id]=true;saveProg();}}
-function updProg(){const done=Object.keys(S.solved).length,total=PROBLEMS.length;document.getElementById('pfill').style.width=Math.round(done/total*100)+'%';document.getElementById('pnum').textContent=done+'/'+total;}
+/* ── HELPERS ────────────────────────────────────────────────── */
+function getAllPats(){return Object.values(PATTERNS).flat();}
+function catLabel(cat){return (CAT_META[cat]||{label:cat}).label;}
+function catColor(cat){return (CAT_META[cat]||{color:'var(--text)'}).color;}
 
-/* ── NAVIGATION ── */
-function showV(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function go_dash(){S.view='dash';showV('v-dash');renderDash();setCrumb([]);}
+/* ── STATE ──────────────────────────────────────────────────── */
+const S={view:'dash',cat:null,patId:null,prob:null,editor:null,diffFilter:'all'};
+
+/* ── PERSIST ────────────────────────────────────────────────── */
+function getSolved(){try{return JSON.parse(localStorage.getItem('dsa_solved')||'[]');}catch{return[];}}
+function getAttempted(){try{return JSON.parse(localStorage.getItem('dsa_attempted')||'[]');}catch{return[];}}
+function markSolved(id){const s=getSolved();if(!s.includes(id)){s.push(id);localStorage.setItem('dsa_solved',JSON.stringify(s));}}
+function markAtt(id){const a=getAttempted();if(!a.includes(id)){a.push(id);localStorage.setItem('dsa_attempted',JSON.stringify(a));}}
+function saveCode(id,code){localStorage.setItem('dsa_code_'+id,code);}
+function loadCode(id){return localStorage.getItem('dsa_code_'+id)||null;}
+
+/* ── NAVIGATION ─────────────────────────────────────────────── */
+function showV(id){['v-dash','v-problems','v-solve'].forEach(v=>{const el=document.getElementById(v);if(el)el.style.display=v===id?'flex':'none';});}
+
+function go_dash(){
+  S.view='dash';S.cat=null;S.patId=null;S.prob=null;
+  showV('v-dash');renderDash();
+  document.getElementById('crumb').innerHTML='<span class="crumb-item active">Dashboard</span>';
+}
+
 function go_problems(id){
-  const allP=[...PATTERNS.array,...PATTERNS.string];
-  const pat=allP.find(p=>p.id===id);
-  S.patId=pat?pat.id:null;
-  S.cat=pat?(PATTERNS.array.find(p=>p.id===id)?'array':'string'):id;
-  S.view='problems';showV('v-problems');renderProblems();
-  setCrumb([{label:pat?pat.name:(S.cat==='array'?'Arrays':'Strings'),fn:()=>go_problems(id)}]);
-}
-function go_solve(id){
-  S.prob=PROBLEMS.find(p=>p.id===id);
-  if(!S.prob) return;
-  S.hintsOpen=0;S.solRevealed=false;S.descTab='desc';
-  S.view='solve';showV('v-solve');renderSolve();
-  setCrumb([{label:S.prob.tech,fn:()=>go_problems(S.prob.techId)},{label:S.prob.title}]);
-}
-function setCrumb(items){
-  const el=document.getElementById('crumb');
-  if(!items.length){el.innerHTML='';return;}
-  el.innerHTML=items.map((item,i)=>
-    i<items.length-1&&item.fn
-      ?`<button class="crumb-btn">${item.label}</button><span>&#8250;</span>`
-      :`<span class="act-crumb">${item.label}</span>`
-  ).join('');
-  el.querySelectorAll('.crumb-btn').forEach((btn,i)=>{const fn=items.filter(x=>x.fn)[i];if(fn)btn.onclick=fn.fn;});
+  // id can be a patternId (techId) or a category key
+  let foundCat=null;
+  for(const [cat,pats] of Object.entries(PATTERNS)){
+    if(pats.find(p=>p.id===id)){foundCat=cat;break;}
+  }
+  if(foundCat){S.patId=id;S.cat=foundCat;}
+  else{S.patId=null;S.cat=id;}
+  S.view='problems';
+  showV('v-problems');renderProblems();
+  const pat=getAllPats().find(p=>p.id===id);
+  const label=pat?pat.name:catLabel(S.cat);
+  const color=catColor(S.cat);
+  setCrumb([
+    {label:catLabel(S.cat),fn:()=>go_problems(S.cat)},
+    ...(pat?[{label:pat.name,fn:()=>go_problems(id)}]:[])
+  ],color);
 }
 
-/* ── DASHBOARD ── */
+function go_solve(probId){
+  S.prob=PROBLEMS.find(p=>p.id===probId);
+  if(!S.prob)return;
+  S.view='solve';
+  showV('v-solve');
+  renderSolve();
+  const color=catColor(S.prob.cat);
+  setCrumb([
+    {label:catLabel(S.prob.cat),fn:()=>go_problems(S.prob.cat)},
+    ...(S.patId?[{label:(getAllPats().find(p=>p.id===S.patId)||{name:''}).name,fn:()=>go_problems(S.patId)}]:[]),
+    {label:S.prob.title,fn:()=>go_solve(probId)}
+  ],color);
+  initEditor();
+}
+
+function setCrumb(parts,color){
+  const el=document.getElementById('crumb');
+  let html='<span class="crumb-item" style="cursor:pointer" onclick="go_dash()">Dashboard</span>';
+  parts.forEach((p,i)=>{
+    html+=`<span class="crumb-sep">›</span>`;
+    const isLast=i===parts.length-1;
+    html+=`<span class="crumb-item${isLast?' active':''}" ${!isLast?`style="cursor:pointer;color:${color||'var(--text)'}" onclick="${p.fn.toString().replace(/"/g,"'")}"`:''}>${p.label}</span>`;
+  });
+  el.innerHTML=html;
+}
+
+/* ── FILTER / HELPERS ───────────────────────────────────────── */
+function getFiltered(){
+  return PROBLEMS.filter(p=>
+    (S.patId?p.techId===S.patId:p.cat===S.cat)&&
+    (S.diffFilter==='all'||p.diff===S.diffFilter)
+  );
+}
+
+
+/* ── RENDER DASHBOARD ───────────────────────────────────────────── */
 function renderDash(){
-  const done=Object.keys(S.solved).length,total=PROBLEMS.length;
-  const easy=PROBLEMS.filter(p=>p.diff==='Easy'&&S.solved[p.id]).length;
-  const med=PROBLEMS.filter(p=>p.diff==='Medium'&&S.solved[p.id]).length;
-  const hard=PROBLEMS.filter(p=>p.diff==='Hard'&&S.solved[p.id]).length;
-  const eT=PROBLEMS.filter(p=>p.diff==='Easy').length;
-  const mT=PROBLEMS.filter(p=>p.diff==='Medium').length;
-  const hT=PROBLEMS.filter(p=>p.diff==='Hard').length;
-  let h=`<div class="dash-hero"><h1>Learn DSA <em>by Pattern</em></h1><p>Master algorithms through patterns — understand the technique once, apply it everywhere. Each pattern includes explanation, examples, hints, and a live judge.</p></div>
-  <div class="stats-row">
-    <div class="stat-box"><div class="stat-n" style="color:var(--arr)">${done}<span style="font-size:.9rem;color:var(--dim)">/${total}</span></div><div class="stat-l">Solved</div></div>
-    <div class="stat-box"><div class="stat-n" style="color:var(--easy)">${easy}<span style="font-size:.9rem;color:var(--dim)">/${eT}</span></div><div class="stat-l">Easy</div></div>
-    <div class="stat-box"><div class="stat-n" style="color:var(--med)">${med}<span style="font-size:.9rem;color:var(--dim)">/${mT}</span></div><div class="stat-l">Medium</div></div>
-    <div class="stat-box"><div class="stat-n" style="color:var(--hard)">${hard}<span style="font-size:.9rem;color:var(--dim)">/${hT}</span></div><div class="stat-l">Hard</div></div>
-  </div>`;
-  ['array','string'].forEach(cat=>{
-    const col=cat==='array'?'var(--arr)':'var(--str)';
-    h+=`<div class="cat-row"><div class="cat-lbl" style="color:${col}">${cat.toUpperCase()} PATTERNS</div><div class="pattern-grid">`;
-    PATTERNS[cat].forEach(pat=>{
-      const ps=PROBLEMS.filter(p=>p.cat===cat&&p.techId===pat.id);
-      const sc=ps.filter(p=>S.solved[p.id]).length;
-      const pct=ps.length?Math.round(sc/ps.length*100):0;
-      const iBg=cat==='array'?'rgba(74,158,255,.1)':'rgba(255,95,133,.1)';
-      h+=`<div class="pc ${cat}" onclick="go_problems('${pat.id}')">
-        <div class="pc-icon" style="background:${iBg};color:${pat.col}">${pat.icon}</div>
+  const solved=getSolved();
+  const total=PROBLEMS.length;
+  const pct=total?Math.round(solved.length/total*100):0;
+  const el=document.getElementById('v-dash');
+  const pfill=document.getElementById('pfill');
+  const pnum=document.getElementById('pnum');
+  if(pfill) pfill.style.width=pct+'%';
+  if(pnum) pnum.textContent=solved.length+'/'+total;
+
+  const diffCounts={Easy:0,Medium:0,Hard:0};
+  PROBLEMS.forEach(p=>diffCounts[p.diff]=(diffCounts[p.diff]||0)+1);
+
+  let statsHtml=`<div class="stats-row">
+    <div class="stat-box"><div class="stat-n">${total}</div><div class="stat-l">Total Problems</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--ok)">${solved.length}</div><div class="stat-l">Solved</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--easy)">${diffCounts.Easy||0}</div><div class="stat-l">Easy</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--med)">${diffCounts.Medium||0}</div><div class="stat-l">Medium</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--hard)">${diffCounts.Hard||0}</div><div class="stat-l">Hard</div></div>
+  </div>
+  <div class="dash-prog-wrap"><div class="dash-prog-fill" style="width:${pct}%"></div></div>`;
+
+  let catsHtml='';
+  for(const [cat,pats] of Object.entries(PATTERNS)){
+    const meta=CAT_META[cat]||{label:cat,color:'var(--dim)'};
+    const catProbs=PROBLEMS.filter(p=>p.cat===cat);
+    const catSolved=catProbs.filter(p=>solved.includes(p.id)).length;
+    const catPct=catProbs.length?Math.round(catSolved/catProbs.length*100):0;
+
+    let patsHtml='';
+    for(const pat of pats){
+      const pp=PROBLEMS.filter(p=>p.techId===pat.id);
+      const ps=pp.filter(p=>solved.includes(p.id)).length;
+      const barPct=pp.length?Math.round(ps/pp.length*100):0;
+      patsHtml+=`<div class="pc ${cat}" onclick="go_problems('${pat.id}')">
         <div class="pc-name">${pat.name}</div>
         <div class="pc-desc">${pat.desc}</div>
-        <div class="pc-foot"><span class="pc-cnt">${ps.length} problems</span><span class="pc-prog" style="color:${sc===ps.length&&ps.length?'var(--ok)':pat.col}">${sc}/${ps.length}</span></div>
-        <div class="pc-bar"><div class="pc-bar-fill" style="width:${pct}%;background:${pat.col}"></div></div>
+        <div class="pc-foot">
+          <span class="pc-cnt">${pp.length} problem${pp.length!==1?'s':''}</span>
+          <span class="pc-prog" style="color:${meta.color}">${ps}/${pp.length}</span>
+        </div>
+        <div class="pc-bar"><div class="pc-bar-fill" style="width:${barPct}%;background:${meta.color}"></div></div>
       </div>`;
-    });
-    h+='</div></div>';
-  });
-  document.getElementById('v-dash').innerHTML=h;
+    }
+
+    catsHtml+=`<div class="cat-block">
+      <div class="cat-block-hdr" onclick="go_problems('${cat}')">
+        <span class="cat-hdr-dot" style="background:${meta.color}"></span>
+        <span class="cat-hdr-name">${meta.label}</span>
+        <span class="cat-hdr-stats">${catSolved}/${catProbs.length} solved</span>
+        <div class="cat-hdr-bar"><div class="cat-hdr-fill" style="width:${catPct}%;background:${meta.color}"></div></div>
+        <span class="cat-hdr-arr">›</span>
+      </div>
+      <div class="pattern-grid" style="padding:12px 16px">${patsHtml}</div>
+    </div>`;
+  }
+
+  el.innerHTML=`<div class="dash-hero" style="padding:28px 32px 0">
+    <h1>&#9650; DSA Forge</h1>
+    <p>Master Data Structures &amp; Algorithms — one pattern at a time.</p>
+  </div>
+  <div style="padding:0 32px 28px">
+    ${statsHtml}
+    <div class="cats-wrap">${catsHtml}</div>
+  </div>`;
 }
 
-/* ── PROBLEM LIST ── */
+/* ── RENDER PROBLEM LIST ────────────────────────────────────────── */
 function renderProblems(){
-  const pat=[...PATTERNS.array,...PATTERNS.string].find(p=>p.id===S.patId);
-  const col=S.cat==='array'?'var(--arr)':'var(--str)';
-  const filtered=getFiltered();
-  document.getElementById('pl-hdr').innerHTML=`<div class="pl-top">
-    <button class="back-btn" onclick="go_dash()">&#8592; Dashboard</button>
-    <span class="pl-title" style="color:${col}">${pat?pat.name:(S.cat==='array'?'Array':'String')} Problems</span>
-    <span class="pl-meta">${filtered.length} problems</span>
-    <div class="diff-tabs">
-      <button class="dtab ${S.diffFilter==='all'?'on-all':''}" onclick="setDiff('all')">All</button>
-      <button class="dtab ${S.diffFilter==='Easy'?'on-easy':''}" onclick="setDiff('Easy')">Easy</button>
-      <button class="dtab ${S.diffFilter==='Medium'?'on-med':''}" onclick="setDiff('Medium')">Medium</button>
-      <button class="dtab ${S.diffFilter==='Hard'?'on-hard':''}" onclick="setDiff('Hard')">Hard</button>
-    </div>
-  </div>`;
-  renderProbTable();
-}
-function getFiltered(){return PROBLEMS.filter(p=>(S.patId?p.techId===S.patId:p.cat===S.cat)&&(S.diffFilter==='all'||p.diff===S.diffFilter));}
-function setDiff(d){S.diffFilter=d;renderProblems();}
-function renderProbTable(){
+  const el=document.getElementById('v-problems');
   const probs=getFiltered();
-  const col=S.cat==='array'?'var(--arr)':'var(--str)';
-  document.getElementById('pl-tbody').innerHTML=probs.map(p=>{
-    const sv=S.solved[p.id],at=S.attempted[p.id];
-    const dc=p.diff==='Easy'?'d-easy':p.diff==='Medium'?'d-med':'d-hard';
+  const solved=getSolved();
+  const att=getAttempted();
+  const meta=CAT_META[S.cat]||{label:S.cat,color:'var(--dim)'};
+  const pat=S.patId?getAllPats().find(p=>p.id===S.patId):null;
+
+  const diffBtns=['all','Easy','Medium','Hard'].map(d=>{
+    const cls=d==='all'?'on-all':d==='Easy'?'on-easy':d==='Medium'?'on-med':'on-hard';
+    return `<button class="dtab${S.diffFilter===d?' '+cls:''}" onclick="S.diffFilter='${d}';renderProblems()">
+      ${d==='all'?'All':d}
+    </button>`;
+  }).join('');
+
+  const rows=probs.map(p=>{
+    const isSolved=solved.includes(p.id);
+    const isAtt=att.includes(p.id);
+    const dot=isSolved?'<span class="sdot sdot-ok" title="Solved"></span>':'<span class="sdot sdot-no"></span>';
+    const dc={Easy:'d-easy',Medium:'d-med',Hard:'d-hard'}[p.diff]||'';
     return `<tr onclick="go_solve(${p.id})">
-      <td class="td-s"><span class="sdot ${sv?'sdot-ok':'sdot-no'}"></span></td>
-      <td class="td-n">${p.id}</td>
-      <td class="td-title-cell">${p.title}${sv?' <span style="color:var(--ok);font-size:.7rem">&#10003;</span>':''}</td>
-      <td class="td-tech" style="color:${col}">${p.tech}</td>
+      <td class="td-s">${dot}</td>
+      <td class="td-n">${String(p.id).padStart(2,'0')}</td>
+      <td class="td-title-cell">${p.title}</td>
+      <td class="td-tech">${p.tech}</td>
       <td><span class="diff-badge ${dc}">${p.diff}</span></td>
     </tr>`;
   }).join('');
+
+  el.innerHTML=`<div class="pl-hdr">
+    <div class="pl-hdr-row">
+      <button class="pl-back" onclick="go_dash()">&#8592; Dashboard</button>
+      <span class="pl-cat-badge" style="background:${meta.color}20;color:${meta.color};border-color:${meta.color}40">${meta.label}</span>
+    </div>
+    <div class="pl-top">
+      <span class="pl-title">${pat?pat.name:meta.label}</span>
+      ${pat?`<span class="pl-meta">${pat.desc}</span>`:''}
+      <div class="diff-tabs">${diffBtns}</div>
+    </div>
+  </div>
+  <div class="pl-wrap">
+    <table class="pl-table">
+      <thead><tr>
+        <th class="td-s"></th>
+        <th class="td-n">#</th>
+        <th>Title</th>
+        <th>Pattern</th>
+        <th>Difficulty</th>
+      </tr></thead>
+      <tbody>${rows||'<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--mut)">No problems found</td></tr>'}</tbody>
+    </table>
+  </div>`;
 }
 
-/* ── SOLVE VIEW ── */
+/* ── RENDER SOLVE ────────────────────────────────────────────────── */
 function renderSolve(){
-  const p=S.prob;
-  const col=p.cat==='array'?'var(--arr)':'var(--str)';
-  const dc=p.diff==='Easy'?'d-easy':p.diff==='Medium'?'d-med':'d-hard';
-  const pp=PROBLEMS.filter(x=>x.techId===p.techId);
-  const idx=pp.findIndex(x=>x.id===p.id);
-  document.getElementById('dp-num').textContent='#'+p.id;
-  document.getElementById('dp-title-txt').textContent=p.title;
-  const prev=document.getElementById('nav-prev'),next=document.getElementById('nav-next');
-  prev.disabled=idx<=0;next.disabled=idx>=pp.length-1;
-  prev.onclick=()=>idx>0&&go_solve(pp[idx-1].id);
-  next.onclick=()=>idx<pp.length-1&&go_solve(pp[idx+1].id);
+  const p=S.prob;if(!p)return;
+  const solved=getSolved();const isSolved=solved.includes(p.id);
+  const meta=CAT_META[p.cat]||{label:p.cat,color:'var(--dim)'};
+  const dc={Easy:'d-easy',Medium:'d-med',Hard:'d-hard'}[p.diff]||'';
 
-  // Build all pane contents
-  const exH=p.examples.map((ex,i)=>`<div class="ex-block"><div class="ex-lbl">Example ${i+1}</div><div class="ex-line"><span class="ek">Input:&nbsp;&nbsp;</span><span class="ev">${ex.input}</span></div><div class="ex-line"><span class="ek">Output: </span><span class="ev">${ex.output}</span></div>${ex.note?`<div class="ex-line"><span class="en">// ${ex.note}</span></div>`:''}</div>`).join('');
-  const descH=`<div class="prob-heading"><h2>${p.title}</h2><span class="diff-badge ${dc}">${p.diff}</span><span class="diff-badge" style="background:${p.cat==='array'?'rgba(74,158,255,.1)':'rgba(255,95,133,.1)'};color:${col}">${p.tech}</span>${S.solved[p.id]?'<span style="color:var(--ok);font-size:.8rem">&#10003; Solved</span>':''}</div>
-    <p class="prob-text">${p.desc}</p>
-    <div class="sec-hd">Examples</div>${exH}
-    <div class="sec-hd" style="margin-top:12px">Constraints</div>
-    <ul class="constraints">${p.constraints.map(c=>`<li>${c}</li>`).join('')}</ul>
-    <div class="tag-row">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`;
+  const exHtml=p.examples.map(e=>`<div class="ex-block">
+    <div class="ex-lbl">Example</div>
+    <div class="ex-line"><span class="ek">Input: </span><span class="ev">${e.input}</span></div>
+    <div class="ex-line"><span class="ek">Output: </span><span class="ev">${e.output}</span></div>
+    ${e.note?`<div class="ex-line"><span class="en">// ${e.note}</span></div>`:''}
+  </div>`).join('');
 
-  const apH=`<div class="ap-card"><div class="ap-head"><div class="ap-title">&#127919; ${p.approach.title}</div></div><div class="ap-body">${p.approach.body}<table class="cx-table"><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td style="color:var(--brute)">Brute Force</td><td><span class="cx-t">${p.approach.bt}</span></td><td><span class="cx-s">${p.approach.bs}</span></td></tr><tr><td style="color:var(--opt)">Optimal</td><td><span class="cx-t">${p.approach.ot}</span></td><td><span class="cx-s">${p.approach.os}</span></td></tr></table></div></div>
-  <div class="ap-card"><div class="ap-head"><div class="ap-title">&#128273; Key Insight</div></div><div class="ap-body">${p.hints[p.hints.length-1]}</div></div>`;
+  const constraintHtml=`<div class="sec-hd">Constraints</div><ul class="constraints">${p.constraints.map(c=>`<li>${c}</li>`).join('')}</ul>`;
+  const tagHtml=`<div class="tag-row">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`;
 
-  function hintsH(){
-    let h='';
-    p.hints.forEach((hint,i)=>{
-      if(i<S.hintsOpen) h+=`<div class="hint-item"><strong style="display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.8px;color:var(--warn);margin-bottom:4px">Hint ${i+1}</strong>${hint}</div>`;
-      else h+=`<div class="hint-locked" onclick="revealHint()">&#128274; Reveal Hint ${i+1}</div>`;
-    });
-    h+=S.hintsOpen<p.hints.length?`<button class="hint-all-btn" onclick="revealAllHints()">Reveal All (${p.hints.length} hints)</button>`:`<div style="text-align:center;font-size:.78rem;color:var(--ok);padding:8px">&#10003; All hints shown</div>`;
-    return h;
-  }
-  function solH(){
-    if(!S.solRevealed) return `<div class="sol-locked"><div class="sol-lock-icon">&#128274;</div><div class="sol-lock-txt">Solution is hidden. Give it your best try first — pattern mastery comes from struggling!</div><button class="sol-reveal-btn" onclick="revealSol()">Reveal Solution</button></div>`;
-    return `<div class="sol-block"><div class="sol-hd sol-brute-hd">&#128308; Brute Force</div><pre class="sol-pre">${esc(p.bruteSol)}</pre></div><div class="sol-block"><div class="sol-hd sol-opt-hd">&#128994; Optimal Solution</div><pre class="sol-pre">${esc(p.sol)}</pre></div>`;
-  }
+  const apH=`<div class="ap-card"><div class="ap-head"><div class="ap-title">&#127919; ${p.approach.title}</div></div><div class="ap-body">${p.approach.body}<table class="cx-table"><tr><th>Approach</th><th>Time</th><th>Space</th></tr><tr><td style="color:var(--brute)">Brute Force</td><td><span class="cx-t">${p.approach.bt}</span></td><td><span class="cx-s">${p.approach.bs}</span></td></tr><tr><td style="color:var(--opt)">Optimal</td><td><span class="cx-t">${p.approach.ot}</span></td><td><span class="cx-s">${p.approach.os}</span></td></tr></table></div></div>`;
 
-  const PANES={desc:descH,approach:apH,hints:hintsH(),solution:solH()};
-  const body=document.getElementById('dp-body');
-  body._panes=PANES;
-  body._hintsH=hintsH;
-  body._solH=solH;
-  body.innerHTML=PANES[S.descTab];
-  document.querySelectorAll('.dp-tab').forEach(t=>t.classList.toggle('on',t.dataset.pane===S.descTab));
+  const hintPanes=p.hints.map((h,i)=>`<div class="hint-item" id="hint-${p.id}-${i}" style="display:none">${h}</div>`).join('');
 
-  initEditor(p.starter,p.id);
-  setRaIdle();
+  document.getElementById('v-solve').innerHTML=`
+  <div class="desc-panel">
+    <div class="dp-topbar">
+      <button class="back-btn" onclick="go_problems(S.cat||S.prob.cat)">&#8592; Problems</button>
+      <span class="dp-num">#${p.id}</span>
+      <span class="dp-title">${p.title}</span>
+      ${isSolved?'<span style="color:var(--ok);font-size:.8rem">&#10003; Solved</span>':''}
+    </div>
+    <div class="dp-tabs-row">
+      <button class="dp-tab on" onclick="dpTab('desc',this)">Description</button>
+      <button class="dp-tab" onclick="dpTab('approach',this)">Approach</button>
+      <button class="dp-tab" onclick="dpTab('hints',this)">Hints</button>
+    </div>
+    <div class="dp-body">
+      <div class="dp-pane on" id="dp-desc">
+        <div class="prob-heading">
+          <h2>${p.title}</h2>
+          <span class="diff-badge ${dc}">${p.diff}</span>
+          <span class="diff-badge" style="background:${meta.color}20;color:${meta.color}">${meta.label}</span>
+        </div>
+        <p class="prob-text">${p.desc}</p>
+        ${exHtml}
+        ${constraintHtml}
+        ${tagHtml}
+      </div>
+      <div class="dp-pane" id="dp-approach">${apH}</div>
+      <div class="dp-pane" id="dp-hints">
+        <div id="hints-wrap">${hintPanes}</div>
+        <button class="hint-all-btn" id="hint-btn" onclick="revealNextHint()">&#128161; Show Hint 1</button>
+        <div id="sol-area" style="margin-top:1rem"></div>
+      </div>
+    </div>
+  </div>
+  <div class="resizer" id="resizer"></div>
+  <div class="editor-panel">
+    <div class="ep-bar">
+      <span class="ep-lang">JavaScript</span>
+      <span class="ep-shortcut">Ctrl+Enter = Run</span>
+      <div class="ep-sp"></div>
+      <button class="ep-btn ep-reset" onclick="resetEditor()">&#8635; Reset</button>
+      <button class="ep-btn ep-run" onclick="runTests(false)">&#9654; Run Tests</button>
+      <button class="ep-btn ep-sub" onclick="runTests(true)">&#10003; Submit</button>
+    </div>
+    <div class="editor-wrap" id="editor-wrap"></div>
+    <div class="results-area">
+      <div class="ra-hdr">
+        <span class="ra-lbl">Test Results</span>
+        <span class="ra-status rs-idle" id="ra-status">&#8212; waiting</span>
+      </div>
+      <div class="ra-body" id="ra-body"><div class="idle-msg">Write your solution and press Run Tests or Ctrl+Enter.</div></div>
+    </div>
+  </div>`;
+
+  initResizer();
+  S._hintsShown=0;
+  S._solRevealed=false;
 }
 
-function switchTab(tab){
-  S.descTab=tab;
-  document.querySelectorAll('.dp-tab').forEach(t=>t.classList.toggle('on',t.dataset.pane===tab));
-  const body=document.getElementById('dp-body');
-  const panes=body._panes||{};
-  if(tab==='hints'){body._panes.hints=body._hintsH();body.innerHTML=body._panes.hints;}
-  else if(tab==='solution'){body._panes.solution=body._solH();body.innerHTML=body._panes.solution;}
-  else body.innerHTML=panes[tab]||'';
+function dpTab(name,btn){
+  document.querySelectorAll('.dp-pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.dp-tab').forEach(b=>b.classList.remove('on'));
+  const pane=document.getElementById('dp-'+name);
+  if(pane) pane.classList.add('on');
+  btn.classList.add('on');
 }
-function revealHint(){S.hintsOpen=Math.min(S.hintsOpen+1,S.prob.hints.length);switchTab('hints');}
-function revealAllHints(){S.hintsOpen=S.prob.hints.length;switchTab('hints');}
-function revealSol(){S.solRevealed=true;switchTab('solution');}
 
-/* ── EDITOR ── */
-function initEditor(code,id){
+function revealNextHint(){
+  const p=S.prob;if(!p)return;
+  const shown=S._hintsShown||0;
+  if(shown<p.hints.length){
+    const el=document.getElementById(`hint-${p.id}-${shown}`);
+    if(el) el.style.display='block';
+    S._hintsShown=shown+1;
+    const btn=document.getElementById('hint-btn');
+    if(btn){
+      if(S._hintsShown<p.hints.length) btn.textContent=`💡 Show Hint ${S._hintsShown+1}`;
+      else{btn.textContent='🔓 Reveal Solution';btn.onclick=revealSolution;}
+    }
+  }
+}
+
+function revealSolution(){
+  if(S._solRevealed)return;
+  S._solRevealed=true;
+  const p=S.prob;if(!p)return;
+  const area=document.getElementById('sol-area');
+  if(!area)return;
+  area.innerHTML=`
+    ${p.bruteSol?`<div class="sol-block"><div class="sol-hd sol-brute-hd">&#128049; Brute Force</div><pre class="sol-pre">${escHtml(p.bruteSol)}</pre></div>`:''}
+    <div class="sol-block"><div class="sol-hd sol-opt-hd">&#10024; Optimal Solution</div><pre class="sol-pre">${escHtml(p.sol)}</pre></div>`;
+}
+
+function escHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+
+
+/* ── EDITOR ──────────────────────────────────────────────────── */
+function initEditor(){
   const wrap=document.getElementById('editor-wrap');
+  if(!wrap)return;
   wrap.innerHTML='';
-  S.editor=CodeMirror(wrap,{value:code,mode:'javascript',theme:'dracula',lineNumbers:true,autoCloseBrackets:true,matchBrackets:true,tabSize:2,indentWithTabs:false,extraKeys:{'Ctrl-Enter':()=>runTests(false),'Cmd-Enter':()=>runTests(false)}});
-  S.editor.setSize('100%','100%');
-  try{const sv=localStorage.getItem('dsf_code_'+id);if(sv)S.editor.setValue(sv);}catch(e){}
-  S.editor.on('change',()=>{try{localStorage.setItem('dsf_code_'+id,S.editor.getValue());}catch(e){}});
-  setTimeout(()=>S.editor.refresh(),150);
+  const p=S.prob;if(!p)return;
+  const saved=loadCode(p.id);
+  if(S.editor){try{S.editor.toTextArea();}catch(e){}}
+  const ta=document.createElement('textarea');
+  wrap.appendChild(ta);
+  S.editor=CodeMirror.fromTextArea(ta,{
+    value:saved||p.starter,
+    mode:'javascript',
+    theme:'dracula',
+    lineNumbers:true,
+    tabSize:2,
+    indentWithTabs:false,
+    autoCloseBrackets:true,
+    matchBrackets:true,
+    extraKeys:{'Ctrl-Enter':()=>runTests(false),'Cmd-Enter':()=>runTests(false)}
+  });
+  S.editor.setValue(saved||p.starter);
+  S.editor.on('change',()=>saveCode(p.id,S.editor.getValue()));
 }
 
-/* ── TEST RUNNER ── */
-function deepEq(a,b,cmp){
-  if(cmp==='sorted'){
-    if(!Array.isArray(a)||!Array.isArray(b)) return JSON.stringify(a)===JSON.stringify(b);
+function resetEditor(){
+  const p=S.prob;if(!p||!S.editor)return;
+  if(confirm('Reset to starter template?')){S.editor.setValue(p.starter);saveCode(p.id,p.starter);}
+}
+
+/* ── TEST RUNNER ─────────────────────────────────────────────────── */
+function deepEq(a,b,compareType){
+  if(compareType==='sorted'){
     return JSON.stringify([...a].sort((x,y)=>x-y))===JSON.stringify([...b].sort((x,y)=>x-y));
+  }
+  if(compareType==='sorted_nested'){
+    const norm=arr=>[...arr].map(x=>[...x].sort((a,b)=>String(a)<String(b)?-1:1).join('|')).sort().join('||');
+    return norm(a)===norm(b);
   }
   return JSON.stringify(a)===JSON.stringify(b);
 }
 
 function runTests(isSubmit){
-  const p=S.prob;if(!p||!S.editor) return;
-  const code=S.editor.getValue().trim();if(!code) return;
+  const p=S.prob;if(!p||!S.editor)return;
+  const code=S.editor.getValue().trim();if(!code)return;
   markAtt(p.id);
-  document.getElementById('ra-status').className='ra-status rs-run';
-  document.getElementById('ra-status').textContent='&#9203; running...';
-  document.getElementById('ra-body').innerHTML='<div class="idle-msg">Executing...</div>';
-
-  const logs=[];
-  const origLog=console.log;
-  console.log=(...args)=>{logs.push(args.map(a=>{try{return JSON.stringify(a);}catch(e){return String(a);}}).join(' '));origLog(...args);};
+  const statusEl=document.getElementById('ra-status');
+  const bodyEl=document.getElementById('ra-body');
+  if(!statusEl||!bodyEl)return;
+  statusEl.className='ra-status rs-run';
+  statusEl.textContent='⏳ running...';
+  bodyEl.innerHTML='<div class="idle-msg">Executing...</div>';
 
   const results=[];
   const t0=performance.now();
-  const tests=isSubmit?p.tests:p.tests.slice(0,3);
+  const origLog=console.log;
+  const allLogs=[];
+  console.log=(...args)=>{allLogs.push(args.map(a=>{try{return JSON.stringify(a);}catch(e){return String(a);}}).join(' '));origLog(...args);};
 
-  for(const tc of tests){
-    try{
-      const factory=new Function(code+'\nif(typeof solution==="undefined")throw new Error("No function named \'solution\' found.");return solution;');
-      const fn=factory();
-      const args=JSON.parse(JSON.stringify(tc.args));
-      const res=fn(...args);
-      const pass=deepEq(res,tc.expected,p.compare);
-      results.push({pass,result:res,expected:tc.expected,label:tc.label,args:tc.args,logs:[...logs]});
-    }catch(err){
-      results.push({error:err.message,label:tc.label,args:tc.args,logs:[...logs]});
+  try{
+    const factory=new Function((p.preamble||'')+'\n'+code+'\nif(typeof solution==="undefined")throw new Error("No function named \'solution\' found.");return solution;');
+    const fn=factory();
+
+    for(const tc of p.tests){
+      const tcLogs=[];
+      const prevLog=console.log;
+      console.log=(...a)=>{tcLogs.push(a.map(x=>{try{return JSON.stringify(x);}catch(e){return String(x);}}).join(' '));prevLog(...a);};
+      try{
+        const rawArgs=JSON.parse(JSON.stringify(tc.args));
+        const args=p.preArgs?p.preArgs(rawArgs):rawArgs;
+        const rawResult=fn(...args);
+        const result=p.postResult?p.postResult(rawResult):rawResult;
+        const pass=deepEq(result,tc.expected,p.compare);
+        results.push({pass,result,expected:tc.expected,label:tc.label,args:tc.args,logs:tcLogs});
+      }catch(e){
+        results.push({pass:false,error:e.message,label:tc.label,args:tc.args,logs:tcLogs});
+      }finally{console.log=prevLog;}
     }
-    logs.length=0;
-  }
-  console.log=origLog;
-  const ms=Math.round(performance.now()-t0);
+  }catch(e){
+    console.log=origLog;
+    statusEl.className='ra-status rs-err';
+    statusEl.textContent='❌ Error';
+    bodyEl.innerHTML=`<div style="color:var(--err);font-size:.8rem;padding:8px 0"><strong>Compile Error:</strong><pre style="font-family:monospace;margin-top:4px;color:var(--warn)">${escHtml(e.message)}</pre></div>`;
+    return;
+  }finally{console.log=origLog;}
 
+  const elapsed=((performance.now()-t0)).toFixed(1);
   const allPass=results.every(r=>r.pass);
-  const anyErr=results.some(r=>r.error);
-  const pc=results.filter(r=>r.pass).length;
+  const passCount=results.filter(r=>r.pass).length;
 
-  const st=document.getElementById('ra-status');
-  if(anyErr){st.className='ra-status rs-err';st.textContent='&#9888; Error';}
-  else if(allPass){st.className='ra-status rs-pass';st.textContent=`&#10003; ${isSubmit?'Accepted':'Passed'} (${pc}/${tests.length})`;}
-  else{st.className='ra-status rs-fail';st.textContent=`&#10007; ${pc}/${tests.length} passed`;}
-  document.getElementById('ra-time').textContent=ms+'ms';
+  if(allPass){
+    statusEl.className='ra-status rs-pass';
+    statusEl.textContent=`✅ All ${results.length} passed (${elapsed}ms)`;
+    if(isSubmit){markSolved(p.id);showCelebration();}
+  }else{
+    statusEl.className='ra-status rs-fail';
+    statusEl.textContent=`❌ ${passCount}/${results.length} passed`;
+  }
 
-  document.getElementById('ra-body').innerHTML=results.map(r=>{
-    const ico=r.error?'&#9888;&#65039;':r.pass?'&#9989;':'&#10060;';
-    let detail='';
-    if(r.error) detail=`<div class="tc-detail"><span class="e">${esc(r.error)}</span></div>`;
-    else if(!r.pass) detail=`<div class="tc-detail">Input: <span class="v">${esc(JSON.stringify(r.args))}</span><br>Expected: <span class="v">${esc(JSON.stringify(r.expected))}</span><br>Got: <span class="e">${esc(JSON.stringify(r.result))}</span></div>`;
-    else detail=`<div class="tc-detail">Output: <span class="v">${esc(JSON.stringify(r.result))}</span></div>`;
-    const logH=r.logs&&r.logs.length?`<div class="console-out">&#128203; ${r.logs.slice(0,3).map(l=>esc(l)).join('<br>')}</div>`:'';
-    return `<div class="tc-row"><span class="tc-ico">${ico}</span><div class="tc-info"><div class="tc-name">${r.label}</div>${detail}${logH}</div></div>`;
+  const rows=results.map((r,i)=>{
+    const icon=r.pass?'✅':r.error?'💥':'❌';
+    const color=r.pass?'var(--ok)':r.error?'var(--warn)':'var(--err)';
+    const detail=r.error
+      ?`<div style="color:var(--err);font-family:monospace;font-size:.75rem">${escHtml(r.error)}</div>`
+      :`<div class="tc-detail">
+          <span class="ek">Input: </span><span class="v">${escHtml(JSON.stringify(r.args))}</span><br>
+          <span class="ek">Expected: </span><span class="v" style="color:var(--ok)">${escHtml(JSON.stringify(r.expected))}</span>
+          ${!r.pass?`<br><span class="ek">Got: </span><span class="e">${escHtml(JSON.stringify(r.result))}</span>`:''}
+        </div>
+        ${r.logs&&r.logs.length?`<div class="console-out">${r.logs.map(escHtml).join('<br>')}</div>`:''}`;
+    return `<div class="tc-row">
+      <span class="tc-ico">${icon}</span>
+      <div class="tc-info">
+        <div class="tc-name" style="color:${color}">Test ${i+1}${r.label?' — '+r.label:''}</div>
+        ${detail}
+      </div>
+    </div>`;
   }).join('');
 
-  if(isSubmit&&allPass&&results.length===p.tests.length){markSolved(p.id);celebrate(p);}
+  bodyEl.innerHTML=`<div style="padding:0">${rows}</div>`;
 }
 
-function setRaIdle(){
-  document.getElementById('ra-status').className='ra-status rs-idle';
-  document.getElementById('ra-status').textContent='&#8212; waiting';
-  document.getElementById('ra-time').textContent='';
-  document.getElementById('ra-body').innerHTML='<div class="idle-msg">Write your solution and press Run Tests or Ctrl+Enter.</div>';
+function showCelebration(){
+  const m=document.getElementById('celebrate-modal');
+  if(m){m.style.display='flex';}
 }
 
-function celebrate(p){
-  const ov=document.createElement('div');ov.className='modal-ov';
-  const pp=PROBLEMS.filter(x=>x.techId===p.techId);
-  const idx=pp.findIndex(x=>x.id===p.id);
-  ov.innerHTML=`<div class="modal-box"><div class="modal-emoji">&#127881;</div><div class="modal-title">Accepted!</div><div class="modal-sub">${esc(p.title)} solved. Pattern: <strong>${esc(p.tech)}</strong></div><div class="modal-cx"><div class="modal-cx-item"><span>Time</span><span class="modal-cx-t">${p.approach.ot}</span></div><div class="modal-cx-item"><span>Space</span><span class="modal-cx-s">${p.approach.os}</span></div></div><div class="modal-btns"><button class="modal-btn" id="cel-close">Close</button><button class="modal-btn modal-btn-ok" id="cel-next">${idx<pp.length-1?'Next Problem &#8594;':'See All Problems'}</button></div></div>`;
-  document.body.appendChild(ov);
-  ov.querySelector('#cel-close').onclick=()=>ov.remove();
-  ov.querySelector('#cel-next').onclick=()=>{ov.remove();idx<pp.length-1?go_solve(pp[idx+1].id):go_problems(p.techId);};
-  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove();});
-}
-
-/* ── RESIZER ── */
+/* ── RESIZER ─────────────────────────────────────────────────── */
 function initResizer(){
-  const rs=document.getElementById('resizer'),lp=document.getElementById('desc-panel');
-  let drag=false,sx=0,sw=0;
-  rs.addEventListener('mousedown',e=>{drag=true;sx=e.clientX;sw=lp.offsetWidth;rs.classList.add('drag');document.body.style.userSelect='none';});
-  document.addEventListener('mousemove',e=>{if(!drag)return;const w=Math.max(280,Math.min(sw+e.clientX-sx,window.innerWidth-380));lp.style.width=w+'px';});
-  document.addEventListener('mouseup',()=>{drag=false;rs.classList.remove('drag');document.body.style.userSelect='';if(S.editor)S.editor.refresh();});
+  const r=document.getElementById('resizer');
+  const left=document.getElementById('solve-left');
+  const layout=document.getElementById('solve-layout');
+  if(!r||!left)return;
+  let dragging=false,startX=0,startW=0;
+  r.addEventListener('mousedown',e=>{dragging=true;startX=e.clientX;startW=left.offsetWidth;r.classList.add('dragging');});
+  document.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    const delta=e.clientX-startX;
+    const total=layout.offsetWidth;
+    const newW=Math.max(280,Math.min(total-300,startW+delta));
+    left.style.width=newW+'px';
+  });
+  document.addEventListener('mouseup',()=>{dragging=false;r.classList.remove('dragging');});
 }
 
-/* ── HELPERS ── */
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* ── EVENTS ──────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  const navHome=document.getElementById('logo-home');if(navHome)navHome.addEventListener('click',go_dash);
+  const cm=document.getElementById('celebrate-modal');
+  if(cm){
+    cm.addEventListener('click',e=>{if(e.target===cm)cm.style.display='none';});
+    const cb=document.getElementById('celebrate-close');
+    if(cb) cb.addEventListener('click',()=>cm.style.display='none');
+    const nb=document.getElementById('celebrate-next');
+    if(nb) nb.addEventListener('click',()=>{cm.style.display='none';go_problems(S.prob?S.prob.cat:'array');});
+  }
+  go_dash();
+});
 
-/* ── EVENTS ── */
-document.getElementById('logo-home').addEventListener('click',go_dash);
-document.getElementById('back-btn').addEventListener('click',()=>S.patId?go_problems(S.patId):go_dash());
-document.getElementById('btn-reset').addEventListener('click',()=>{if(S.editor&&S.prob){S.editor.setValue(S.prob.starter);try{localStorage.removeItem('dsf_code_'+S.prob.id);}catch(e){}}});
-document.getElementById('btn-run').addEventListener('click',()=>runTests(false));
-document.getElementById('btn-sub').addEventListener('click',()=>runTests(true));
-document.getElementById('dp-tabs-row').addEventListener('click',e=>{const b=e.target.closest('.dp-tab');if(b)switchTab(b.dataset.pane);});
-
-/* ── INIT ── */
-loadProg();updProg();renderDash();initResizer();
 </script>
+
+<div id="celebrate-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem 3rem;text-align:center;max-width:420px">
+    <div style="font-size:3rem">🎉</div>
+    <h2 style="margin:.5rem 0;color:var(--success)">Problem Solved!</h2>
+    <p style="color:var(--muted);margin-bottom:1.5rem">Great work! Keep the momentum going.</p>
+    <div style="display:flex;gap:.75rem;justify-content:center">
+      <button id="celebrate-close" style="padding:.6rem 1.4rem;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);cursor:pointer">Stay Here</button>
+      <button id="celebrate-next" style="padding:.6rem 1.4rem;border-radius:8px;background:var(--accent);border:none;color:#fff;cursor:pointer;font-weight:600">Next Problem →</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
